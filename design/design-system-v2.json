@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "appName": "Lingora",
+    "appTagline": "Teman ngobrol AI yang ramah untuk melatih bahasamu",
+    "exportedAt": "2026-06-09",
+    "designSystemBase": "MUI Minimals (Lingora Revamp Version)",
+    "uiLibrary": "MUI 9 + Emotion",
+    "framework": "Next.js 16 App Router",
+    "currentPages": ["login", "dashboard", "conversation", "settings"]
+  },
+  "themeConfig": {
+    "defaultSettings": {
+      "themeStretch": false,
+      "themeMode": "system",
+      "themeDirection": "ltr",
+      "themeContrast": "default",
+      "themeLayout": "mobile-first",
+      "themeColorPresets": "orange"
+    },
+    "shape": { "borderRadius": 16 }
+  },
+  "tokens": {
+    "colors": {
+      "primary": { "main": "#FF9800", "light": "#FFB74D", "dark": "#F57C00", "label": "Warm Orange" },
+      "secondary": { "main": "#03A9F4", "label": "Calm Blue" },
+      "lightMode": { "backgroundDefault": "#FCFBF8", "backgroundPaper": "#FFFFFF", "textPrimary": "#2C3135" },
+      "darkMode": { "backgroundDefault": "#121212", "backgroundPaper": "#1E1E1E" }
+    },
+    "typography": { "primaryFont": "Nunito" }
+  },
+  "atmosphere": {
+    "summary": "Ruang belajar bahasa yang hangat, rileks, dan sangat ramah",
+    "keywords": ["soft", "relaxing", "friendly", "approachable", "modern-mobile", "encouraging"]
+  },
+  "nuansa": {
+    "summary": "Nyaman dan positif, menghilangkan rasa takut salah saat belajar bahasa",
+    "emotionalTone": ["warm", "encouraging", "calm", "safe", "fun"]
+  },
+  "layoutPatterns": {
+    "navigation": "Bottom Navigation Bar mobile-first",
+    "pageStructure": "max-width 480px centered",
+    "settingsLayout": "Dedicated settings page (not drawer)"
+  },
+  "penglihatan": {
+    "summary": "Aplikasi terasa seperti teman belajar yang asyik — latar putih tulang, navigasi bawah, bubble oranye untuk user, koreksi inline merah/hijau, font Nunito membulat."
+  }
+}

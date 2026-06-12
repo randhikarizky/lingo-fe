@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "appName": "Lingora",
+    "appTagline": "Teman ngobrol AI yang ramah untuk melatih bahasamu",
+    "exportedAt": "2026-06-10",
+    "designSystemBase": "Material 3 Expressive (MUI 9 Customization)",
+    "uiLibrary": "MUI 9 + Emotion",
+    "framework": "Next.js 16 App Router",
+    "currentPages": ["login", "dashboard", "conversation", "settings"]
+  },
+  "themeConfig": {
+    "defaultSettings": {
+      "themeMode": "system",
+      "themeDirection": "ltr",
+      "themeContrast": "default"
+    },
+    "shape": {
+      "borderRadius": 24,
+      "borderRadiusUnit": "px",
+      "buttonBorderRadius": 100,
+      "dialogBorderRadiusMultiplier": 1.16
+    }
+  },
+  "tokens": {
+    "colors": {
+      "primary": {
+        "lighter": "#FFDCC2",
+        "light": "#FFB380",
+        "main": "#FA7D19",
+        "dark": "#D95E00",
+        "darker": "#A64500",
+        "contrastText": "#FFFFFF",
+        "tonalContainer": "#FFEDDF",
+        "onTonalContainer": "#4D2200",
+        "label": "M3 Expressive Vibrant Orange"
+      },
+      "secondary": {
+        "lighter": "#D6E4FF",
+        "light": "#A3C2FF",
+        "main": "#4785FF",
+        "dark": "#1A5CE6",
+        "darker": "#003BB3",
+        "contrastText": "#FFFFFF",
+        "tonalContainer": "#EBF1FF",
+        "onTonalContainer": "#001B5E",
+        "label": "M3 Expressive Dynamic Blue"
+      },
+      "semantic": {
+        "success": { "main": "#14B862", "description": "Digunakan untuk teks koreksi AI yang benar" },
+        "error": { "main": "#FF3B30", "description": "Digunakan untuk coretan merah (strikethrough)" }
+      },
+      "lightMode": {
+        "textPrimary": "#1C1B1A",
+        "textSecondary": "#494745",
+        "backgroundDefault": "#FFF8F4",
+        "backgroundPaper": "#FFFFFF",
+        "surfaceContainer": "#F5EFEB",
+        "surfaceContainerHigh": "#EBE4DF",
+        "divider": "rgba(28, 27, 26, 0.08)"
+      },
+      "darkMode": {
+        "textPrimary": "#F5EFEB",
+        "textSecondary": "#D1C9C4",
+        "backgroundDefault": "#1C1B1A",
+        "backgroundPaper": "#262523",
+        "surfaceContainer": "#33302E",
+        "surfaceContainerHigh": "#403D3A",
+        "divider": "rgba(245, 239, 235, 0.12)"
+      }
+    },
+    "typography": {
+      "primaryFont": "Nunito, Quicksand, sans-serif",
+      "fontWeights": {
+        "regular": 500,
+        "medium": 600,
+        "semiBold": 700,
+        "bold": 800,
+        "extraBold": 900
+      },
+      "scale": {
+        "h1": { "fontSize": "40px", "fontWeight": 900, "letterSpacing": "-1px" },
+        "h2": { "fontSize": "32px", "fontWeight": 800, "letterSpacing": "-0.5px" },
+        "h3": { "fontSize": "26px", "fontWeight": 800 },
+        "body1": { "fontSize": "17px", "fontWeight": 600, "letterSpacing": "0.1px" },
+        "body2": { "fontSize": "15px", "fontWeight": 500 },
+        "button": { "fontSize": "16px", "fontWeight": 800, "textTransform": "none" }
+      },
+      "character": "Chunky, tebal, ekspresif, sangat mudah dibaca, berkarakter playful"
+    },
+    "spacing": {
+      "baseUnit": 8,
+      "cardPadding": 24,
+      "formSpacing": 20
+    },
+    "shadows": {
+      "elevation": "Dihapus. M3 Expressive menggunakan warna latar (Tonal Surface) bukan shadow tebal.",
+      "custom": {
+        "card": "none",
+        "appBar": "none",
+        "dialog": "0px 24px 48px -12px rgba(28, 27, 26, 0.15)",
+        "fab": "0px 8px 24px -4px rgba(250, 125, 25, 0.3)"
+      }
+    }
+  },
+  "atmosphere": {
+    "summary": "Aplikasi edukasi yang sangat playful, empuk, dan interaktif (Material 3 Expressive)",
+    "derivedFrom": ["Extreme pill shapes", "Tonal surface colors", "Chunky typography", "No harsh borders/shadows"],
+    "keywords": ["expressive", "chunky", "tactile", "dynamic", "fun", "modern-mobile"],
+    "density": "Lega dan besar. Target sentuh (touch target) minimum 48px untuk semua interaksi.",
+    "visualWeight": "Diberikan melalui Tonal Container (warna latar lembut yang menyesuaikan primary/secondary) alih-alih bayangan."
+  },
+  "affectedComponents": {
+    "m3ExpressiveRules": {
+      "MuiButton": "Bentuk kapsul/pil (borderRadius: 100px). Lebih tinggi (min 48px) dan tebal.",
+      "MuiCard": "Sudut sangat besar (borderRadius: 24px). Hapus box-shadow, gunakan backgroundColor: surfaceContainer.",
+      "MuiPaper": "Sama dengan Card. Hapus bayangan.",
+      "MuiDialog": "Sudut ekstrem (borderRadius: 28px). Padding tebal.",
+      "MuiTextField": "Bentuk gemuk (chunky). Gunakan borderRadius: 16px untuk OutlinedInput.",
+      "MuiBottomNavigation": "Tinggi minimum 80px. Hilangkan border atas. Action icon yang aktif harus memiliki latar belakang kapsul kecil (pill indicator) di sekeliling ikon.",
+      "MuiSwitch": "Track gemuk (chunky). Thumb harus membesar/mengembang saat state checked.",
+      "MuiFab": "Bukan bulat sempurna, melainkan kotak membulat (Rounded Rectangle, borderRadius: 16px).",
+      "MuiChip": "Kotak bersudut halus (borderRadius: 8px), bukan lonjong penuh.",
+      "MuiAppBar": "Menyatu dengan latar belakang aplikasi. Tidak ada box-shadow."
+    },
+    "layoutPatterns": {
+      "navigation": "M3 Bottom Navigation dengan pill-shaped active indicator.",
+      "pageStructure": "Latar belakang utama menggunakan backgroundDefault (#FFF8F4), sedangkan kartu menggunakan backgroundPaper (#FFFFFF) untuk memberikan kedalaman tanpa bayangan."
+    }
+  },
+  "penglihatan": {
+    "summary": "Saat dibuka, Lingora terasa seperti aplikasi modern ala Google terbaru. Semuanya empuk dan membulat. Tombol utamanya berbentuk kapsul sempurna. Kartu-kartu menu tidak memiliki bayangan, melainkan dibedakan dengan warna latar (tonal) dan sudut 24px yang sangat ramah. Navigasi bawah sangat tinggi dan nyaman di jempol, di mana menu yang aktif disorot dengan gelembung kapsul. Saat pengguna menggeser switch/toggle, tombol di dalamnya membesar. Tidak ada lagi sisa-sisa desain 'dashboard admin' yang kaku; semuanya memancarkan energi 'fun' dan 'expressive'."
+  }
+}

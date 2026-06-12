@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "appName": "Lingora",
+    "appTagline": "Berlatih percakapan bahasa dengan AI",
+    "exportedAt": "2026-06-08",
+    "designSystemBase": "MUI Minimals (gurilap fork)",
+    "uiLibrary": "MUI 9 + Emotion",
+    "framework": "Next.js 16 App Router",
+    "currentPages": ["login", "dashboard", "conversation"]
+  },
+
+  "themeConfig": {
+    "defaultSettings": {
+      "themeStretch": false,
+      "themeMode": "light",
+      "themeDirection": "ltr",
+      "themeContrast": "default",
+      "themeLayout": "vertical",
+      "themeColorPresets": "default"
+    },
+    "supportedModes": {
+      "themeMode": ["light", "dark"],
+      "themeDirection": ["ltr", "rtl"],
+      "themeContrast": ["default", "bold"],
+      "themeLayout": ["vertical", "horizontal", "mini"],
+      "themeColorPresets": ["default", "cyan", "purple", "blue", "orange", "red"]
+    },
+    "shape": {
+      "borderRadius": 8,
+      "borderRadiusUnit": "px",
+      "cardBorderRadiusMultiplier": 2,
+      "dialogBorderRadiusMultiplier": 2
+    },
+    "providers": ["SettingsProvider", "MuiThemeProvider", "LocalizationProvider (Dayjs)", "React Query", "Snackbar (notistack)"]
+  },
+
+  "tokens": {
+    "colors": {
+      "primary": {
+        "lighter": "#C8FAD6",
+        "light": "#5BE49B",
+        "main": "#00A76F",
+        "dark": "#007867",
+        "darker": "#004B50",
+        "contrastText": "#FFFFFF",
+        "label": "Emerald Green"
+      },
+      "secondary": {
+        "lighter": "#EFD6FF",
+        "light": "#C684FF",
+        "main": "#8E33FF",
+        "dark": "#5119B7",
+        "darker": "#27097A",
+        "contrastText": "#FFFFFF",
+        "label": "Vivid Purple"
+      },
+      "semantic": {
+        "info": { "main": "#00B8D9" },
+        "success": { "main": "#22C55E" },
+        "warning": { "main": "#FFAB00" },
+        "error": { "main": "#FF5630" }
+      },
+      "grey": {
+        "0": "#FFFFFF",
+        "100": "#F9FAFB",
+        "200": "#F4F6F8",
+        "300": "#DFE3E8",
+        "400": "#C4CDD5",
+        "500": "#919EAB",
+        "600": "#637381",
+        "700": "#454F5B",
+        "800": "#212B36",
+        "900": "#161C24"
+      },
+      "lightMode": {
+        "textPrimary": "#212B36",
+        "textSecondary": "#637381",
+        "backgroundDefault": "#FFFFFF",
+        "backgroundPaper": "#FFFFFF",
+        "backgroundNeutral": "#F4F6F8",
+        "divider": "rgba(145, 158, 171, 0.2)"
+      },
+      "darkMode": {
+        "textPrimary": "#FFFFFF",
+        "textSecondary": "#919EAB",
+        "backgroundDefault": "#161C24",
+        "backgroundPaper": "#212B36",
+        "backgroundNeutral": "rgba(145, 158, 171, 0.12)",
+        "divider": "rgba(145, 158, 171, 0.2)"
+      }
+    },
+    "typography": {
+      "primaryFont": "Public Sans",
+      "secondaryFont": "Barlow",
+      "fontWeights": {
+        "regular": 400,
+        "medium": 500,
+        "semiBold": 600,
+        "bold": 700,
+        "extraBold": 800
+      },
+      "scale": {
+        "h1": { "fontSize": "42px", "fontWeight": 800, "responsive": "52-64px" },
+        "h2": { "fontSize": "34px", "fontWeight": 800, "responsive": "40-48px" },
+        "h3": { "fontSize": "26px", "fontWeight": 700 },
+        "h4": { "fontSize": "22px", "fontWeight": 700 },
+        "h5": { "fontSize": "20px", "fontWeight": 700 },
+        "h6": { "fontSize": "19px", "fontWeight": 700 },
+        "body1": { "fontSize": "18px" },
+        "body2": { "fontSize": "16px" },
+        "caption": { "fontSize": "14px" },
+        "button": { "fontSize": "16px", "fontWeight": 700, "textTransform": "none" }
+      },
+      "character": "Modern sans-serif, bold headings, readable body, no uppercase buttons"
+    },
+    "spacing": {
+      "baseUnit": 8,
+      "cardPadding": 24,
+      "cardHeaderPadding": "24px 24px 0",
+      "pagePadding": { "mobile": 16, "desktop": 32 },
+      "formSpacing": 24
+    },
+    "shadows": {
+      "elevation": "Material Design 25-level shadow system",
+      "custom": {
+        "card": "Soft layered shadow with 12px blur",
+        "dropdown": "Directional shadow (-20px 20px 40px)",
+        "dialog": "Heavy dramatic shadow (-40px 40px 80px)",
+        "colored": "8px glow shadows per semantic color (primary, info, etc.)"
+      }
+    },
+    "motion": {
+      "framerMotion": "Available in theme/animate (variants: fade, slide, zoom, bounce, etc.)",
+      "usageInApp": "Minimal — mostly theme settings drawer, not heavily used in pages yet"
+    }
+  },
+
+  "atmosphere": {
+    "summary": "Dashboard SaaS profesional yang bersih dan modern",
+    "derivedFrom": ["emerald primary", "white backgrounds", "soft card shadows", "Public Sans typography", "8px rounded corners"],
+    "keywords": ["clean", "professional", "corporate-startup", "trustworthy", "minimal", "light-first"],
+    "density": "medium — cukup ruang napas, tidak terlalu padat",
+    "contrast": "default — background putih polos, kontras teks standar",
+    "visualWeight": "ringan — dominasi putih/abu, aksen hijau pada CTA dan bubble user"
+  },
+
+  "nuansa": {
+    "summary": "Segar, ramah, dan terpercaya — seperti aplikasi edukasi/produktivitas modern",
+    "emotionalTone": ["fresh", "approachable", "calm", "competent", "neutral-warm"],
+    "brandPersonality": "Guru digital yang profesional tapi tidak kaku",
+    "userFeeling": "Masuk ke ruang belajar digital yang rapi, bukan game atau media sosial",
+    "colorPsychology": {
+      "primaryGreen": "Pertumbuhan, kesegaran, kemajuan belajar",
+      "purpleSecondary": "Kreativitas & teknologi (belum dominan di UI saat ini)",
+      "whiteGrey": "Kejelasan, fokus, minim distraksi"
+    }
+  },
+
+  "affectedComponents": {
+    "muiOverrides": [
+      "MuiAccordion", "MuiAlert", "MuiAppBar", "MuiAutocomplete", "MuiAvatar",
+      "MuiBackdrop", "MuiBadge", "MuiBreadcrumbs", "MuiButton", "MuiButtonGroup",
+      "MuiCard", "MuiCardHeader", "MuiCardContent", "MuiCheckbox", "MuiChip",
+      "MuiCssBaseline", "MuiDataGrid", "MuiDatePicker", "MuiDialog", "MuiDrawer",
+      "MuiFab", "MuiList", "MuiLoadingButton", "MuiMenu", "MuiPagination",
+      "MuiPaper", "MuiPopover", "MuiProgress", "MuiRadio", "MuiRating",
+      "MuiSelect", "MuiSkeleton", "MuiSlider", "MuiStepper", "MuiSwitch",
+      "MuiSvgIcon", "MuiTable", "MuiTabs", "MuiTextField", "MuiTimeline",
+      "MuiToggleButton", "MuiTooltip", "MuiTreeView", "MuiTypography"
+    ],
+    "customVariants": {
+      "Button": ["soft variant — tinted background per color"],
+      "globalDefaultProps": "Custom icons for Checkbox, Radio, Rating, Select arrow (Iconify)"
+    },
+    "appLevelComponents": [
+      {
+        "name": "LoginComponent",
+        "uses": ["Box full-viewport center", "Card maxWidth 420", "Typography h4", "TextField", "Button contained primary", "background.default"]
+      },
+      {
+        "name": "DashboardComponent",
+        "uses": ["AppHeader", "Card sections", "Button contained CTA", "Typography h6 body2"]
+      },
+      {
+        "name": "ConversationComponent",
+        "uses": ["AppHeader", "Alert info", "Card toolbar", "Chip status", "Chat bubbles (primary.main user / background.neutral AI)", "TextField multiline", "Button contained"]
+      },
+      {
+        "name": "AppHeader",
+        "uses": ["Typography h4", "Link navigation", "SettingsDrawer", "Stack horizontal layout"]
+      },
+      {
+        "name": "SettingsDrawer",
+        "uses": ["Theme mode toggle light/dark", "Layout options", "Color presets", "Contrast toggle", "Stretch toggle"]
+      },
+      {
+        "name": "Snackbar",
+        "uses": ["notistack toast notifications — success/error/warning"]
+      }
+    ],
+    "layoutPatterns": {
+      "navigation": "Top header only — NO sidebar implemented (themeLayout vertical defined but unused)",
+      "pageStructure": "Full-width container + padding, content in Cards",
+      "authLayout": "Centered single card on plain background",
+      "contentLayout": "Stack vertical sections with 16-24px gap"
+    }
+  },
+
+  "penglihatan": {
+    "summary": "Dari data yang ada, app ini akan terlihat seperti dashboard admin SaaS edukasi modern ala Minimals — dominan putih bersih dengan aksen hijau zamrud (#00A76F), tipografi Public Sans tebal untuk judul, konten dalam kartu putih berbayang lembut dengan sudut membulat 16px. Tidak ada sidebar; navigasi sederhana lewat teks link di header. Halaman login adalah form tunggal di tengah layar. Halaman conversation menyerupai chat app minimalis: bubble hijau untuk user, abu-abu muda untuk AI. Secara keseluruhan terasa seperti produk B2B startup yang rapi dan profesional — mirip panel admin internal, belum terasa seperti consumer app atau aplikasi speaking yang immersive.",
+    "perPage": {
+      "login": "Layar putih polos, satu kartu di tengah berisi logo teks 'Lingora', subjudul abu-abu, 2 input field standar MUI, tombol hijau lebar 'Masuk'",
+      "dashboard": "Header 'Dashboard' besar + link navigasi kecil + drawer settings. Kartu selamat datang + kartu CTA 'Buka Conversation' dengan tombol hijau",
+      "conversation": "Header serupa, alert biru info di atas, baris chip status, area chat scrollable dengan bubble, input teks + tombol kirim di bawah"
+    },
+    "lightModeDefault": "Background putih #FFFFFF, teks gelap #212B36, kartu dengan shadow halus",
+    "darkModeAvailable": "Background #161C24, kartu #212B36 — tersedia via settings drawer tapi bukan default",
+    "notYetVisualized": ["Roleplay", "Progress charts", "Audio waveform", "Onboarding", "Mobile-first gestures"]
+  },
+
+  "gapsAndRevampOpportunities": [
+    "Desain masih generic admin template — belum punya identitas 'AI speaking platform'",
+    "Tidak ada ilustrasi, icon brand, atau imagery",
+    "Layout vertical sidebar dikonfigurasi tapi tidak dipakai",
+    "Conversation UI masih basic chat — belum immersive untuk latihan speaking",
+    "Secondary purple color hampir tidak terlihat di UI",
+    "Tidak ada design token file terpusat — masih tersebar di palette.ts"
+  ]
+}
