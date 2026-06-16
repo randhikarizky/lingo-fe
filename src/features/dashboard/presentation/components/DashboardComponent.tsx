@@ -157,7 +157,7 @@ export default function DashboardComponent() {
           color="primary"
           size="large"
           fullWidth
-          onClick={() => router.push("/conversation")}
+          onClick={() => router.push("/conversation?character=maya&personality=santai")}
         >
           Mulai Ngobrol Sekarang
         </Button>

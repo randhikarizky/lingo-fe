@@ -8,4 +8,5 @@ export type ChatApiMessage = {
 export type ChatRequest = {
   messages: ChatApiMessage[];
   model?: AiModel;
+  conversationId?: string;
 };

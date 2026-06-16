@@ -1,13 +1,16 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 
 import LoadingTips from "@/global/components/Loading/LoadingTips";
 import { useGetMe } from "@/features/auth/presentation/controller/auth.controller";
@@ -18,15 +21,20 @@ import {
   getPersonality,
   type PersonalityId,
 } from "../../domain/constants/personalities";
-import { useChat } from "../controller/conversation.controller";
+import {
+  useChat,
+  useCreateConversation,
+  useGetConversationDetail,
+} from "../controller/conversation.controller";
 import { useTranscribe } from "../controller/speech.controller";
-import type { ChatMessageEntity } from "../../domain/entities/chat-message.entity";
+import type { ChatMessageEntity, ChatRole } from "../../domain/entities/chat-message.entity";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
 import { useCorrectionTts } from "../hooks/useCorrectionTts";
 import ChatInputBar from "./ChatInputBar";
 import ChatMessageBubble from "./ChatMessageBubble";
 import MicPermissionDialog from "./MicPermissionDialog";
 import PersonalityPicker from "./PersonalityPicker";
+import HistoryDrawer from "./HistoryDrawer";
 
 const FLOATING_INPUT_CLEARANCE = 88;
 
@@ -46,12 +54,17 @@ function createMessage(
 
 export default function ConversationComponent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  const conversationId = searchParams.get("id");
+  const queryPersonality = searchParams.get("personality") as PersonalityId | null;
+  const queryCharacter = searchParams.get("character");
+
   const { isError: isAuthError, isLoading: isAuthLoading } = useGetMe();
   const chat = useChat();
   const transcribe = useTranscribe();
   const correctionTts = useCorrectionTts();
   const bottomRef = useRef<HTMLDivElement>(null);
-  const conversationIdRef = useRef(crypto.randomUUID());
 
   const [input, setInput] = useState("");
   const [personalityId, setPersonalityId] = useState<PersonalityId>("santai");
@@ -65,6 +78,76 @@ export default function ConversationComponent() {
   ]);
   const messagesRef = useRef(messages);
   const [isMockMode, setIsMockMode] = useState<boolean | null>(null);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
+  const createConversation = useCreateConversation();
+  const { data: detail, isLoading: isDetailLoading } = useGetConversationDetail(conversationId || "");
+
+  // Create new conversation on mount if no ID is present
+  useEffect(() => {
+    if (!conversationId && !isAuthLoading && !isAuthError && !createConversation.isPending) {
+      const pId = queryPersonality || "santai";
+      const characterMap: Record<string, string> = {
+        santai: "maya",
+        bebas: "alex",
+        semangat: "sora",
+        teliti: "ken",
+      };
+      const characterId = queryCharacter || characterMap[pId] || "maya";
+
+      createConversation.mutate(
+        {
+          characterId,
+          personality: pId,
+          language: "en",
+        },
+        {
+          onSuccess: (data) => {
+            router.replace(`/conversation?id=${data.id}`);
+          },
+        }
+      );
+    }
+  }, [conversationId, isAuthLoading, isAuthError, queryPersonality, queryCharacter, createConversation, router]);
+
+  // Restore messages when conversation details are loaded
+  useEffect(() => {
+    if (detail) {
+      const mappedMessages: ChatMessageEntity[] = detail.messages.map((m) => ({
+        id: m.id,
+        role: m.role.toLowerCase() as ChatRole,
+        content: m.content,
+        createdAt: m.createdAt,
+      }));
+
+      if (mappedMessages.length === 0) {
+        const characterMap: Record<string, string> = {
+          maya: "santai",
+          alex: "bebas",
+          sora: "semangat",
+          ken: "teliti",
+        };
+        const pId = (detail.personality as PersonalityId) || characterMap[detail.characterId] || "santai";
+        setPersonalityId(pId);
+        setMessages([
+          createMessage(
+            "assistant",
+            `Hai! Aku ${detail.characterId.charAt(0).toUpperCase() + detail.characterId.slice(1)}, teman belajarmu. Ketuk mic untuk latihan speaking, atau ketik: I [go|went] to school yesterday — aku akan koreksi dengan coretan merah & hijau 💬`
+          ),
+        ]);
+      } else {
+        setMessages(mappedMessages);
+        const characterMap: Record<string, string> = {
+          maya: "santai",
+          alex: "bebas",
+          sora: "semangat",
+          ken: "teliti",
+        };
+        const pId = (detail.personality as PersonalityId) || characterMap[detail.characterId] || "santai";
+        setPersonalityId(pId);
+      }
+    }
+  }, [detail]);
 
   useEffect(() => {
     messagesRef.current = messages;
@@ -112,6 +195,7 @@ export default function ConversationComponent() {
               })),
           ],
           model: personality.model,
+          conversationId: conversationId || undefined,
         });
 
         setIsMockMode(result.mock);
@@ -151,7 +235,7 @@ export default function ConversationComponent() {
         }
       }
     },
-    [chat, correctionTts, input, personality, scrollToBottom]
+    [chat, correctionTts, input, personality, scrollToBottom, conversationId]
   );
 
   const handleVoicePipeline = useCallback(
@@ -163,7 +247,7 @@ export default function ConversationComponent() {
       try {
         const formData = buildRecordingFormData(recording, {
           language: personality.sttLanguage,
-          conversationId: conversationIdRef.current,
+          conversationId: conversationId || "",
         });
 
         const result = await transcribe.mutateAsync(formData);
@@ -181,7 +265,7 @@ export default function ConversationComponent() {
         // Error snackbar ditangani axios interceptor.
       }
     },
-    [chat.isPending, handleSend, personality.sttLanguage, transcribe]
+    [chat.isPending, handleSend, personality.sttLanguage, transcribe, conversationId]
   );
 
   const voicePipelineRef = useRef(handleVoicePipeline);
@@ -231,7 +315,12 @@ export default function ConversationComponent() {
     return null;
   })();
 
-  if (isAuthLoading) {
+  const handleSelectConversation = (id: string) => {
+    setIsHistoryOpen(false);
+    router.push(`/conversation?id=${id}`);
+  };
+
+  if (isAuthLoading || (conversationId && isDetailLoading) || createConversation.isPending) {
     return <LoadingTips label="Menghubungkan ke teman ngobrol..." />;
   }
 
@@ -249,7 +338,12 @@ export default function ConversationComponent() {
       }}
     >
       <Box sx={{ px: 2, pt: 2, pb: 1.5, flexShrink: 0 }}>
-        <Typography variant="h5">Ngobrol</Typography>
+        <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", mb: 0.5 }}>
+          <Typography variant="h5">Ngobrol</Typography>
+          <IconButton onClick={() => setIsHistoryOpen(true)}>
+            <HistoryRoundedIcon />
+          </IconButton>
+        </Stack>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
           Latihan bahasa dengan koreksi ramah
         </Typography>
@@ -325,6 +419,13 @@ export default function ConversationComponent() {
           recorder.dismissPermissionDenied();
           void recorder.toggleRecording();
         }}
+      />
+
+      <HistoryDrawer
+        open={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        activeId={conversationId}
+        onSelect={handleSelectConversation}
       />
     </Box>
   );
