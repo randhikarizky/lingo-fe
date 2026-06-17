@@ -16,11 +16,18 @@ type Props = {
   index: number;
 };
 
-export default function CharacterSelectCard({ name, emoji, role, index }: Props) {
+export default function CharacterSelectCard({ id, name, emoji, role, index }: Props) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/conversation");
+    const personalityMap: Record<string, string> = {
+      maya: "santai",
+      alex: "bebas",
+      sora: "semangat",
+      ken: "teliti",
+    };
+    const personality = personalityMap[id] || "santai";
+    router.push(`/conversation?character=${id}&personality=${personality}`);
   };
 
   return (
