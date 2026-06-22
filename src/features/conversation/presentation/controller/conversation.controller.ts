@@ -5,10 +5,15 @@ import { conversationService } from "../../data/repositories/conversation.reposi
 import { ChatRequest } from "../../data/request/chat.request";
 import { CreateConversationRequest } from "../../data/network/conversation.api";
 
-export const useChat = () =>
-  useMutation({
+export const useChat = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: (request: ChatRequest) => conversationService.chat(request),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["progress"] });
+    },
   });
+};
 
 export const useCreateConversation = () => {
   const queryClient = useQueryClient();
