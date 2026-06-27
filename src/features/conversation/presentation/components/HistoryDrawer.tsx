@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+<<<<<<< HEAD
+import Chip from "@mui/material/Chip";
+=======
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
 import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -19,6 +23,13 @@ import {
   useDeleteConversation,
 } from "../controller/conversation.controller";
 import type { ConversationListItem } from "../../data/network/conversation.api";
+<<<<<<< HEAD
+import {
+  CHARACTER_EMOJIS,
+  formatDifficultyLabel,
+} from "@/features/learning/domain/constants/characters";
+=======
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
 
 type Props = {
   open: boolean;
@@ -27,6 +38,8 @@ type Props = {
   onSelect: (id: string) => void;
 };
 
+<<<<<<< HEAD
+=======
 const CHARACTER_EMOJIS: Record<string, string> = {
   maya: "👩‍🏫",
   alex: "🧑‍💻",
@@ -41,6 +54,7 @@ const PERSONALITY_EMOJIS: Record<string, string> = {
   bebas: "💬",
 };
 
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
 function categorizeConversations(conversations: ConversationListItem[]) {
   const todayList: ConversationListItem[] = [];
   const yesterdayList: ConversationListItem[] = [];
@@ -72,7 +86,11 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
 
   const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
+<<<<<<< HEAD
+    if (confirm("Apakah Anda yakin ingin menghapus sesi latihan ini?")) {
+=======
     if (confirm("Apakah Anda yakin ingin menghapus percakapan ini?")) {
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
       await deleteConversation.mutateAsync(id);
     }
   };
@@ -88,12 +106,28 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
         <Stack spacing={1}>
           {items.map((item) => {
             const isActive = item.id === activeId;
+<<<<<<< HEAD
+            const emoji = CHARACTER_EMOJIS[item.characterId] ?? "🎓";
+            const isCompleted = item.status === "COMPLETED";
+=======
             const emoji = CHARACTER_EMOJIS[item.characterId] || PERSONALITY_EMOJIS[item.personality] || "💬";
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
 
             return (
               <Card
                 key={item.id}
+<<<<<<< HEAD
+                onClick={() => {
+                  onClose();
+                  if (isCompleted) {
+                    router.push(`/practice/summary?id=${item.id}`);
+                    return;
+                  }
+                  onSelect(item.id);
+                }}
+=======
                 onClick={() => onSelect(item.id)}
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
                 sx={{
                   p: 1.5,
                   display: "flex",
@@ -122,6 +156,26 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
                     {emoji}
                   </Avatar>
                   <Box sx={{ flex: 1, minWidth: 0 }}>
+<<<<<<< HEAD
+                    <Stack direction="row" spacing={0.75} sx={{ alignItems: "center", mb: 0.25 }}>
+                      <Typography
+                        variant="subtitle2"
+                        noWrap
+                        sx={{
+                          color: isActive ? "primary.onTonalContainer" : "text.primary",
+                          fontWeight: isActive ? 800 : 600,
+                          flex: 1,
+                        }}
+                      >
+                        {item.title}
+                      </Typography>
+                      {isCompleted && (
+                        <Chip label="Selesai" size="small" color="success" variant="soft" />
+                      )}
+                    </Stack>
+                    <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
+                      {item.scenarioLabel} · {formatDifficultyLabel(item.difficulty)}
+=======
                     <Typography
                       variant="subtitle2"
                       noWrap
@@ -131,6 +185,7 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
                       }}
                     >
                       {item.title}
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
                     </Typography>
                     <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
                       {item.lastMessage || "Belum ada pesan"}
@@ -177,7 +232,11 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
     >
       <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", mb: 2.5 }}>
         <Typography variant="h6" sx={{ fontWeight: 800 }}>
+<<<<<<< HEAD
+          Riwayat Latihan
+=======
           Riwayat Obrolan
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
         </Typography>
         <IconButton onClick={onClose} size="small">
           <CloseRoundedIcon />
@@ -191,11 +250,19 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
         fullWidth
         onClick={() => {
           onClose();
+<<<<<<< HEAD
+          router.push("/practice");
+        }}
+        sx={{ mb: 2.5, height: 44, borderRadius: 100, fontWeight: 800 }}
+      >
+        Mulai Latihan Baru
+=======
           router.push("/conversation");
         }}
         sx={{ mb: 2.5, height: 44, borderRadius: 100, fontWeight: 800 }}
       >
         Mulai Obrolan Baru
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
       </Button>
 
       <Box sx={{ flex: 1, overflowY: "auto", pr: 0.5, mr: -0.5 }}>
@@ -205,7 +272,11 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
           </Typography>
         ) : conversations.length === 0 ? (
           <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", mt: 4 }}>
+<<<<<<< HEAD
+            Belum ada riwayat latihan.
+=======
             Belum ada riwayat percakapan.
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
           </Typography>
         ) : (
           <>

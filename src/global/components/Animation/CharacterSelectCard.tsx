@@ -7,6 +7,10 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
 import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
+<<<<<<< HEAD
+import { CHARACTER_TO_PERSONALITY } from "@/features/learning/domain/constants/characters";
+=======
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
 
 type Props = {
   id: string;
@@ -20,6 +24,10 @@ export default function CharacterSelectCard({ id, name, emoji, role, index }: Pr
   const router = useRouter();
 
   const handleClick = () => {
+<<<<<<< HEAD
+    const personality = CHARACTER_TO_PERSONALITY[id] || "santai";
+    router.push(`/practice?character=${id}&personality=${personality}`);
+=======
     const personalityMap: Record<string, string> = {
       maya: "santai",
       alex: "bebas",
@@ -28,6 +36,7 @@ export default function CharacterSelectCard({ id, name, emoji, role, index }: Pr
     };
     const personality = personalityMap[id] || "santai";
     router.push(`/conversation?character=${id}&personality=${personality}`);
+>>>>>>> 57585e961eaa8052618bfbfc0a63052bdd48b4bf
   };
 
   return (

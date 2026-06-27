@@ -10,9 +10,14 @@ import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
+import FlagRoundedIcon from "@mui/icons-material/FlagRounded";
 
 import LoadingTips from "@/global/components/Loading/LoadingTips";
+import ObjectiveCard from "@/features/learning/presentation/components/ObjectiveCard";
+import EndSessionDialog from "@/features/learning/presentation/components/EndSessionDialog";
+import { useEndSession } from "@/features/learning/presentation/controller/learning.controller";
 import { useGetMe } from "@/features/auth/presentation/controller/auth.controller";
 import { buildRecordingFormData } from "../../domain/utils/buildRecordingFormData";
 import type { VoiceRecording, VoiceUiState } from "../../domain/constants/speech";
@@ -22,7 +27,6 @@ import {
 } from "../../domain/constants/personalities";
 import {
   useChat,
-  useCreateConversation,
   useGetConversationDetail,
 } from "../controller/conversation.controller";
 import { useSynthesize, useTranscribe } from "../controller/speech.controller";
@@ -32,8 +36,8 @@ import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import ChatInputBar from "./ChatInputBar";
 import ChatMessageBubble from "./ChatMessageBubble";
 import MicPermissionDialog from "./MicPermissionDialog";
-import PersonalityPicker from "./PersonalityPicker";
-import HistoryDrawer from "./HistoryDrawer";
+import SessionContextBar from "@/features/learning/presentation/components/SessionContextBar";
+import { formatDifficultyLabel, getTutorName } from "@/features/learning/domain/constants/characters";
 
 const FLOATING_INPUT_CLEARANCE = 88;
 
@@ -49,6 +53,14 @@ function createMessage(
     createdAt: new Date().toISOString(),
     ...extras,
   };
+}
+
+function resolvePersonalityId(value?: string | null): PersonalityId {
+  if (value === "santai" || value === "semangat" || value === "teliti" || value === "bebas") {
+    return value;
+  }
+
+  return "santai";
 }
 
 export default function ConversationComponent() {
@@ -67,50 +79,28 @@ export default function ConversationComponent() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const [input, setInput] = useState("");
-  const [personalityId, setPersonalityId] = useState<PersonalityId>("santai");
-  const personality = getPersonality(personalityId);
+  const sessionPersonality = getPersonality(resolvePersonalityId(detail?.personality));
 
-  const [messages, setMessages] = useState<ChatMessageEntity[]>([
-    createMessage(
-      "assistant",
-      "Hai! Aku teman belajarmu. Ketuk mic untuk latihan speaking, atau ketik: I [go|went] to school yesterday — aku akan koreksi dengan coretan merah & hijau 💬"
-    ),
-  ]);
+  const [messages, setMessages] = useState<ChatMessageEntity[]>([]);
   const messagesRef = useRef(messages);
   const [isMockMode, setIsMockMode] = useState<boolean | null>(null);
   const [voiceUiState, setVoiceUiState] = useState<VoiceUiState>("idle");
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isEndSessionOpen, setIsEndSessionOpen] = useState(false);
 
-  const createConversation = useCreateConversation();
+  const endSession = useEndSession();
   const { data: detail, isLoading: isDetailLoading } = useGetConversationDetail(conversationId || "");
 
-  // Create new conversation on mount if no ID is present
   useEffect(() => {
-    if (!conversationId && !isAuthLoading && !isAuthError && !createConversation.isPending) {
-      const pId = queryPersonality || "santai";
-      const characterMap: Record<string, string> = {
-        santai: "maya",
-        bebas: "alex",
-        semangat: "sora",
-        teliti: "ken",
-      };
-      const characterId = queryCharacter || characterMap[pId] || "maya";
-
-      createConversation.mutate(
-        {
-          characterId,
-          personality: pId,
-          language: "en",
-        },
-        {
-          onSuccess: (data) => {
-            router.replace(`/conversation?id=${data.id}`);
-          },
-        }
-      );
+    if (!conversationId && !isAuthLoading && !isAuthError) {
+      const params = new URLSearchParams();
+      if (queryCharacter) params.set("character", queryCharacter);
+      if (queryPersonality) params.set("personality", queryPersonality);
+      const suffix = params.toString() ? `?${params.toString()}` : "";
+      router.replace(`/practice${suffix}`);
     }
-  }, [conversationId, isAuthLoading, isAuthError, queryPersonality, queryCharacter, createConversation, router]);
+  }, [conversationId, isAuthLoading, isAuthError, queryCharacter, queryPersonality, router]);
 
   // Restore messages when conversation details are loaded
   useEffect(() => {
@@ -123,30 +113,15 @@ export default function ConversationComponent() {
       }));
 
       if (mappedMessages.length === 0) {
-        const characterMap: Record<string, string> = {
-          maya: "santai",
-          alex: "bebas",
-          sora: "semangat",
-          ken: "teliti",
-        };
-        const pId = (detail.personality as PersonalityId) || characterMap[detail.characterId] || "santai";
-        setPersonalityId(pId);
+        const characterName = getTutorName(detail.characterId);
         setMessages([
           createMessage(
             "assistant",
-            `Hai! Aku ${detail.characterId.charAt(0).toUpperCase() + detail.characterId.slice(1)}, teman belajarmu. Ketuk mic untuk latihan speaking, atau ketik: I [go|went] to school yesterday — aku akan koreksi dengan coretan merah & hijau 💬`
+            `Hi! I'm ${characterName}. Let's practice ${detail.scenarioLabel.toLowerCase()} together. Your goal: ${detail.objective}`
           ),
         ]);
       } else {
         setMessages(mappedMessages);
-        const characterMap: Record<string, string> = {
-          maya: "santai",
-          alex: "bebas",
-          sora: "semangat",
-          ken: "teliti",
-        };
-        const pId = (detail.personality as PersonalityId) || characterMap[detail.characterId] || "santai";
-        setPersonalityId(pId);
       }
     }
   }, [detail]);
@@ -167,7 +142,7 @@ export default function ConversationComponent() {
         const result = await synthesize.mutateAsync({
           text,
           conversationId: conversationId || undefined,
-          language: personality.sttLanguage,
+          language: sessionPersonality.sttLanguage,
         });
         const playback = await audioPlayer.play(result.blob);
 
@@ -186,7 +161,7 @@ export default function ConversationComponent() {
         setVoiceError(message);
       }
     },
-    [audioPlayer, conversationId, personality.sttLanguage, synthesize]
+    [audioPlayer, conversationId, sessionPersonality.sttLanguage, synthesize]
   );
 
   const handleSend = useCallback(
@@ -204,16 +179,13 @@ export default function ConversationComponent() {
 
       try {
         const result = await chat.mutateAsync({
-          messages: [
-            { role: "system", content: personality.systemPrompt },
-            ...pendingMessages
-              .filter((m) => m.role !== "system")
-              .map((m) => ({
-                role: m.role as "user" | "assistant",
-                content: m.content,
-              })),
-          ],
-          model: personality.model,
+          messages: pendingMessages
+            .filter((m) => m.role !== "system")
+            .map((m) => ({
+              role: m.role as "user" | "assistant",
+              content: m.content,
+            })),
+          model: sessionPersonality.model,
           conversationId: conversationId || undefined,
         });
 
@@ -235,7 +207,7 @@ export default function ConversationComponent() {
             const synthesis = await synthesize.mutateAsync({
               text: reply,
               conversationId: conversationId || undefined,
-              language: personality.sttLanguage,
+              language: sessionPersonality.sttLanguage,
             });
             setIsMockMode((prev) => prev ?? synthesis.mock);
             const playback = await audioPlayer.play(synthesis.blob);
@@ -287,7 +259,7 @@ export default function ConversationComponent() {
         }
       }
     },
-    [audioPlayer, chat, conversationId, input, personality, scrollToBottom, synthesize]
+    [audioPlayer, chat, conversationId, input, sessionPersonality, scrollToBottom, synthesize]
   );
 
   const handleVoicePipeline = useCallback(
@@ -306,7 +278,7 @@ export default function ConversationComponent() {
         setVoiceUiState("uploading");
 
         const formData = buildRecordingFormData(recording, {
-          language: personality.sttLanguage,
+          language: sessionPersonality.sttLanguage,
           conversationId: conversationId || "",
         });
 
@@ -337,7 +309,7 @@ export default function ConversationComponent() {
       chat.isPending,
       conversationId,
       handleSend,
-      personality.sttLanguage,
+      sessionPersonality.sttLanguage,
       synthesize.isPending,
       transcribe,
       voiceUiState,
@@ -392,7 +364,7 @@ export default function ConversationComponent() {
 
     if (chat.isPending || voiceUiState === "processing") {
       return {
-        label: `${personality.emoji} memproses respons...`,
+        label: `${sessionPersonality.emoji} memproses respons...`,
         color: "primary" as const,
       };
     }
@@ -409,9 +381,41 @@ export default function ConversationComponent() {
     router.push(`/conversation?id=${id}`);
   };
 
-  if (isAuthLoading || (conversationId && isDetailLoading) || createConversation.isPending) {
-    return <LoadingTips label="Menghubungkan ke teman ngobrol..." />;
+  const handleOpenEndSession = useCallback(() => {
+    const hasUserMessages =
+      messages.some((message) => message.role === "user") ||
+      (detail?.messages.some((message) => message.role === "USER") ?? false);
+
+    if (!hasUserMessages) {
+      enqueueSnackbar("Kirim minimal satu pesan sebelum mengakhiri sesi.", {
+        variant: "info",
+      });
+      return;
+    }
+
+    setIsEndSessionOpen(true);
+  }, [detail?.messages, messages]);
+
+  const handleEndSession = useCallback(() => {
+    if (!conversationId) return;
+
+    endSession.mutate(conversationId, {
+      onSuccess: () => {
+        setIsEndSessionOpen(false);
+        router.push(`/practice/summary?id=${conversationId}`);
+      },
+      onError: () => {
+        enqueueSnackbar("Gagal mengakhiri sesi latihan", { variant: "error" });
+      },
+    });
+  }, [conversationId, endSession, router]);
+
+  if (isAuthLoading || !conversationId || (conversationId && isDetailLoading)) {
+    return <LoadingTips label="Menyiapkan sesi latihan..." />;
   }
+
+  const isSessionCompleted = detail?.status === "COMPLETED";
+  const characterName = detail ? getTutorName(detail.characterId) : "Tutor";
 
   return (
     <Box
@@ -428,13 +432,24 @@ export default function ConversationComponent() {
     >
       <Box sx={{ px: 2, pt: 2, pb: 1.5, flexShrink: 0 }}>
         <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", mb: 0.5 }}>
-          <Typography variant="h5">Ngobrol</Typography>
-          <IconButton onClick={() => setIsHistoryOpen(true)}>
-            <HistoryRoundedIcon />
-          </IconButton>
+          <Typography variant="h5">Latihan</Typography>
+          <Stack direction="row" spacing={0.5}>
+            {!isSessionCompleted && (
+              <IconButton
+                aria-label="Akhiri sesi"
+                onClick={handleOpenEndSession}
+                disabled={isVoiceBusy}
+              >
+                <FlagRoundedIcon />
+              </IconButton>
+            )}
+            <IconButton onClick={() => setIsHistoryOpen(true)}>
+              <HistoryRoundedIcon />
+            </IconButton>
+          </Stack>
         </Stack>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-          Latihan bahasa dengan koreksi ramah
+          Latihan roleplay dengan umpan balik dari tutor AI
         </Typography>
 
         {isMockMode && (
@@ -443,11 +458,46 @@ export default function ConversationComponent() {
           </Alert>
         )}
 
-        <PersonalityPicker
-          value={personalityId}
-          onChange={setPersonalityId}
-          disabled={isVoiceBusy}
-        />
+        {detail && (
+          <Box sx={{ mb: 1.5 }}>
+            <ObjectiveCard
+              scenarioLabel={detail.scenarioLabel}
+              scenarioCategory={detail.scenarioCategory}
+              difficultyLabel={formatDifficultyLabel(detail.difficulty)}
+              objective={detail.objective}
+              characterName={characterName}
+            />
+          </Box>
+        )}
+
+        {isSessionCompleted && (
+          <Alert
+            severity="success"
+            sx={{ borderRadius: 2, mb: 1.5 }}
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => router.push(`/practice/summary?id=${conversationId}`)}
+              >
+                Lihat Ringkasan
+              </Button>
+            }
+          >
+            Sesi selesai. Buka ringkasan belajar untuk melihat hasil latihanmu.
+          </Alert>
+        )}
+
+        {detail && (
+          <Box sx={{ mb: 1.5 }}>
+            <SessionContextBar
+              characterId={detail.characterId}
+              personality={detail.personality}
+              scenarioLabel={detail.scenarioLabel}
+              difficulty={detail.difficulty}
+            />
+          </Box>
+        )}
       </Box>
 
       <Box
@@ -468,7 +518,7 @@ export default function ConversationComponent() {
             <ChatMessageBubble
               key={message.id}
               message={message}
-              personalityEmoji={personality.emoji}
+              personalityEmoji={sessionPersonality.emoji}
               onPlaySpeech={handlePlaySpeech}
               isSpeechPlaying={audioPlayer.isSpeaking || synthesize.isPending}
             />
@@ -494,11 +544,11 @@ export default function ConversationComponent() {
         value={input}
         onChange={setInput}
         onSend={() => void handleSend()}
-        disabled={isVoiceBusy}
+        disabled={isVoiceBusy || isSessionCompleted}
         isSending={chat.isPending}
         recordingStatus={recorder.status}
         onMicToggle={() => void recorder.toggleRecording()}
-        isMicDisabled={isVoiceBusy && recorder.status !== "recording"}
+        isMicDisabled={(isVoiceBusy && recorder.status !== "recording") || isSessionCompleted}
       />
 
       <MicPermissionDialog
@@ -515,6 +565,13 @@ export default function ConversationComponent() {
         onClose={() => setIsHistoryOpen(false)}
         activeId={conversationId}
         onSelect={handleSelectConversation}
+      />
+
+      <EndSessionDialog
+        open={isEndSessionOpen}
+        loading={endSession.isPending}
+        onClose={() => setIsEndSessionOpen(false)}
+        onConfirm={handleEndSession}
       />
     </Box>
   );

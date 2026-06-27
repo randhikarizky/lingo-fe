@@ -16,19 +16,13 @@ import LoadingTips from "@/global/components/Loading/LoadingTips";
 import CharacterSelectCard from "@/global/components/Animation/CharacterSelectCard";
 import AnimatedNumber from "./AnimatedNumber";
 import ActivityChart from "./ActivityChart";
+import { TUTOR_CHARACTERS } from "@/features/learning/domain/constants/characters";
 
 import { useGetMe } from "@/features/auth/presentation/controller/auth.controller";
 import {
   useProgressSummary,
   useProgressActivity,
 } from "@/features/dashboard/presentation/controller/progress.controller";
-
-const AI_CHARACTERS = [
-  { id: "maya", name: "Maya", emoji: "👩‍🏫", role: "Guru santai" },
-  { id: "alex", name: "Alex", emoji: "🧑‍💻", role: "Teman ngobrol" },
-  { id: "sora", name: "Sora", emoji: "🌸", role: "Coach positif" },
-  { id: "ken", name: "Ken", emoji: "🎧", role: "Partner latihan" },
-];
 
 const ROADMAP = [
   { level: 1, title: "Perkenalan", status: "done" },
@@ -90,7 +84,7 @@ export default function DashboardComponent() {
           Halo, {user?.name?.split(" ")[0] ?? "teman"}! 👋
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          Siap latihan bahasa hari ini?
+          Pilih tutor, skenario, dan mulai sesi latihan terstruktur.
         </Typography>
       </Box>
 
@@ -240,7 +234,7 @@ export default function DashboardComponent() {
 
       <Box component={m.div} variants={sectionVariants} custom={0.1}>
         <Typography variant="subtitle1" sx={{ mb: 1.5 }}>
-          Pilih Teman Ngobrol
+          Pilih Tutor Latihan
         </Typography>
         <Stack
           direction="row"
@@ -251,7 +245,7 @@ export default function DashboardComponent() {
             "&::-webkit-scrollbar": { display: "none" },
           }}
         >
-          {AI_CHARACTERS.map((char, index) => (
+          {TUTOR_CHARACTERS.map((char, index) => (
             <CharacterSelectCard key={char.id} {...char} index={index} />
           ))}
         </Stack>
@@ -307,9 +301,9 @@ export default function DashboardComponent() {
           color="primary"
           size="large"
           fullWidth
-          onClick={() => router.push("/conversation?character=maya&personality=santai")}
+          onClick={() => router.push("/practice?character=maya&personality=santai")}
         >
-          Mulai Ngobrol Sekarang
+          Mulai Latihan
         </Button>
       </m.div>
     </Stack>

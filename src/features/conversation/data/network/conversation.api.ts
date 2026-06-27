@@ -2,12 +2,19 @@ import api from "@/global/data/network/axios";
 import { BaseResponse } from "@/global/data/response/base.response";
 import { ChatRequest } from "../request/chat.request";
 import { ChatResponse } from "../response/chat.response";
+import type {
+  SessionMetrics,
+  SessionSummaryFeedback,
+} from "@/features/learning/domain/entities/learning-session.entity";
 
 export type CreateConversationRequest = {
   characterId: string;
   personality: string;
   language: string;
   title?: string;
+  scenarioType: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  objective?: string;
 };
 
 export type ConversationListItem = {
@@ -15,6 +22,10 @@ export type ConversationListItem = {
   title: string;
   characterId: string;
   personality: string;
+  scenarioType: string;
+  scenarioLabel: string;
+  difficulty: string;
+  status: "ACTIVE" | "COMPLETED" | "ARCHIVED";
   lastMessage: string | null;
   updatedAt: string;
 };
@@ -24,6 +35,15 @@ export type ConversationDetail = {
   title: string | null;
   characterId: string;
   personality: string;
+  language: string;
+  scenarioType: string;
+  scenarioLabel: string;
+  scenarioCategory: string;
+  difficulty: string;
+  objective: string;
+  status: "ACTIVE" | "COMPLETED" | "ARCHIVED";
+  summary: SessionSummaryFeedback | null;
+  metrics: SessionMetrics | null;
   messages: Array<{
     id: string;
     role: "USER" | "ASSISTANT";
