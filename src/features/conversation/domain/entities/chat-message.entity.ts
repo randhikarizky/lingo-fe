@@ -6,6 +6,7 @@ export type ChatMessageEntity = {
   content: string;
   createdAt: string;
   correctionAudioText?: string;
+  speechAudioText?: string;
   needsManualPlay?: boolean;
 };
 
