@@ -15,8 +15,7 @@ import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import LoadingTips from "@/global/components/Loading/LoadingTips";
 import { useGetMe } from "@/features/auth/presentation/controller/auth.controller";
 import { buildRecordingFormData } from "../../domain/utils/buildRecordingFormData";
-import { extractCorrectionText } from "../../domain/utils/extractCorrectionText";
-import type { VoiceRecording } from "../../domain/constants/speech";
+import type { VoiceRecording, VoiceUiState } from "../../domain/constants/speech";
 import {
   getPersonality,
   type PersonalityId,
@@ -26,10 +25,10 @@ import {
   useCreateConversation,
   useGetConversationDetail,
 } from "../controller/conversation.controller";
-import { useTranscribe } from "../controller/speech.controller";
+import { useSynthesize, useTranscribe } from "../controller/speech.controller";
 import type { ChatMessageEntity, ChatRole } from "../../domain/entities/chat-message.entity";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
-import { useCorrectionTts } from "../hooks/useCorrectionTts";
+import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import ChatInputBar from "./ChatInputBar";
 import ChatMessageBubble from "./ChatMessageBubble";
 import MicPermissionDialog from "./MicPermissionDialog";
@@ -41,7 +40,7 @@ const FLOATING_INPUT_CLEARANCE = 88;
 function createMessage(
   role: ChatMessageEntity["role"],
   content: string,
-  extras?: Pick<ChatMessageEntity, "correctionAudioText" | "needsManualPlay">
+  extras?: Pick<ChatMessageEntity, "speechAudioText" | "needsManualPlay">
 ): ChatMessageEntity {
   return {
     id: crypto.randomUUID(),
@@ -63,7 +62,8 @@ export default function ConversationComponent() {
   const { isError: isAuthError, isLoading: isAuthLoading } = useGetMe();
   const chat = useChat();
   const transcribe = useTranscribe();
-  const correctionTts = useCorrectionTts();
+  const synthesize = useSynthesize();
+  const audioPlayer = useAudioPlayer();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const [input, setInput] = useState("");
@@ -78,6 +78,8 @@ export default function ConversationComponent() {
   ]);
   const messagesRef = useRef(messages);
   const [isMockMode, setIsMockMode] = useState<boolean | null>(null);
+  const [voiceUiState, setVoiceUiState] = useState<VoiceUiState>("idle");
+  const [voiceError, setVoiceError] = useState<string | null>(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const createConversation = useCreateConversation();
@@ -157,17 +159,34 @@ export default function ConversationComponent() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  const handlePlayCorrection = useCallback(
-    async (text: string, locale: string) => {
-      const result = await correctionTts.speak(text, locale);
-
-      if (!result.played && result.needsManualPlay) {
-        enqueueSnackbar("Audio tidak bisa diputar otomatis. Ketuk tombol putar lagi.", {
-          variant: "info",
+  const handlePlaySpeech = useCallback(
+    async (text: string) => {
+      try {
+        setVoiceError(null);
+        setVoiceUiState("speaking");
+        const result = await synthesize.mutateAsync({
+          text,
+          conversationId: conversationId || undefined,
+          language: personality.sttLanguage,
         });
+        const playback = await audioPlayer.play(result.blob);
+
+        if (!playback.played && playback.needsManualPlay) {
+          enqueueSnackbar("Audio tidak bisa diputar otomatis. Ketuk Putar respons.", {
+            variant: "info",
+          });
+        }
+
+        setVoiceUiState("idle");
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Gagal memutar audio respons";
+        enqueueSnackbar(message, { variant: "error" });
+        setVoiceUiState("error");
+        setVoiceError(message);
       }
     },
-    [correctionTts]
+    [audioPlayer, conversationId, personality.sttLanguage, synthesize]
   );
 
   const handleSend = useCallback(
@@ -176,10 +195,10 @@ export default function ConversationComponent() {
       if (!text || chat.isPending) return;
 
       const userMessage = createMessage("user", text);
-      const nextMessages = [...messagesRef.current, userMessage];
+      const pendingMessages = [...messagesRef.current, userMessage];
 
-      setMessages(nextMessages);
-      if (!textOverride) {
+      if (!options?.fromVoice) {
+        setMessages(pendingMessages);
         setInput("");
       }
 
@@ -187,7 +206,7 @@ export default function ConversationComponent() {
         const result = await chat.mutateAsync({
           messages: [
             { role: "system", content: personality.systemPrompt },
-            ...nextMessages
+            ...pendingMessages
               .filter((m) => m.role !== "system")
               .map((m) => ({
                 role: m.role as "user" | "assistant",
@@ -207,65 +226,122 @@ export default function ConversationComponent() {
           reply += `\n\nBagus! Contoh koreksi: Kamu menulis [${bracketMatch[1]}|${bracketMatch[2]}] — seharusnya "${bracketMatch[2]}".`;
         }
 
-        const correctionAudioText = options?.fromVoice
-          ? extractCorrectionText(reply)
-          : null;
-
         let needsManualPlay = false;
+        let speechAudioText: string | undefined;
 
-        if (correctionAudioText && options?.fromVoice) {
-          const ttsResult = await correctionTts.speak(
-            correctionAudioText,
-            personality.speechLocale
-          );
-          needsManualPlay = ttsResult.needsManualPlay;
+        if (options?.fromVoice) {
+          setVoiceUiState("speaking");
+          try {
+            const synthesis = await synthesize.mutateAsync({
+              text: reply,
+              conversationId: conversationId || undefined,
+              language: personality.sttLanguage,
+            });
+            setIsMockMode((prev) => prev ?? synthesis.mock);
+            const playback = await audioPlayer.play(synthesis.blob);
+            needsManualPlay = playback.needsManualPlay;
+            speechAudioText = reply;
+
+            if (!playback.played && playback.needsManualPlay) {
+              enqueueSnackbar("Respons siap. Ketuk Putar respons untuk mendengarkan.", {
+                variant: "info",
+              });
+            }
+          } catch (error) {
+            const message =
+              error instanceof Error
+                ? error.message
+                : "Gagal menghasilkan audio respons";
+            enqueueSnackbar(message, { variant: "error" });
+            setVoiceUiState("error");
+            setVoiceError(message);
+            speechAudioText = reply;
+            needsManualPlay = true;
+          } finally {
+            setVoiceUiState((current) => (current === "error" ? "error" : "idle"));
+          }
         }
 
         const assistantMessage = createMessage("assistant", reply, {
-          correctionAudioText: correctionAudioText ?? undefined,
-          needsManualPlay: correctionAudioText ? needsManualPlay : undefined,
+          speechAudioText,
+          needsManualPlay: speechAudioText ? needsManualPlay : undefined,
         });
 
-        setMessages((prev) => [...prev, assistantMessage]);
+        setMessages((prev) =>
+          options?.fromVoice
+            ? [...prev, userMessage, assistantMessage]
+            : [...prev, assistantMessage]
+        );
         setTimeout(scrollToBottom, 100);
       } catch {
-        setMessages((prev) => prev.slice(0, -1));
-        if (!textOverride) {
+        if (!options?.fromVoice) {
+          setMessages((prev) => prev.slice(0, -1));
           setInput(text);
+        }
+        if (options?.fromVoice) {
+          setVoiceUiState("error");
+          setVoiceError("Gagal mendapatkan respons AI");
+          enqueueSnackbar("Gagal mendapatkan respons AI. Percakapan tidak disimpan.", {
+            variant: "error",
+          });
         }
       }
     },
-    [chat, correctionTts, input, personality, scrollToBottom, conversationId]
+    [audioPlayer, chat, conversationId, input, personality, scrollToBottom, synthesize]
   );
 
   const handleVoicePipeline = useCallback(
     async (recording: VoiceRecording) => {
-      if (transcribe.isPending || chat.isPending) {
+      if (
+        transcribe.isPending ||
+        chat.isPending ||
+        synthesize.isPending ||
+        voiceUiState === "speaking"
+      ) {
         return;
       }
 
       try {
+        setVoiceError(null);
+        setVoiceUiState("uploading");
+
         const formData = buildRecordingFormData(recording, {
           language: personality.sttLanguage,
           conversationId: conversationId || "",
         });
 
         const result = await transcribe.mutateAsync(formData);
-        const transcript = result.transcript.trim();
+        const transcript = (result.text ?? result.transcript).trim();
 
         if (!transcript) {
+          setVoiceUiState("error");
+          setVoiceError("Transkripsi kosong");
           enqueueSnackbar("Transkripsi kosong. Coba bicara lebih jelas.", {
             variant: "warning",
           });
           return;
         }
 
+        setIsMockMode(result.mock);
+        setVoiceUiState("processing");
         await handleSend(transcript, { fromVoice: true });
-      } catch {
-        // Error snackbar ditangani axios interceptor.
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Gagal memproses suara";
+        setVoiceUiState("error");
+        setVoiceError(message);
+        enqueueSnackbar(message, { variant: "error" });
       }
     },
-    [chat.isPending, handleSend, personality.sttLanguage, transcribe, conversationId]
+    [
+      chat.isPending,
+      conversationId,
+      handleSend,
+      personality.sttLanguage,
+      synthesize.isPending,
+      transcribe,
+      voiceUiState,
+    ]
   );
 
   const voicePipelineRef = useRef(handleVoicePipeline);
@@ -287,29 +363,42 @@ export default function ConversationComponent() {
   }, [isAuthError, isAuthLoading, router]);
 
   const isVoiceBusy =
-    recorder.status !== "idle" || transcribe.isPending || chat.isPending;
+    (voiceUiState !== "idle" && voiceUiState !== "error") ||
+    recorder.status !== "idle" ||
+    transcribe.isPending ||
+    chat.isPending ||
+    synthesize.isPending ||
+    audioPlayer.isSpeaking;
 
   const statusChip = (() => {
-    if (recorder.status === "recording") {
+    if (voiceUiState === "error" && voiceError) {
+      return { label: voiceError, color: "error" as const };
+    }
+
+    if (recorder.status === "recording" || voiceUiState === "recording") {
       return {
         label: "Merekam... ketuk mic untuk selesai",
         color: "error" as const,
       };
     }
 
-    if (recorder.status === "processing") {
-      return { label: "Memproses rekaman...", color: "default" as const };
+    if (recorder.status === "processing" || voiceUiState === "uploading") {
+      return { label: "Mengunggah audio...", color: "secondary" as const };
     }
 
     if (transcribe.isPending) {
       return { label: "Menyalin suara...", color: "secondary" as const };
     }
 
-    if (chat.isPending) {
+    if (chat.isPending || voiceUiState === "processing") {
       return {
-        label: `${personality.emoji} memikirkan respons...`,
+        label: `${personality.emoji} memproses respons...`,
         color: "primary" as const,
       };
+    }
+
+    if (synthesize.isPending || voiceUiState === "speaking" || audioPlayer.isSpeaking) {
+      return { label: "Memutar respons AI...", color: "info" as const };
     }
 
     return null;
@@ -350,7 +439,7 @@ export default function ConversationComponent() {
 
         {isMockMode && (
           <Alert severity="info" sx={{ borderRadius: 2, mb: 1.5 }}>
-            Mode latihan — respons AI & STT dummy aktif
+            Mode latihan — sebagian layanan masih mock (AI/STT/TTS)
           </Alert>
         )}
 
@@ -380,8 +469,8 @@ export default function ConversationComponent() {
               key={message.id}
               message={message}
               personalityEmoji={personality.emoji}
-              speechLocale={personality.speechLocale}
-              onPlayCorrection={handlePlayCorrection}
+              onPlaySpeech={handlePlaySpeech}
+              isSpeechPlaying={audioPlayer.isSpeaking || synthesize.isPending}
             />
           ))}
           {statusChip && (
