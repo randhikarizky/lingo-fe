@@ -37,7 +37,9 @@ import ChatInputBar from "./ChatInputBar";
 import ChatMessageBubble from "./ChatMessageBubble";
 import MicPermissionDialog from "./MicPermissionDialog";
 import SessionContextBar from "@/features/learning/presentation/components/SessionContextBar";
+import SessionGoalChecklist from "@/features/learning/presentation/components/SessionGoalChecklist";
 import { formatDifficultyLabel, getTutorName } from "@/features/learning/domain/constants/characters";
+import HistoryDrawer from "./HistoryDrawer";
 
 const FLOATING_INPUT_CLEARANCE = 88;
 
@@ -79,6 +81,8 @@ export default function ConversationComponent() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const [input, setInput] = useState("");
+  const endSession = useEndSession();
+  const { data: detail, isLoading: isDetailLoading } = useGetConversationDetail(conversationId || "");
   const sessionPersonality = getPersonality(resolvePersonalityId(detail?.personality));
 
   const [messages, setMessages] = useState<ChatMessageEntity[]>([]);
@@ -88,9 +92,6 @@ export default function ConversationComponent() {
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isEndSessionOpen, setIsEndSessionOpen] = useState(false);
-
-  const endSession = useEndSession();
-  const { data: detail, isLoading: isDetailLoading } = useGetConversationDetail(conversationId || "");
 
   useEffect(() => {
     if (!conversationId && !isAuthLoading && !isAuthError) {
@@ -486,6 +487,12 @@ export default function ConversationComponent() {
           >
             Sesi selesai. Buka ringkasan belajar untuk melihat hasil latihanmu.
           </Alert>
+        )}
+
+        {detail && detail.sessionGoals?.length > 0 && !isSessionCompleted && (
+          <Box sx={{ mb: 1.5 }}>
+            <SessionGoalChecklist goals={detail.sessionGoals} compact />
+          </Box>
         )}
 
         {detail && (

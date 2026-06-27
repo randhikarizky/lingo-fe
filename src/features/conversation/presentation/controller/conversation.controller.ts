@@ -9,8 +9,14 @@ export const useChat = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (request: ChatRequest) => conversationService.chat(request),
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["progress"] });
+
+      if (variables.conversationId) {
+        queryClient.invalidateQueries({
+          queryKey: ["conversations", "detail", variables.conversationId],
+        });
+      }
     },
   });
 };

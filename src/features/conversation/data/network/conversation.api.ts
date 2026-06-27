@@ -5,6 +5,7 @@ import { ChatResponse } from "../response/chat.response";
 import type {
   SessionMetrics,
   SessionSummaryFeedback,
+  SessionGoal,
 } from "@/features/learning/domain/entities/learning-session.entity";
 
 export type CreateConversationRequest = {
@@ -44,6 +45,7 @@ export type ConversationDetail = {
   status: "ACTIVE" | "COMPLETED" | "ARCHIVED";
   summary: SessionSummaryFeedback | null;
   metrics: SessionMetrics | null;
+  sessionGoals: SessionGoal[];
   messages: Array<{
     id: string;
     role: "USER" | "ASSISTANT";
