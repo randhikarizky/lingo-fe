@@ -11,18 +11,19 @@ import type { ChatMessageEntity } from "../../domain/entities/chat-message.entit
 type Props = {
   message: ChatMessageEntity;
   personalityEmoji?: string;
-  speechLocale?: string;
-  onPlayCorrection?: (text: string, locale: string) => void;
+  onPlaySpeech?: (text: string) => void;
+  isSpeechPlaying?: boolean;
 };
 
 export default function ChatMessageBubble({
   message,
   personalityEmoji = "🤖",
-  speechLocale = "en-US",
-  onPlayCorrection,
+  onPlaySpeech,
+  isSpeechPlaying = false,
 }: Props) {
   const isUser = message.role === "user";
-  const showPlayButton = !isUser && Boolean(message.correctionAudioText);
+  const speechText = message.speechAudioText ?? message.correctionAudioText;
+  const showPlayButton = !isUser && Boolean(speechText) && onPlaySpeech;
 
   return (
     <Box
@@ -79,9 +80,8 @@ export default function ChatMessageBubble({
             variant={message.needsManualPlay ? "contained" : "text"}
             color="secondary"
             startIcon={<VolumeUpRoundedIcon fontSize="small" />}
-            onClick={() =>
-              onPlayCorrection?.(message.correctionAudioText!, speechLocale)
-            }
+            onClick={() => onPlaySpeech?.(speechText!)}
+            disabled={isSpeechPlaying}
             sx={{
               alignSelf: "flex-start",
               ml: 0.5,
@@ -91,7 +91,7 @@ export default function ChatMessageBubble({
               fontWeight: 600,
             }}
           >
-            {message.needsManualPlay ? "Putar artikulasi" : "Putar ulang artikulasi"}
+            {message.needsManualPlay ? "Putar respons" : "Putar ulang respons"}
           </Button>
         )}
       </Box>
