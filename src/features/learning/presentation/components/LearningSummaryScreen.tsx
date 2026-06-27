@@ -12,9 +12,11 @@ import LoadingTips from "@/global/components/Loading/LoadingTips";
 import { useGetConversationDetail } from "@/features/conversation/presentation/controller/conversation.controller";
 import { formatDifficultyLabel } from "../../domain/constants/characters";
 import type {
+  SessionGoal,
   SessionMetrics,
   SessionSummaryFeedback,
 } from "../../domain/entities/learning-session.entity";
+import SessionGoalChecklist from "./SessionGoalChecklist";
 
 type Props = {
   conversationId: string;
@@ -100,6 +102,8 @@ export default function LearningSummaryScreen({ conversationId }: Props) {
 
   const summary = detail.summary as SessionSummaryFeedback | null;
   const metrics = detail.metrics as SessionMetrics | null;
+  const sessionGoals = (detail.sessionGoals ?? []) as SessionGoal[];
+  const achievedGoals = sessionGoals.filter((goal) => goal.achieved).length;
 
   if (!summary || !metrics) {
     return (
@@ -120,8 +124,13 @@ export default function LearningSummaryScreen({ conversationId }: Props) {
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {detail.scenarioLabel} · {formatDifficultyLabel(detail.difficulty)}
+          {sessionGoals.length > 0 ? ` · ${achievedGoals}/${sessionGoals.length} misi tercapai` : ""}
         </Typography>
       </Box>
+
+      {sessionGoals.length > 0 && (
+        <SessionGoalChecklist goals={sessionGoals} title="Pencapaian Sesi" />
+      )}
 
       <MetricsGrid metrics={metrics} />
 

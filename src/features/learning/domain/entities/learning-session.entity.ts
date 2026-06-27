@@ -24,6 +24,27 @@ export type SessionMetrics = {
   estimatedSpeakingMinutes: number;
 };
 
+export type SessionGoalId =
+  | "complete-sentences"
+  | "new-vocabulary"
+  | "english-only"
+  | "independent-practice";
+
+export type SessionGoal = {
+  id: SessionGoalId;
+  emoji: string;
+  label: string;
+  target: number;
+  progress: number;
+  progressLabel: string;
+  achieved: boolean;
+};
+
+export type SessionGoalPreview = Pick<
+  SessionGoal,
+  "id" | "emoji" | "label" | "target"
+>;
+
 export type LearningCatalog = {
   scenarios: Array<{
     category: string;
@@ -33,6 +54,10 @@ export type LearningCatalog = {
     id: DifficultyId;
     label: string;
   }>;
+  sessionGoalPreviews: Array<{
+    difficulty: DifficultyId;
+    goals: SessionGoalPreview[];
+  }>;
 };
 
 export type EndSessionResponse = {
@@ -40,4 +65,5 @@ export type EndSessionResponse = {
   status: "ACTIVE" | "COMPLETED" | "ARCHIVED";
   summary: SessionSummaryFeedback;
   metrics: SessionMetrics;
+  sessionGoals: SessionGoal[];
 };

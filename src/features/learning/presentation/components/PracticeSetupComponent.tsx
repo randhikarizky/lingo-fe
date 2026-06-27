@@ -17,11 +17,12 @@ import {
   formatDifficultyLabel,
   getTutorName,
 } from "../../domain/constants/characters";
-import type { DifficultyId } from "../domain/entities/learning-session.entity";
+import type { DifficultyId, SessionGoal } from "../domain/entities/learning-session.entity";
 import { useLearningCatalog } from "../controller/learning.controller";
 import ScenarioSelector from "./ScenarioSelector";
 import DifficultySelector from "./DifficultySelector";
 import ObjectiveCard from "./ObjectiveCard";
+import SessionGoalChecklist from "./SessionGoalChecklist";
 
 const DEFAULT_CHARACTER = "maya";
 const DEFAULT_PERSONALITY = "santai";
@@ -48,6 +49,19 @@ export default function PracticeSetupComponent() {
   const difficultyLabel =
     catalog?.difficulties.find((item) => item.id === difficulty)?.label ??
     formatDifficultyLabel(difficulty);
+
+  const previewGoals = useMemo<SessionGoal[]>(() => {
+    const preview = catalog?.sessionGoalPreviews.find((item) => item.difficulty === difficulty);
+
+    return (
+      preview?.goals.map((goal) => ({
+        ...goal,
+        progress: 0,
+        progressLabel: "Belum dimulai",
+        achieved: false,
+      })) ?? []
+    );
+  }, [catalog?.sessionGoalPreviews, difficulty]);
 
   const handleStart = () => {
     if (!selectedScenario) return;
@@ -123,6 +137,10 @@ export default function PracticeSetupComponent() {
         objective={selectedScenario.objective}
         characterName={getTutorName(characterId)}
       />
+
+      {previewGoals.length > 0 && (
+        <SessionGoalChecklist goals={previewGoals} title="Misi Sesi Kamu" />
+      )}
 
       <Box>
         <Typography variant="subtitle1" sx={{ mb: 1.5 }}>
