@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import Chip from "@mui/material/Chip";
 import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -19,26 +20,16 @@ import {
   useDeleteConversation,
 } from "../controller/conversation.controller";
 import type { ConversationListItem } from "../../data/network/conversation.api";
+import {
+  CHARACTER_EMOJIS,
+  formatDifficultyLabel,
+} from "@/features/learning/domain/constants/characters";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   activeId: string | null;
   onSelect: (id: string) => void;
-};
-
-const CHARACTER_EMOJIS: Record<string, string> = {
-  maya: "👩‍🏫",
-  alex: "🧑‍💻",
-  sora: "🌸",
-  ken: "🎧",
-};
-
-const PERSONALITY_EMOJIS: Record<string, string> = {
-  santai: "😊",
-  semangat: "🔥",
-  teliti: "🎯",
-  bebas: "💬",
 };
 
 function categorizeConversations(conversations: ConversationListItem[]) {
@@ -72,7 +63,7 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
 
   const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    if (confirm("Apakah Anda yakin ingin menghapus percakapan ini?")) {
+    if (confirm("Apakah Anda yakin ingin menghapus sesi latihan ini?")) {
       await deleteConversation.mutateAsync(id);
     }
   };
@@ -88,12 +79,20 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
         <Stack spacing={1}>
           {items.map((item) => {
             const isActive = item.id === activeId;
-            const emoji = CHARACTER_EMOJIS[item.characterId] || PERSONALITY_EMOJIS[item.personality] || "💬";
+            const emoji = CHARACTER_EMOJIS[item.characterId] ?? "🎓";
+            const isCompleted = item.status === "COMPLETED";
 
             return (
               <Card
                 key={item.id}
-                onClick={() => onSelect(item.id)}
+                onClick={() => {
+                  onClose();
+                  if (isCompleted) {
+                    router.push(`/practice/summary?id=${item.id}`);
+                    return;
+                  }
+                  onSelect(item.id);
+                }}
                 sx={{
                   p: 1.5,
                   display: "flex",
@@ -122,15 +121,24 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
                     {emoji}
                   </Avatar>
                   <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Typography
-                      variant="subtitle2"
-                      noWrap
-                      sx={{
-                        color: isActive ? "primary.onTonalContainer" : "text.primary",
-                        fontWeight: isActive ? 800 : 600,
-                      }}
-                    >
-                      {item.title}
+                    <Stack direction="row" spacing={0.75} sx={{ alignItems: "center", mb: 0.25 }}>
+                      <Typography
+                        variant="subtitle2"
+                        noWrap
+                        sx={{
+                          color: isActive ? "primary.onTonalContainer" : "text.primary",
+                          fontWeight: isActive ? 800 : 600,
+                          flex: 1,
+                        }}
+                      >
+                        {item.title}
+                      </Typography>
+                      {isCompleted && (
+                        <Chip label="Selesai" size="small" color="success" variant="soft" />
+                      )}
+                    </Stack>
+                    <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
+                      {item.scenarioLabel} · {formatDifficultyLabel(item.difficulty)}
                     </Typography>
                     <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
                       {item.lastMessage || "Belum ada pesan"}
@@ -177,7 +185,7 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
     >
       <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", mb: 2.5 }}>
         <Typography variant="h6" sx={{ fontWeight: 800 }}>
-          Riwayat Obrolan
+          Riwayat Latihan
         </Typography>
         <IconButton onClick={onClose} size="small">
           <CloseRoundedIcon />
@@ -191,11 +199,11 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
         fullWidth
         onClick={() => {
           onClose();
-          router.push("/conversation");
+          router.push("/practice");
         }}
         sx={{ mb: 2.5, height: 44, borderRadius: 100, fontWeight: 800 }}
       >
-        Mulai Obrolan Baru
+        Mulai Latihan Baru
       </Button>
 
       <Box sx={{ flex: 1, overflowY: "auto", pr: 0.5, mr: -0.5 }}>
@@ -205,7 +213,7 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
           </Typography>
         ) : conversations.length === 0 ? (
           <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", mt: 4 }}>
-            Belum ada riwayat percakapan.
+            Belum ada riwayat latihan.
           </Typography>
         ) : (
           <>
