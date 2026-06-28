@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -11,11 +12,15 @@ import Typography from "@mui/material/Typography";
 import LoadingTips from "@/global/components/Loading/LoadingTips";
 import { useSettingsContext } from "@/theme/settings";
 import { useGetMe, useLogout } from "@/features/auth/presentation/controller/auth.controller";
+import { useSubscriptionMe } from "@/features/subscription/presentation/controller/subscription.controller";
+import { getPlanLabel } from "@/features/subscription/domain/utils/subscription-access";
 import type { ThemeMode } from "@/theme/settings/types";
 
 export default function SettingsComponent() {
+  const router = useRouter();
   const settings = useSettingsContext();
   const { data: user, isLoading } = useGetMe();
+  const { data: subscription } = useSubscriptionMe();
   const logout = useLogout();
 
   if (isLoading) {
@@ -39,6 +44,18 @@ export default function SettingsComponent() {
         <Typography variant="body2" color="text.secondary">
           {user?.email}
         </Typography>
+      </Card>
+
+      <Card sx={{ p: 2.5 }}>
+        <Stack spacing={1.5}>
+          <Typography variant="subtitle2">Langganan</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Paket aktif: {subscription ? getPlanLabel(subscription.plan) : "Free"}
+          </Typography>
+          <Button variant="outlined" onClick={() => router.push("/pricing")}>
+            Lihat Paket & Upgrade
+          </Button>
+        </Stack>
       </Card>
 
       <Card sx={{ p: 2.5 }}>

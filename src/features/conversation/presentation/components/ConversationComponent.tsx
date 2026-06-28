@@ -40,6 +40,8 @@ import SessionContextBar from "@/features/learning/presentation/components/Sessi
 import SessionGoalChecklist from "@/features/learning/presentation/components/SessionGoalChecklist";
 import { formatDifficultyLabel, getTutorName } from "@/features/learning/domain/constants/characters";
 import HistoryDrawer from "./HistoryDrawer";
+import LockedFeatureDialog from "@/features/subscription/presentation/components/LockedFeatureDialog";
+import { parseSubscriptionError } from "@/features/subscription/domain/utils/parse-subscription-error";
 
 const FLOATING_INPUT_CLEARANCE = 88;
 
@@ -92,6 +94,19 @@ export default function ConversationComponent() {
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isEndSessionOpen, setIsEndSessionOpen] = useState(false);
+  const [lockedDialog, setLockedDialog] = useState<{
+    type: "quota" | "feature";
+    message: string;
+    requiredPlan?: string;
+  } | null>(null);
+
+  const showSubscriptionDialog = useCallback((error: unknown) => {
+    const parsed = parseSubscriptionError(error);
+    if (!parsed) return false;
+
+    setLockedDialog(parsed);
+    return true;
+  }, []);
 
   useEffect(() => {
     if (!conversationId && !isAuthLoading && !isAuthError) {
@@ -155,6 +170,11 @@ export default function ConversationComponent() {
 
         setVoiceUiState("idle");
       } catch (error) {
+        if (showSubscriptionDialog(error)) {
+          setVoiceUiState("idle");
+          return;
+        }
+
         const message =
           error instanceof Error ? error.message : "Gagal memutar audio respons";
         enqueueSnackbar(message, { variant: "error" });
@@ -162,7 +182,7 @@ export default function ConversationComponent() {
         setVoiceError(message);
       }
     },
-    [audioPlayer, conversationId, sessionPersonality.sttLanguage, synthesize]
+    [audioPlayer, conversationId, sessionPersonality.sttLanguage, showSubscriptionDialog, synthesize]
   );
 
   const handleSend = useCallback(
@@ -221,15 +241,21 @@ export default function ConversationComponent() {
               });
             }
           } catch (error) {
-            const message =
-              error instanceof Error
-                ? error.message
-                : "Gagal menghasilkan audio respons";
-            enqueueSnackbar(message, { variant: "error" });
-            setVoiceUiState("error");
-            setVoiceError(message);
-            speechAudioText = reply;
-            needsManualPlay = true;
+            if (showSubscriptionDialog(error)) {
+              setVoiceUiState("idle");
+              speechAudioText = reply;
+              needsManualPlay = true;
+            } else {
+              const message =
+                error instanceof Error
+                  ? error.message
+                  : "Gagal menghasilkan audio respons";
+              enqueueSnackbar(message, { variant: "error" });
+              setVoiceUiState("error");
+              setVoiceError(message);
+              speechAudioText = reply;
+              needsManualPlay = true;
+            }
           } finally {
             setVoiceUiState((current) => (current === "error" ? "error" : "idle"));
           }
@@ -246,7 +272,18 @@ export default function ConversationComponent() {
             : [...prev, assistantMessage]
         );
         setTimeout(scrollToBottom, 100);
-      } catch {
+      } catch (error) {
+        if (showSubscriptionDialog(error)) {
+          if (!options?.fromVoice) {
+            setMessages((prev) => prev.slice(0, -1));
+            setInput(text);
+          }
+          if (options?.fromVoice) {
+            setVoiceUiState("idle");
+          }
+          return;
+        }
+
         if (!options?.fromVoice) {
           setMessages((prev) => prev.slice(0, -1));
           setInput(text);
@@ -260,7 +297,7 @@ export default function ConversationComponent() {
         }
       }
     },
-    [audioPlayer, chat, conversationId, input, sessionPersonality, scrollToBottom, synthesize]
+    [audioPlayer, chat, conversationId, input, sessionPersonality, scrollToBottom, showSubscriptionDialog, synthesize]
   );
 
   const handleVoicePipeline = useCallback(
@@ -299,6 +336,11 @@ export default function ConversationComponent() {
         setVoiceUiState("processing");
         await handleSend(transcript, { fromVoice: true });
       } catch (error) {
+        if (showSubscriptionDialog(error)) {
+          setVoiceUiState("idle");
+          return;
+        }
+
         const message =
           error instanceof Error ? error.message : "Gagal memproses suara";
         setVoiceUiState("error");
@@ -311,6 +353,7 @@ export default function ConversationComponent() {
       conversationId,
       handleSend,
       sessionPersonality.sttLanguage,
+      showSubscriptionDialog,
       synthesize.isPending,
       transcribe,
       voiceUiState,
@@ -579,6 +622,15 @@ export default function ConversationComponent() {
         loading={endSession.isPending}
         onClose={() => setIsEndSessionOpen(false)}
         onConfirm={handleEndSession}
+      />
+
+      <LockedFeatureDialog
+        open={lockedDialog !== null}
+        type={lockedDialog?.type ?? "quota"}
+        message={lockedDialog?.message ?? ""}
+        requiredPlan={lockedDialog?.requiredPlan}
+        onClose={() => setLockedDialog(null)}
+        onUpgrade={() => router.push("/pricing")}
       />
     </Box>
   );
