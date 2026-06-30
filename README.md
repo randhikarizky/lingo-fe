@@ -10,9 +10,9 @@ npm install
 npm run dev
 ```
 
-App berjalan di `http://localhost:306`.
+App berjalan di `http://localhost:3626`.
 
-API backend di-proxy ke `http://localhost:406` (atur lewat `API_PROXY_URL` di `.env.local`).
+API backend di-proxy ke `http://localhost:4626` (atur lewat `API_PROXY_URL` di `.env.local`).
 
 ## Struktur Folder
 
@@ -33,5 +33,5 @@ Lihat `.env.example`. Ringkas:
 NEXT_PUBLIC_API_URL=
 
 # Target backend untuk Next.js rewrites (server-only)
-API_PROXY_URL=http://localhost:406
+API_PROXY_URL=http://localhost:4626
 ```

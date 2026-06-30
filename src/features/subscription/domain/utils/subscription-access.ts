@@ -1,10 +1,10 @@
 import type { PlanId, UserSubscription } from "../entities/subscription.entity";
 
 const PLAN_LABELS: Record<PlanId, string> = {
-  FREE: "Free",
+  FREE: "Gratis",
   STARTER: "Starter",
   PRO: "Pro",
-  LIFETIME: "Lifetime",
+  LIFETIME: "Seumur Hidup",
 };
 
 export function getPlanLabel(planId: string) {

@@ -57,7 +57,9 @@ export type ConversationDetail = {
 
 export const conversationApi = {
   chat: (request: ChatRequest) =>
-    api.post<BaseResponse<ChatResponse>>("/api/v1/ai/chat", request),
+    api.post<BaseResponse<ChatResponse>>("/api/v1/ai/chat", request, {
+      silentError: true,
+    }),
   create: (request: CreateConversationRequest) =>
     api.post<BaseResponse<{ id: string }>>("/api/v1/conversations", request),
   list: () =>

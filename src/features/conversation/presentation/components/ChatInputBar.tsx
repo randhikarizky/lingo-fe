@@ -28,6 +28,9 @@ type Props = {
   recordingStatus?: RecordingStatus;
   onMicToggle?: () => void;
   isMicDisabled?: boolean;
+  bottomOffset?: number;
+  inputRef?: React.RefObject<HTMLInputElement | HTMLTextAreaElement | null>;
+  autoFocus?: boolean;
 };
 
 const INPUT_MIN_HEIGHT = 52;
@@ -42,6 +45,9 @@ export default function ChatInputBar({
   recordingStatus = "idle",
   onMicToggle,
   isMicDisabled = false,
+  bottomOffset = 0,
+  inputRef,
+  autoFocus = false,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState(INPUT_MIN_HEIGHT);
@@ -83,7 +89,7 @@ export default function ChatInputBar({
         position: "absolute",
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: bottomOffset,
         px: 2,
         pb: 1.5,
         pt: 3,
@@ -93,6 +99,7 @@ export default function ChatInputBar({
         pointerEvents: "none",
         background: (theme) =>
           `linear-gradient(180deg, transparent 0%, ${theme.palette.background.default} 55%)`,
+        transition: `bottom ${M3_DURATION.medium}ms ${M3_EASING.emphasizedDecelerate}`,
         "& > *": { pointerEvents: "auto" },
       }}
     >
@@ -120,6 +127,8 @@ export default function ChatInputBar({
           fullWidth
           multiline
           maxRows={MAX_ROWS}
+          inputRef={inputRef}
+          autoFocus={autoFocus}
           placeholder={isRecording ? "Sedang merekam..." : "Ketik pesanmu..."}
           value={value}
           onChange={(e) => onChange(e.target.value)}

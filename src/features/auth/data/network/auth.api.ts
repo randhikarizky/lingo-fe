@@ -6,7 +6,9 @@ import { UserEntity } from "../../domain/entities/user.entity";
 
 export const authApi = {
   login: (request: LoginRequest) =>
-    api.post<BaseResponse<UserEntity>>("/api/v1/auth/login", request),
+    api.post<BaseResponse<UserEntity>>("/api/v1/auth/login", request, {
+      silentError: true,
+    }),
 
   register: (request: RegisterRequest) =>
     api.post<BaseResponse<UserEntity>>("/api/v1/auth/register", request),

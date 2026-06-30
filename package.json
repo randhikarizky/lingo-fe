@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 0306",
+    "dev": "next dev -p 3626",
     "build": "next build",
-    "start": "next start -p 0306",
+    "start": "next start -p 3626",
     "lint": "eslint",
     "format": "prettier --write --ignore-path=.gitignore .",
     "format:check": "prettier --check --ignore-path=.gitignore ."

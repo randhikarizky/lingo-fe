@@ -120,9 +120,7 @@ export function defaultProps(theme: Theme) {
     },
     MuiDialog: {
       defaultProps: {
-        TransitionProps: {
-          timeout: { enter: 300, exit: 200 },
-        },
+        transitionDuration: { enter: 300, exit: 200 },
       },
     },
     MuiDialogActions: {
