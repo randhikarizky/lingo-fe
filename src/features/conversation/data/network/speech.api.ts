@@ -1,10 +1,24 @@
 import api from "@/global/data/network/axios";
+import axios from "axios";
 import { BaseResponse } from "@/global/data/response/base.response";
 import {
   SynthesizeRequest,
   SynthesizeResponse,
   TranscribeResponse,
 } from "../response/transcribe.response";
+
+async function normalizeBlobError(error: unknown) {
+  if (!axios.isAxiosError(error) || !(error.response?.data instanceof Blob)) {
+    return;
+  }
+
+  try {
+    const payload = JSON.parse(await error.response.data.text()) as BaseResponse;
+    error.response.data = payload;
+  } catch {
+    // Response bukan JSON
+  }
+}
 
 export const speechApi = {
   transcribe: (formData: FormData) =>
@@ -17,34 +31,21 @@ export const speechApi = {
     ),
 
   synthesize: async (request: SynthesizeRequest): Promise<SynthesizeResponse> => {
-    const response = await fetch("/api/v1/speech/synthesize", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "audio/mpeg, audio/*",
-      },
-      body: JSON.stringify(request),
-    });
+    try {
+      const response = await api.post<Blob>("/api/v1/speech/synthesize", request, {
+        responseType: "blob",
+        headers: {
+          Accept: "audio/mpeg, audio/*",
+        },
+      });
 
-    if (!response.ok) {
-      let message = "Gagal menghasilkan audio";
-
-      try {
-        const payload = (await response.json()) as { message?: string };
-        message = payload.message ?? message;
-      } catch {
-        // Response bukan JSON
-      }
-
-      throw new Error(message);
+      return {
+        blob: response.data,
+        mock: response.headers["x-voice-mock"] === "true",
+      };
+    } catch (error) {
+      await normalizeBlobError(error);
+      throw error;
     }
-
-    const blob = await response.blob();
-
-    return {
-      blob,
-      mock: response.headers.get("X-Voice-Mock") === "true",
-    };
   },
 };

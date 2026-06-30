@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { enqueueSnackbar } from "notistack";
 
-// Kosongkan NEXT_PUBLIC_API_URL untuk pakai proxy Next.js (same-origin, tanpa CORS)
 const baseURL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 const api = axios.create({
@@ -12,6 +11,21 @@ const api = axios.create({
   },
   withCredentials: true,
 });
+
+function redirectToLogin() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  if (window.location.pathname.startsWith("/login")) {
+    return;
+  }
+
+  const redirect = encodeURIComponent(
+    `${window.location.pathname}${window.location.search}`
+  );
+  window.location.href = `/login?redirect=${redirect}`;
+}
 
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
@@ -25,6 +39,7 @@ api.interceptors.response.use(
       enqueueSnackbar("Sesi berakhir, silakan login kembali", {
         variant: "warning",
       });
+      redirectToLogin();
     } else {
       const subscriptionCode = error.response?.data?.data?.code;
       const isSubscriptionError =

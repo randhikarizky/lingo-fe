@@ -6,10 +6,13 @@ AI Speaking & Conversation Platform — frontend.
 
 ```bash
 cp .env.example .env.local
+npm install
 npm run dev
 ```
 
-App berjalan di `http://localhost:3000`.
+App berjalan di `http://localhost:306`.
+
+API backend di-proxy ke `http://localhost:406` (atur lewat `API_PROXY_URL` di `.env.local`).
 
 ## Struktur Folder
 
@@ -23,6 +26,12 @@ src/
 
 ## Environment
 
+Lihat `.env.example`. Ringkas:
+
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3001
+# Kosongkan untuk same-origin proxy (disarankan dev)
+NEXT_PUBLIC_API_URL=
+
+# Target backend untuk Next.js rewrites (server-only)
+API_PROXY_URL=http://localhost:406
 ```

@@ -4,7 +4,6 @@ import { useSnackbar } from "notistack";
 
 import { authService } from "../../data/repositories/auth.repository.impl";
 import { LoginRequest } from "../../data/request/login.request";
-import { RegisterRequest } from "../../data/request/register.request";
 
 export const useLogin = () => {
   const router = useRouter();
@@ -16,23 +15,17 @@ export const useLogin = () => {
     onSuccess: () => {
       enqueueSnackbar("Login berhasil!", { variant: "success" });
       queryClient.invalidateQueries();
-      router.push("/dashboard");
-    },
-  });
 
-  return mutation;
-};
+      if (typeof window !== "undefined") {
+        const redirect = new URLSearchParams(window.location.search).get("redirect");
+        const safeRedirect =
+          redirect && redirect.startsWith("/") && !redirect.startsWith("//")
+            ? redirect
+            : "/dashboard";
+        router.push(safeRedirect);
+        return;
+      }
 
-export const useRegister = () => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const { enqueueSnackbar } = useSnackbar();
-
-  const mutation = useMutation({
-    mutationFn: (request: RegisterRequest) => authService.register(request),
-    onSuccess: () => {
-      enqueueSnackbar("Registrasi berhasil!", { variant: "success" });
-      queryClient.invalidateQueries();
       router.push("/dashboard");
     },
   });
