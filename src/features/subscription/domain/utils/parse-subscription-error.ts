@@ -49,7 +49,3 @@ export function parseSubscriptionError(error: unknown): ParsedSubscriptionError 
 
   return null;
 }
-
-export function isSubscriptionError(error: unknown) {
-  return parseSubscriptionError(error) !== null;
-}
