@@ -32,6 +32,17 @@ export default function Providers({ children }: Props) {
           queries: {
             staleTime: 60 * 1000,
             refetchOnWindowFocus: false,
+            retry: (failureCount, error) => {
+              const status = (error as { response?: { status?: number } })?.response?.status;
+              if (status === 401 || status === 403 || status === 429) {
+                return false;
+              }
+
+              return failureCount < 1;
+            },
+          },
+          mutations: {
+            retry: false,
           },
         },
       })
@@ -44,7 +55,9 @@ export default function Providers({ children }: Props) {
           <MotionLazy>
             <QueryClientProvider client={queryClient}>
               {children}
-              <ReactQueryDevtools initialIsOpen={false} />
+              {process.env.NODE_ENV === "development" && (
+                <ReactQueryDevtools initialIsOpen={false} />
+              )}
             </QueryClientProvider>
           </MotionLazy>
         </ThemeConfig>
