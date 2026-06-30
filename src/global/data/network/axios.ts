@@ -25,8 +25,14 @@ api.interceptors.response.use(
       enqueueSnackbar("Sesi berakhir, silakan login kembali", {
         variant: "warning",
       });
-    } else if (error.message?.toLowerCase() !== "network error") {
-      enqueueSnackbar(message, { variant: "error" });
+    } else {
+      const subscriptionCode = error.response?.data?.data?.code;
+      const isSubscriptionError =
+        subscriptionCode === "QUOTA_EXCEEDED" || subscriptionCode === "FEATURE_LOCKED";
+
+      if (!isSubscriptionError && error.message?.toLowerCase() !== "network error") {
+        enqueueSnackbar(message, { variant: "error" });
+      }
     }
 
     return Promise.reject(error);

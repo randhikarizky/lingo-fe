@@ -17,6 +17,9 @@ import CharacterSelectCard from "@/global/components/Animation/CharacterSelectCa
 import AnimatedNumber from "./AnimatedNumber";
 import ActivityChart from "./ActivityChart";
 import { TUTOR_CHARACTERS } from "@/features/learning/domain/constants/characters";
+import { useSubscriptionMe } from "@/features/subscription/presentation/controller/subscription.controller";
+import { isTutorAllowed } from "@/features/subscription/domain/utils/subscription-access";
+import UsageCard from "@/features/subscription/presentation/components/UsageCard";
 
 import { useGetMe } from "@/features/auth/presentation/controller/auth.controller";
 import {
@@ -55,6 +58,7 @@ export default function DashboardComponent() {
     isError: isActivityError,
     refetch: refetchActivity,
   } = useProgressActivity();
+  const { data: subscription } = useSubscriptionMe();
 
   if (isUserLoading) {
     return <LoadingTips label="Menyiapkan ruang belajarmu..." />;
@@ -87,6 +91,15 @@ export default function DashboardComponent() {
           Pilih tutor, skenario, dan mulai sesi latihan terstruktur.
         </Typography>
       </Box>
+
+      {subscription && (
+        <Box component={m.div} variants={sectionVariants} custom={0.03}>
+          <UsageCard
+            subscription={subscription}
+            onUpgrade={() => router.push("/pricing")}
+          />
+        </Box>
+      )}
 
       {isProgressError ? (
         <Card
@@ -246,7 +259,13 @@ export default function DashboardComponent() {
           }}
         >
           {TUTOR_CHARACTERS.map((char, index) => (
-            <CharacterSelectCard key={char.id} {...char} index={index} />
+            <CharacterSelectCard
+              key={char.id}
+              {...char}
+              index={index}
+              locked={subscription ? !isTutorAllowed(subscription, char.id) : false}
+              onLockedClick={() => router.push("/pricing")}
+            />
           ))}
         </Stack>
       </Box>

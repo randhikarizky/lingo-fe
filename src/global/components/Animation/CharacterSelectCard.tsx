@@ -15,12 +15,27 @@ type Props = {
   emoji: string;
   role: string;
   index: number;
+  locked?: boolean;
+  onLockedClick?: () => void;
 };
 
-export default function CharacterSelectCard({ id, name, emoji, role, index }: Props) {
+export default function CharacterSelectCard({
+  id,
+  name,
+  emoji,
+  role,
+  index,
+  locked,
+  onLockedClick,
+}: Props) {
   const router = useRouter();
 
   const handleClick = () => {
+    if (locked) {
+      onLockedClick?.();
+      return;
+    }
+
     const personality = CHARACTER_TO_PERSONALITY[id] || "santai";
     router.push(`/practice?character=${id}&personality=${personality}`);
   };
@@ -52,8 +67,23 @@ export default function CharacterSelectCard({ id, name, emoji, role, index }: Pr
           p: 1.5,
           textAlign: "center",
           cursor: "pointer",
+          opacity: locked ? 0.65 : 1,
+          position: "relative",
         }}
       >
+        {locked && (
+          <Typography
+            variant="caption"
+            sx={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+              fontSize: 14,
+            }}
+          >
+            🔒
+          </Typography>
+        )}
         <Avatar
           sx={{
             width: 48,
