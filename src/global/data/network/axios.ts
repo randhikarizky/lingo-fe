@@ -1,7 +1,11 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { enqueueSnackbar } from "notistack";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL ?? "";
+
+export type SilentAxiosConfig = InternalAxiosRequestConfig & {
+  silentError?: boolean;
+};
 
 const api = axios.create({
   baseURL,
@@ -30,17 +34,22 @@ function redirectToLogin() {
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error) => {
+    const config = error.config as SilentAxiosConfig | undefined;
+    const silentError = config?.silentError === true;
+
     const message =
       error.response?.data?.message ||
       error.message ||
       "Terjadi kesalahan pada server";
 
     if (error.response?.status === 401) {
-      enqueueSnackbar("Sesi berakhir, silakan login kembali", {
-        variant: "warning",
-      });
+      if (!silentError) {
+        enqueueSnackbar("Sesi berakhir, silakan login kembali", {
+          variant: "warning",
+        });
+      }
       redirectToLogin();
-    } else {
+    } else if (!silentError) {
       const subscriptionCode = error.response?.data?.data?.code;
       const isSubscriptionError =
         subscriptionCode === "QUOTA_EXCEEDED" || subscriptionCode === "FEATURE_LOCKED";

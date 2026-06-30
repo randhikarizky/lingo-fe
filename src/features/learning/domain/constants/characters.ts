@@ -1,6 +1,6 @@
 export const TUTOR_CHARACTERS = [
   { id: "maya", name: "Maya", emoji: "👩‍🏫", role: "Guru santai", personality: "santai" },
-  { id: "alex", name: "Alex", emoji: "🧑‍💻", role: "Business English", personality: "bebas" },
+  { id: "alex", name: "Alex", emoji: "🧑‍💻", role: "Bahasa Inggris bisnis", personality: "bebas" },
   { id: "sora", name: "Sora", emoji: "🌸", role: "Small talk santai", personality: "semangat" },
   { id: "ken", name: "Ken", emoji: "🎧", role: "Partner latihan", personality: "teliti" },
 ] as const;
@@ -24,6 +24,12 @@ export function getTutorName(characterId: string) {
   return tutor?.name ?? characterId.charAt(0).toUpperCase() + characterId.slice(1);
 }
 
+const DIFFICULTY_LABELS: Record<string, string> = {
+  beginner: "Pemula",
+  intermediate: "Menengah",
+  advanced: "Lanjutan",
+};
+
 export function formatDifficultyLabel(difficulty: string) {
-  return difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+  return DIFFICULTY_LABELS[difficulty.toLowerCase()] ?? difficulty;
 }

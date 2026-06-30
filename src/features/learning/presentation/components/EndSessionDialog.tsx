@@ -22,7 +22,7 @@ export default function EndSessionDialog({ open, loading, onClose, onConfirm }: 
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
           AI akan membuat ringkasan grammar, vocabulary, fluency, dan area perbaikan dari sesi ini.
         </Typography>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.2 }}>
           Pastikan kamu sudah mengirim minimal satu pesan (teks atau suara).
         </Typography>
       </DialogContent>

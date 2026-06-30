@@ -1,38 +1,39 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { m } from "framer-motion";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
-
 import { useRouter } from "next/navigation";
 
-import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
 import LoadingTips from "@/global/components/Loading/LoadingTips";
-import CharacterSelectCard from "@/global/components/Animation/CharacterSelectCard";
-import AnimatedNumber from "./AnimatedNumber";
-import ActivityChart from "./ActivityChart";
-import { TUTOR_CHARACTERS } from "@/features/learning/domain/constants/characters";
-import { useSubscriptionMe } from "@/features/subscription/presentation/controller/subscription.controller";
-import { isTutorAllowed } from "@/features/subscription/domain/utils/subscription-access";
-import UsageCard from "@/features/subscription/presentation/components/UsageCard";
-
+import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
 import { useGetMe } from "@/features/auth/presentation/controller/auth.controller";
+import { useGetConversationList } from "@/features/conversation/presentation/controller/conversation.controller";
 import {
   useProgressSummary,
   useProgressActivity,
 } from "@/features/dashboard/presentation/controller/progress.controller";
+import { getLastSession } from "@/features/learning/presentation/utils/last-session.storage";
+import { useSubscriptionMe } from "@/features/subscription/presentation/controller/subscription.controller";
 
-const ROADMAP = [
-  { level: 1, title: "Perkenalan", status: "done" },
-  { level: 2, title: "Daily Chat", status: "active" },
-  { level: 3, title: "Cerita Singkat", status: "locked" },
-  { level: 4, title: "Debat Mini", status: "locked" },
-];
+import GreetingHero from "./adventure/GreetingHero";
+import MissionHeroCard from "./adventure/MissionHeroCard";
+import DashboardLearningSnapshot from "./adventure/DashboardLearningSnapshot";
+import JourneyTimeline from "./adventure/JourneyTimeline";
+import TutorCarousel from "./adventure/TutorCarousel";
+import RecentPracticeCard from "./adventure/RecentPracticeCard";
+import ActivityHeatmap from "./adventure/ActivityHeatmap";
+import SubscriptionMiniCard from "./adventure/SubscriptionMiniCard";
+import { DASHBOARD_RADIUS } from "./adventure/dashboard.tokens";
+import {
+  buildJourneyNodes,
+  resolveMissionState,
+} from "../utils/dashboard.utils";
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 16 },
@@ -43,9 +44,18 @@ const sectionVariants = {
   }),
 };
 
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <Typography variant="subtitle1" sx={{ fontWeight: 800, mb: 1.25 }}>
+      {children}
+    </Typography>
+  );
+}
+
 export default function DashboardComponent() {
   const router = useRouter();
   const { data: user, isLoading: isUserLoading } = useGetMe();
+  const { data: conversations = [] } = useGetConversationList();
   const {
     data: summary,
     isLoading: isSummaryLoading,
@@ -60,8 +70,46 @@ export default function DashboardComponent() {
   } = useProgressActivity();
   const { data: subscription } = useSubscriptionMe();
 
+  const [lastSession, setLastSession] = useState(() =>
+    typeof window !== "undefined" ? getLastSession() : null
+  );
+
+  useEffect(() => {
+    setLastSession(getLastSession());
+  }, []);
+
+  const missionState = useMemo(
+    () => resolveMissionState(conversations, summary, lastSession),
+    [conversations, summary, lastSession]
+  );
+
+  const journeyNodes = useMemo(
+    () => buildJourneyNodes(summary?.conversationCount ?? 0),
+    [summary?.conversationCount]
+  );
+
+  const recentConversation = useMemo(() => {
+    return [...conversations].sort(
+      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    )[0];
+  }, [conversations]);
+
+  const recommendedCharacterId = useMemo(() => {
+    if (missionState.kind === "continue") return missionState.conversation.characterId;
+    if (lastSession) return lastSession.characterId;
+    if (recentConversation) return recentConversation.characterId;
+    return "maya";
+  }, [missionState, lastSession, recentConversation]);
+
+  const recommendedScenario = useMemo(() => {
+    if (missionState.kind === "continue") return missionState.conversation.scenarioLabel;
+    if (lastSession) return lastSession.scenarioLabel;
+    if (recentConversation) return recentConversation.scenarioLabel;
+    return "";
+  }, [missionState, lastSession, recentConversation]);
+
   if (isUserLoading) {
-    return <LoadingTips label="Menyiapkan ruang belajarmu..." />;
+    return <LoadingTips label="Menyiapkan pusat petualanganmu..." />;
   }
 
   const isProgressLoading = isSummaryLoading || isActivityLoading;
@@ -84,22 +132,12 @@ export default function DashboardComponent() {
       }}
     >
       <Box component={m.div} variants={sectionVariants} custom={0}>
-        <Typography variant="h5">
-          Halo, {user?.name?.split(" ")[0] ?? "teman"}! 👋
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          Pilih tutor, skenario, dan mulai sesi latihan terstruktur.
-        </Typography>
+        <GreetingHero name={user?.name ?? "Pelajar"} />
       </Box>
 
-      {subscription && (
-        <Box component={m.div} variants={sectionVariants} custom={0.03}>
-          <UsageCard
-            subscription={subscription}
-            onUpgrade={() => router.push("/pricing")}
-          />
-        </Box>
-      )}
+      <Box component={m.div} variants={sectionVariants} custom={0.02}>
+        <MissionHeroCard state={missionState} />
+      </Box>
 
       {isProgressError ? (
         <Card
@@ -112,14 +150,13 @@ export default function DashboardComponent() {
             borderColor: "error.light",
             borderWidth: 1,
             borderStyle: "solid",
-            bgcolor: "background.paper",
           }}
         >
           <Typography variant="subtitle2" color="error" sx={{ fontWeight: 700, mb: 1 }}>
-            Gagal memuat data perkembangan belajar
+            Gagal memuat progres belajar
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 2 }}>
-            Terjadi kesalahan koneksi atau server saat mengambil data statistik Anda.
+            Koneksi atau server error saat mengambil statistikmu.
           </Typography>
           <Button variant="outlined" color="primary" size="small" onClick={handleRetry}>
             Coba Lagi
@@ -127,204 +164,73 @@ export default function DashboardComponent() {
         </Card>
       ) : isProgressLoading ? (
         <>
-          {/* Skeleton Metrics Grid */}
           <Box
             component={m.div}
             variants={sectionVariants}
             custom={0.05}
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
-              gap: 2,
-            }}
+            sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 1.5 }}
           >
             {[...Array(4)].map((_, i) => (
-              <Card key={i} sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
+              <Card key={i} sx={{ p: 1.75 }}>
                 <Skeleton variant="circular" width={28} height={28} />
-                <Skeleton variant="text" width="60%" height={16} />
-                <Skeleton variant="text" width="40%" height={28} />
+                <Skeleton variant="text" width="60%" sx={{ mt: 1 }} />
+                <Skeleton variant="text" width="40%" />
               </Card>
             ))}
           </Box>
-
-          {/* Skeleton Chart */}
-          <Card
-            component={m.div}
-            variants={sectionVariants}
-            custom={0.08}
-            sx={{ p: 2.5 }}
-          >
-            <Skeleton variant="text" width="180px" height={20} sx={{ mb: 2 }} />
-            <Skeleton variant="rectangular" height={130} sx={{ borderRadius: 1 }} />
+          <Card component={m.div} variants={sectionVariants} custom={0.08} sx={{ p: 2.5 }}>
+            <Skeleton variant="text" width="180px" />
+            <Skeleton variant="rectangular" height={120} sx={{ mt: 1.5, borderRadius: 1 }} />
           </Card>
         </>
-      ) : (
+      ) : summary ? (
         <>
-          {/* Metrics Grid */}
-          <Box
-            component={m.div}
-            variants={sectionVariants}
-            custom={0.05}
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
-              gap: 2,
-            }}
-          >
-            {/* Card 1: Percakapan */}
-            <Card sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
-              <Box sx={{ fontSize: 24 }}>💬</Box>
-              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
-                Total Sesi
-              </Typography>
-              <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                <AnimatedNumber value={summary?.conversationCount ?? 0} />
-              </Typography>
-            </Card>
-
-            {/* Card 2: Total Pesan */}
-            <Card sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
-              <Box sx={{ fontSize: 24 }}>✍️</Box>
-              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
-                Total Pesan
-              </Typography>
-              <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                <AnimatedNumber value={summary?.messageCount ?? 0} />
-              </Typography>
-            </Card>
-
-            {/* Card 3: Menit Berbicara */}
-            <Card sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
-              <Box sx={{ fontSize: 24 }}>⏱️</Box>
-              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
-                Menit Latihan
-              </Typography>
-              <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                <AnimatedNumber value={summary?.speakingMinutes ?? 0} />
-              </Typography>
-            </Card>
-
-            {/* Card 4: Streak Latihan */}
-            <Card
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                gap: 1,
-                bgcolor: (summary?.currentStreak ?? 0) > 0 ? "primary.tonalContainer" : "background.paper",
-                color: (summary?.currentStreak ?? 0) > 0 ? "primary.onTonalContainer" : "text.primary",
-                transition: "background-color 0.3s ease, color 0.3s ease",
-              }}
-            >
-              <Box sx={{ fontSize: 24 }}>🔥</Box>
-              <Typography
-                variant="caption"
-                color={(summary?.currentStreak ?? 0) > 0 ? "inherit" : "text.secondary"}
-                sx={{ fontWeight: 600 }}
-              >
-                Streak Latihan
-              </Typography>
-              <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                <AnimatedNumber value={summary?.currentStreak ?? 0} /> Hari
-              </Typography>
-            </Card>
+          <Box component={m.div} variants={sectionVariants} custom={0.05}>
+            <SectionTitle>Ringkasan Belajar</SectionTitle>
+            <DashboardLearningSnapshot summary={summary} />
           </Box>
 
-          {/* Activity Chart Card */}
-          <Card
-            component={m.div}
-            variants={sectionVariants}
-            custom={0.08}
-            sx={{ p: 2.5 }}
-          >
-            <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 700 }}>
-              Aktivitas Belajar (30 Hari Terakhir)
-            </Typography>
-            <ActivityChart data={activity ?? []} />
-          </Card>
+          <Box component={m.div} variants={sectionVariants} custom={0.08}>
+            <SectionTitle>Perjalanan Belajar</SectionTitle>
+            <JourneyTimeline nodes={journeyNodes} />
+          </Box>
         </>
-      )}
+      ) : null}
 
       <Box component={m.div} variants={sectionVariants} custom={0.1}>
-        <Typography variant="subtitle1" sx={{ mb: 1.5 }}>
-          Pilih Tutor Latihan
-        </Typography>
-        <Stack
-          direction="row"
-          spacing={1.5}
-          sx={{
-            overflowX: "auto",
-            pb: 0.5,
-            "&::-webkit-scrollbar": { display: "none" },
-          }}
-        >
-          {TUTOR_CHARACTERS.map((char, index) => (
-            <CharacterSelectCard
-              key={char.id}
-              {...char}
-              index={index}
-              locked={subscription ? !isTutorAllowed(subscription, char.id) : false}
-              onLockedClick={() => router.push("/pricing")}
-            />
-          ))}
-        </Stack>
+        <SectionTitle>Tutor Rekomendasi</SectionTitle>
+        <TutorCarousel
+          recommendedCharacterId={recommendedCharacterId}
+          scenarioLabel={recommendedScenario}
+          subscription={subscription}
+        />
       </Box>
 
-      <Box component={m.div} variants={sectionVariants} custom={0.15}>
-        <Typography variant="subtitle1" sx={{ mb: 1.5 }}>
-          Peta Belajar
-        </Typography>
-        <Stack spacing={1}>
-          {ROADMAP.map((item) => (
-            <Card
-              key={item.level}
-              sx={{
-                p: 2,
-                ...((item.status === "locked" || item.status === "done") && {
-                  borderRadius: 0.5,
-                }),
-                opacity: item.status === "locked" ? 0.55 : 1,
-                ...(item.status === "active" && {
-                  bgcolor: "primary.tonalContainer",
-                  color: "primary.onTonalContainer",
-                }),
-              }}
-            >
-              <Stack direction="row" sx={{ alignItems: "center", gap: 1.5 }}>
-                <Chip
-                  label={`Lv ${item.level}`}
-                  size="small"
-                  color={item.status === "done" ? "success" : item.status === "active" ? "primary" : "default"}
-                />
-                <Typography variant="body2" sx={{ flex: 1 }}>
-                  {item.title}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {item.status === "done" ? "Selesai" : item.status === "active" ? "Aktif" : "Terkunci"}
-                </Typography>
-              </Stack>
-            </Card>
-          ))}
-        </Stack>
+      <Box component={m.div} variants={sectionVariants} custom={0.12}>
+        <SectionTitle>Latihan Terbaru</SectionTitle>
+        <RecentPracticeCard conversation={recentConversation} />
       </Box>
 
-      <m.div
-        variants={sectionVariants}
-        custom={0.2}
-        whileHover={{ scale: 1.02, y: -2 }}
-        whileTap={{ scale: 0.96 }}
-        transition={{ duration: 0.2, ease: M3_MOTION_EASE.expressive }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          fullWidth
-          onClick={() => router.push("/practice?character=maya&personality=santai")}
+      {!isProgressLoading && !isProgressError && (
+        <Card
+          component={m.div}
+          variants={sectionVariants}
+          custom={0.14}
+          sx={{ p: 2.5, borderRadius: `${DASHBOARD_RADIUS.section}px` }}
         >
-          Mulai Latihan
-        </Button>
-      </m.div>
+          <SectionTitle>Aktivitas Belajar</SectionTitle>
+          <ActivityHeatmap data={activity ?? []} />
+        </Card>
+      )}
+
+      {subscription && (
+        <Box component={m.div} variants={sectionVariants} custom={0.18}>
+          <SubscriptionMiniCard
+            subscription={subscription}
+            onUpgrade={() => router.push("/pricing")}
+          />
+        </Box>
+      )}
     </Stack>
   );
 }

@@ -18,6 +18,10 @@ const defaultSettings: SettingsValueProps = {
   themeContrast: "default",
   themeLayout: "mobile-first",
   themeColorPresets: "orange",
+  targetLanguage: "en",
+  dailyGoalMinutes: "20",
+  defaultTutor: "maya",
+  preferredPersonality: "santai",
 };
 
 type Props = {

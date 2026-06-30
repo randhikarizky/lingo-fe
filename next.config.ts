@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const apiProxyUrl = process.env.API_PROXY_URL ?? "http://localhost:406";
+const apiProxyUrl = process.env.API_PROXY_URL ?? "http://localhost:4626";
 
 const nextConfig: NextConfig = {
   async rewrites() {
