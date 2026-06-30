@@ -17,12 +17,16 @@ import {
   formatDifficultyLabel,
   getTutorName,
 } from "../../domain/constants/characters";
-import type { DifficultyId, SessionGoal } from "../domain/entities/learning-session.entity";
+import type { DifficultyId, ScenarioDefinition, SessionGoal } from "../../domain/entities/learning-session.entity";
 import { useLearningCatalog } from "../controller/learning.controller";
 import ScenarioSelector from "./ScenarioSelector";
 import DifficultySelector from "./DifficultySelector";
 import ObjectiveCard from "./ObjectiveCard";
 import SessionGoalChecklist from "./SessionGoalChecklist";
+import { useSubscriptionMe } from "@/features/subscription/presentation/controller/subscription.controller";
+import { isScenarioAllowed } from "@/features/subscription/domain/utils/subscription-access";
+import { parseSubscriptionError } from "@/features/subscription/domain/utils/parse-subscription-error";
+import LockedFeatureDialog from "@/features/subscription/presentation/components/LockedFeatureDialog";
 
 const DEFAULT_CHARACTER = "maya";
 const DEFAULT_PERSONALITY = "santai";
@@ -32,6 +36,13 @@ export default function PracticeSetupComponent() {
   const searchParams = useSearchParams();
   const createConversation = useCreateConversation();
   const { data: catalog, isLoading, isError } = useLearningCatalog();
+  const { data: subscription } = useSubscriptionMe();
+
+  const [lockedDialog, setLockedDialog] = useState<{
+    type: "quota" | "feature";
+    message: string;
+    requiredPlan?: string;
+  } | null>(null);
 
   const characterId = searchParams.get("character") || DEFAULT_CHARACTER;
   const personality = searchParams.get("personality") || DEFAULT_PERSONALITY;
@@ -79,11 +90,25 @@ export default function PracticeSetupComponent() {
         onSuccess: (data) => {
           router.replace(`/conversation?id=${data.id}`);
         },
-        onError: () => {
+        onError: (error) => {
+          const parsed = parseSubscriptionError(error);
+          if (parsed) {
+            setLockedDialog(parsed);
+            return;
+          }
+
           enqueueSnackbar("Gagal memulai sesi latihan", { variant: "error" });
         },
       }
     );
+  };
+
+  const handleLockedScenario = (scenario: ScenarioDefinition) => {
+    setLockedDialog({
+      type: "feature",
+      message: `${scenario.label} tersedia mulai paket Starter.`,
+      requiredPlan: "STARTER",
+    });
   };
 
   if (isLoading) {
@@ -151,6 +176,8 @@ export default function PracticeSetupComponent() {
           value={scenarioId}
           onChange={setScenarioId}
           disabled={createConversation.isPending}
+          isLocked={(id) => !isScenarioAllowed(subscription, id)}
+          onLockedClick={handleLockedScenario}
         />
       </Box>
 
@@ -174,6 +201,15 @@ export default function PracticeSetupComponent() {
       >
         {createConversation.isPending ? "Memulai sesi..." : "Mulai Latihan"}
       </Button>
+
+      <LockedFeatureDialog
+        open={lockedDialog !== null}
+        type={lockedDialog?.type ?? "feature"}
+        message={lockedDialog?.message ?? ""}
+        requiredPlan={lockedDialog?.requiredPlan}
+        onClose={() => setLockedDialog(null)}
+        onUpgrade={() => router.push("/pricing")}
+      />
     </Stack>
   );
 }

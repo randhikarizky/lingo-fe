@@ -11,6 +11,7 @@ export const useChat = () => {
     mutationFn: (request: ChatRequest) => conversationService.chat(request),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["progress"] });
+      queryClient.invalidateQueries({ queryKey: ["subscription", "me"] });
 
       if (variables.conversationId) {
         queryClient.invalidateQueries({
