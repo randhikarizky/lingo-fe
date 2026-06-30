@@ -1,89 +1,37 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import Box from "@mui/material/Box";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import LoadingTips from "@/global/components/Loading/LoadingTips";
 import { useGetConversationDetail } from "@/features/conversation/presentation/controller/conversation.controller";
-import { formatDifficultyLabel } from "../../domain/constants/characters";
+import { CHARACTER_EMOJIS, getTutorName } from "../../domain/constants/characters";
 import type {
   SessionGoal,
   SessionMetrics,
   SessionSummaryFeedback,
 } from "../../domain/entities/learning-session.entity";
-import SessionGoalChecklist from "./SessionGoalChecklist";
+import { buildTutorCongrats } from "../utils/mission-summary.utils";
+import MissionCompleteIntro from "./mission-summary/MissionCompleteIntro";
+import MissionSummaryContent from "./mission-summary/MissionSummaryContent";
 
 type Props = {
   conversationId: string;
 };
 
-function SummarySection({
-  title,
-  content,
-  accent,
-}: {
-  title: string;
-  content: string;
-  accent?: "success" | "warning";
-}) {
-  return (
-    <Card sx={{ p: 2 }}>
-      <Stack direction="row" spacing={1} sx={{ alignItems: "center", mb: 1 }}>
-        <Typography variant="subtitle2">{title}</Typography>
-        {accent && (
-          <Chip
-            size="small"
-            label={accent === "success" ? "Kekuatan" : "Perbaiki"}
-            color={accent === "success" ? "success" : "warning"}
-            variant="soft"
-          />
-        )}
-      </Stack>
-      <Typography variant="body2" color="text.secondary">
-        {content}
-      </Typography>
-    </Card>
-  );
-}
-
-function MetricsGrid({ metrics }: { metrics: SessionMetrics }) {
-  const items = [
-    { label: "Kata Diucapkan", value: metrics.wordsSpoken },
-    { label: "Koreksi", value: metrics.corrections },
-    { label: "Kosakata Baru", value: metrics.newVocabulary.length },
-    { label: "Menit Latihan", value: metrics.estimatedSpeakingMinutes },
-  ];
-
-  return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "repeat(2, 1fr)",
-        gap: 1.5,
-      }}
-    >
-      {items.map((item) => (
-        <Card key={item.label} sx={{ p: 1.5 }}>
-          <Typography variant="caption" color="text.secondary">
-            {item.label}
-          </Typography>
-          <Typography variant="h6" sx={{ fontWeight: 800 }}>
-            {item.value}
-          </Typography>
-        </Card>
-      ))}
-    </Box>
-  );
-}
-
 export default function LearningSummaryScreen({ conversationId }: Props) {
   const router = useRouter();
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const [showIntro, setShowIntro] = useState(!prefersReducedMotion);
   const { data: detail, isLoading, isError } = useGetConversationDetail(conversationId);
+
+  const handleIntroComplete = useCallback(() => {
+    setShowIntro(false);
+  }, []);
 
   if (isLoading) {
     return <LoadingTips label="Menyusun laporan belajarmu..." />;
@@ -103,7 +51,6 @@ export default function LearningSummaryScreen({ conversationId }: Props) {
   const summary = detail.summary as SessionSummaryFeedback | null;
   const metrics = detail.metrics as SessionMetrics | null;
   const sessionGoals = (detail.sessionGoals ?? []) as SessionGoal[];
-  const achievedGoals = sessionGoals.filter((goal) => goal.achieved).length;
 
   if (!summary || !metrics) {
     return (
@@ -116,47 +63,31 @@ export default function LearningSummaryScreen({ conversationId }: Props) {
     );
   }
 
+  const tutorName = getTutorName(detail.characterId);
+  const tutorEmoji = CHARACTER_EMOJIS[detail.characterId] ?? "🎓";
+  const tutorMessage = buildTutorCongrats(tutorName, detail.scenarioLabel, summary);
+
   return (
-    <Stack spacing={2.5} sx={{ pb: 3 }}>
-      <Box>
-        <Typography variant="h5" sx={{ mb: 0.5 }}>
-          Ringkasan Belajar
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {detail.scenarioLabel} · {formatDifficultyLabel(detail.difficulty)}
-          {sessionGoals.length > 0 ? ` · ${achievedGoals}/${sessionGoals.length} misi tercapai` : ""}
-        </Typography>
-      </Box>
-
-      {sessionGoals.length > 0 && (
-        <SessionGoalChecklist goals={sessionGoals} title="Pencapaian Sesi" />
+    <>
+      {showIntro && (
+        <MissionCompleteIntro
+          scenarioLabel={detail.scenarioLabel}
+          tutorName={tutorName}
+          tutorEmoji={tutorEmoji}
+          goals={sessionGoals}
+          tutorMessage={tutorMessage}
+          onComplete={handleIntroComplete}
+        />
       )}
 
-      <MetricsGrid metrics={metrics} />
-
-      <SummarySection title="Grammar" content={summary.grammar} />
-      <SummarySection title="Vocabulary" content={summary.vocabulary} />
-      <SummarySection title="Fluency" content={summary.fluency} />
-      <SummarySection title="Confidence" content={summary.confidence} />
-      <SummarySection title="Strength" content={summary.strength} accent="success" />
-      <SummarySection title="Improve" content={summary.improvementArea} accent="warning" />
-
-      {metrics.newVocabulary.length > 0 && (
-        <Card sx={{ p: 2 }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Kosakata Baru
-          </Typography>
-          <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", gap: 1 }}>
-            {metrics.newVocabulary.map((word) => (
-              <Chip key={word} label={word} size="small" variant="soft" />
-            ))}
-          </Stack>
-        </Card>
+      {!showIntro && (
+        <MissionSummaryContent
+          detail={detail}
+          summary={summary}
+          metrics={metrics}
+          sessionGoals={sessionGoals}
+        />
       )}
-
-      <Button variant="contained" size="large" onClick={() => router.push("/dashboard")}>
-        Kembali ke Dashboard
-      </Button>
-    </Stack>
+    </>
   );
 }

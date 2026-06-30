@@ -1,20 +1,16 @@
 "use client";
 
-import Chip from "@mui/material/Chip";
+import { m } from "framer-motion";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 
+import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
 import type { DifficultyId } from "../../domain/entities/learning-session.entity";
+import DifficultyCard from "./mission-briefing/DifficultyCard";
 
 type DifficultyOption = {
   id: DifficultyId;
   label: string;
-};
-
-const DIFFICULTY_HINTS: Record<DifficultyId, string> = {
-  beginner: "Kalimat pendek & kosakata sederhana",
-  intermediate: "Percakapan natural dengan variasi grammar",
-  advanced: "Respons kaya, idiom, dan nuansa grammar",
 };
 
 type Props = {
@@ -27,22 +23,23 @@ type Props = {
 export default function DifficultySelector({ options, value, onChange, disabled }: Props) {
   return (
     <Stack spacing={1}>
-      <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", gap: 1 }}>
-        {options.map((option) => (
-          <Chip
-            key={option.id}
+      {options.map((option, index) => (
+        <Box
+          key={option.id}
+          component={m.div}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.05, duration: 0.32, ease: M3_MOTION_EASE.decelerate }}
+        >
+          <DifficultyCard
+            difficulty={option.id}
             label={option.label}
-            clickable
+            selected={value === option.id}
             disabled={disabled}
-            color={value === option.id ? "secondary" : "default"}
-            variant={value === option.id ? "filled" : "outlined"}
-            onClick={() => onChange(option.id)}
+            onSelect={() => onChange(option.id)}
           />
-        ))}
-      </Stack>
-      <Typography variant="caption" color="text.secondary">
-        {DIFFICULTY_HINTS[value]}
-      </Typography>
+        </Box>
+      ))}
     </Stack>
   );
 }

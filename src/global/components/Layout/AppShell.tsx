@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 
 import AppBottomNavigation from "./AppBottomNavigation";
 import AuthGuard from "@/global/components/Auth/AuthGuard";
+import { APP_BOTTOM_NAV_HEIGHT } from "@/global/constants/layout";
 
 type Props = {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ type Props = {
 export default function AppShell({ children }: Props) {
   const pathname = usePathname();
   const isAuthPage = pathname === "/login";
+  const isConversationSession = pathname.startsWith("/conversation");
 
   if (isAuthPage) {
     return <>{children}</>;
@@ -35,11 +37,11 @@ export default function AppShell({ children }: Props) {
             minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
-            pb: "72px",
+            pb: isConversationSession ? 0 : `${APP_BOTTOM_NAV_HEIGHT}px`,
           }}
         >
-          <Box sx={{ flex: 1, px: 2, py: 2 }}>{children}</Box>
-          <AppBottomNavigation />
+          <Box sx={{ flex: 1, px: 2, py: isConversationSession ? 0 : 2 }}>{children}</Box>
+          {!isConversationSession && <AppBottomNavigation />}
         </Box>
       </Box>
     </AuthGuard>

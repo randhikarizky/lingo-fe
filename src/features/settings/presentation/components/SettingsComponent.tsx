@@ -1,114 +1,106 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { m } from "framer-motion";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
+import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import LoadingTips from "@/global/components/Loading/LoadingTips";
-import { useSettingsContext } from "@/theme/settings";
+import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
 import { useGetMe, useLogout } from "@/features/auth/presentation/controller/auth.controller";
+import { useProgressSummary } from "@/features/dashboard/presentation/controller/progress.controller";
 import { useSubscriptionMe } from "@/features/subscription/presentation/controller/subscription.controller";
-import { getPlanLabel } from "@/features/subscription/domain/utils/subscription-access";
-import type { ThemeMode } from "@/theme/settings/types";
+import AboutCard from "./profile/AboutCard";
+import AppearanceCard from "./profile/AppearanceCard";
+import DangerZoneCard from "./profile/DangerZoneCard";
+import LearningPreferenceCard from "./profile/LearningPreferenceCard";
+import LearningSnapshot from "./profile/LearningSnapshot";
+import ProfileHeader from "./profile/ProfileHeader";
+import SubscriptionProfileCard from "./profile/SubscriptionProfileCard";
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay, duration: 0.36, ease: M3_MOTION_EASE.decelerate },
+  }),
+};
 
 export default function SettingsComponent() {
   const router = useRouter();
-  const settings = useSettingsContext();
-  const { data: user, isLoading } = useGetMe();
-  const { data: subscription } = useSubscriptionMe();
+  const { data: user, isLoading: isUserLoading } = useGetMe();
+  const { data: subscription, isLoading: isSubscriptionLoading } = useSubscriptionMe();
+  const { data: progress, isLoading: isProgressLoading } = useProgressSummary();
   const logout = useLogout();
 
-  if (isLoading) {
-    return <LoadingTips label="Memuat pengaturan..." />;
+  if (isUserLoading) {
+    return <LoadingTips label="Memuat profil..." />;
   }
 
   return (
-    <Stack spacing={2.5}>
-      <Box>
-        <Typography variant="h5">Pengaturan</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Sesuaikan pengalaman belajarmu
+    <Stack
+      spacing={2}
+      component={m.div}
+      initial="hidden"
+      animate="visible"
+      variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}
+    >
+      <Box component={m.div} variants={sectionVariants} custom={0}>
+        <Typography variant="h5" sx={{ fontWeight: 900 }}>
+          Profil
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
+          Identitas, progress, dan preferensi belajarmu
         </Typography>
       </Box>
 
-      <Card sx={{ p: 2.5 }}>
-        <Typography variant="subtitle2" sx={{ mb: 2 }}>
-          Akun
-        </Typography>
-        <Typography variant="body1">{user?.name}</Typography>
-        <Typography variant="body2" color="text.secondary">
-          {user?.email}
-        </Typography>
-      </Card>
+      {user && (
+        <Box component={m.div} variants={sectionVariants} custom={0.04}>
+          <ProfileHeader
+            name={user.name}
+            email={user.email}
+            plan={subscription?.plan ?? "FREE"}
+          />
+        </Box>
+      )}
 
-      <Card sx={{ p: 2.5 }}>
-        <Stack spacing={1.5}>
-          <Typography variant="subtitle2">Langganan</Typography>
-          <Typography variant="body2" color="text.secondary">
-            Paket aktif: {subscription ? getPlanLabel(subscription.plan) : "Free"}
-          </Typography>
-          <Button variant="outlined" onClick={() => router.push("/pricing")}>
-            Lihat Paket & Upgrade
-          </Button>
-        </Stack>
-      </Card>
+      <Box component={m.div} variants={sectionVariants} custom={0.08}>
+        <LearningSnapshot summary={progress} isLoading={isProgressLoading} />
+      </Box>
 
-      <Card sx={{ p: 2.5 }}>
-        <Stack spacing={2}>
-          <Typography variant="subtitle2">Tampilan</Typography>
+      <Box component={m.div} variants={sectionVariants} custom={0.12}>
+        {isSubscriptionLoading ? (
+          <Skeleton variant="rounded" height={280} sx={{ borderRadius: "20px" }} />
+        ) : subscription ? (
+          <SubscriptionProfileCard
+            subscription={subscription}
+            onManagePlan={() => router.push("/pricing")}
+            onUpgrade={() => router.push("/pricing")}
+          />
+        ) : null}
+      </Box>
 
-          <TextField
-            select
-            label="Mode Tema"
-            value={settings.themeMode}
-            onChange={(e) => settings.onUpdate("themeMode", e.target.value as ThemeMode)}
-            fullWidth
-            size="small"
-          >
-            <MenuItem value="system">Ikuti Sistem (disarankan)</MenuItem>
-            <MenuItem value="light">Terang</MenuItem>
-            <MenuItem value="dark">Gelap</MenuItem>
-          </TextField>
+      <Box component={m.div} variants={sectionVariants} custom={0.16}>
+        <LearningPreferenceCard />
+      </Box>
 
-          <TextField
-            select
-            label="Target Bahasa"
-            defaultValue="en"
-            fullWidth
-            size="small"
-          >
-            <MenuItem value="en">English</MenuItem>
-            <MenuItem value="id">Indonesia</MenuItem>
-            <MenuItem value="ja">Japanese</MenuItem>
-          </TextField>
+      <Box component={m.div} variants={sectionVariants} custom={0.2}>
+        <AppearanceCard />
+      </Box>
 
-          <TextField
-            select
-            label="Target Harian (menit)"
-            defaultValue="20"
-            fullWidth
-            size="small"
-          >
-            <MenuItem value="10">10 menit</MenuItem>
-            <MenuItem value="20">20 menit</MenuItem>
-            <MenuItem value="30">30 menit</MenuItem>
-          </TextField>
-        </Stack>
-      </Card>
+      <Box component={m.div} variants={sectionVariants} custom={0.24}>
+        <AboutCard />
+      </Box>
 
-      <Button
-        variant="outlined"
-        color="error"
-        fullWidth
-        onClick={() => logout.mutate()}
-      >
-        Keluar
-      </Button>
+      <Box component={m.div} variants={sectionVariants} custom={0.28}>
+        <DangerZoneCard
+          onLogout={() => logout.mutate()}
+          isLoggingOut={logout.isPending}
+        />
+      </Box>
     </Stack>
   );
 }

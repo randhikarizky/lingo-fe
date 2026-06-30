@@ -27,6 +27,7 @@ export const speechApi = {
       formData,
       {
         headers: { "Content-Type": false as unknown as string },
+        silentError: true,
       }
     ),
 
@@ -37,6 +38,7 @@ export const speechApi = {
         headers: {
           Accept: "audio/mpeg, audio/*",
         },
+        silentError: true,
       });
 
       return {

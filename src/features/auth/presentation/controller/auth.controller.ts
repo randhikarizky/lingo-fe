@@ -8,12 +8,10 @@ import { LoginRequest } from "../../data/request/login.request";
 export const useLogin = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { enqueueSnackbar } = useSnackbar();
 
   const mutation = useMutation({
     mutationFn: (request: LoginRequest) => authService.login(request),
     onSuccess: () => {
-      enqueueSnackbar("Login berhasil!", { variant: "success" });
       queryClient.invalidateQueries();
 
       if (typeof window !== "undefined") {
