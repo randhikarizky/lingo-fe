@@ -1,5 +1,5 @@
 import { Theme } from "@mui/material/styles";
-import { m3Interactive, m3Transition } from "../../motion";
+import { m3Interactive } from "../../motion";
 
 export function iconButton(theme: Theme) {
   return {

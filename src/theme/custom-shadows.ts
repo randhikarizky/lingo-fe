@@ -2,7 +2,7 @@ import { alpha } from "@mui/material/styles";
 
 import { primary } from "./palette";
 
-export function customShadows(_mode: "light" | "dark") {
+export function customShadows() {
   return {
     z1: "none",
     z4: "none",

@@ -75,6 +75,7 @@ export default function ChatMessageBubble({
     >
       {!isUser && (
         <Avatar
+          aria-label={tutorName}
           sx={{
             width: 32,
             height: 32,
