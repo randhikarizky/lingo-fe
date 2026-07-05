@@ -21,8 +21,7 @@ export function toggleButton(theme: Theme) {
         color: theme.palette.primary.onTonalContainer ?? theme.palette.primary.dark,
         fontWeight: 800,
         backgroundColor:
-          theme.palette.primary.tonalContainer ??
-          alpha(theme.palette.primary.main, 0.14),
+          theme.palette.primary.tonalContainer ?? alpha(theme.palette.primary.main, 0.14),
       },
     };
 
@@ -32,12 +31,9 @@ export function toggleButton(theme: Theme) {
           backgroundColor: alpha(theme.palette[color].main, 0.08),
         },
         [`&.${toggleButtonClasses.selected}`]: {
-          color:
-            theme.palette[color].onTonalContainer ??
-            theme.palette[color].dark,
+          color: theme.palette[color].onTonalContainer ?? theme.palette[color].dark,
           backgroundColor:
-            theme.palette[color].tonalContainer ??
-            alpha(theme.palette[color].main, 0.14),
+            theme.palette[color].tonalContainer ?? alpha(theme.palette[color].main, 0.14),
         },
       }),
     }));
@@ -57,7 +53,8 @@ export function toggleButton(theme: Theme) {
   return {
     MuiToggleButton: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ToggleButtonProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: ToggleButtonProps }) =>
+          rootStyles(ownerState),
       },
     },
     MuiToggleButtonGroup: {

@@ -22,11 +22,11 @@ export default function AnimatedNumber({ value }: Props) {
     const update = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing: easeOutQuad
       const ease = progress * (2 - progress);
       const nextValue = Math.floor(start + (end - start) * ease);
-      
+
       setCurrent(nextValue);
 
       if (progress < 1) {

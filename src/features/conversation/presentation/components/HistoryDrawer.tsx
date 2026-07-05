@@ -73,7 +73,11 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
 
     return (
       <Box sx={{ mb: 2.5 }}>
-        <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, px: 1, mb: 1, display: "block" }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ fontWeight: 700, px: 1, mb: 1, display: "block" }}
+        >
           {title}
         </Typography>
         <Stack spacing={1}>
@@ -108,7 +112,11 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
                   },
                 }}
               >
-                <Stack direction="row" spacing={1.5} sx={{ flex: 1, minWidth: 0, alignItems: "center" }}>
+                <Stack
+                  direction="row"
+                  spacing={1.5}
+                  sx={{ flex: 1, minWidth: 0, alignItems: "center" }}
+                >
                   <Avatar
                     sx={{
                       width: 36,
@@ -121,7 +129,11 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
                     {emoji}
                   </Avatar>
                   <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Stack direction="row" spacing={0.75} sx={{ alignItems: "center", mb: 0.25 }}>
+                    <Stack
+                      direction="row"
+                      spacing={0.75}
+                      sx={{ alignItems: "center", mb: 0.25 }}
+                    >
                       <Typography
                         variant="subtitle2"
                         noWrap
@@ -134,13 +146,28 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
                         {item.title}
                       </Typography>
                       {isCompleted && (
-                        <Chip label="Selesai" size="small" color="success" variant="soft" />
+                        <Chip
+                          label="Selesai"
+                          size="small"
+                          color="success"
+                          variant="soft"
+                        />
                       )}
                     </Stack>
-                    <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      noWrap
+                      sx={{ display: "block" }}
+                    >
                       {item.scenarioLabel} · {formatDifficultyLabel(item.difficulty)}
                     </Typography>
-                    <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      noWrap
+                      sx={{ display: "block" }}
+                    >
                       {item.lastMessage || "Belum ada pesan"}
                     </Typography>
                   </Box>
@@ -183,7 +210,10 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
         },
       }}
     >
-      <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", mb: 2.5 }}>
+      <Stack
+        direction="row"
+        sx={{ justifyContent: "space-between", alignItems: "center", mb: 2.5 }}
+      >
         <Typography variant="h6" sx={{ fontWeight: 800 }}>
           Riwayat Latihan
         </Typography>
@@ -208,11 +238,19 @@ export default function HistoryDrawer({ open, onClose, activeId, onSelect }: Pro
 
       <Box sx={{ flex: 1, overflowY: "auto", pr: 0.5, mr: -0.5 }}>
         {isLoading ? (
-          <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", mt: 4 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textAlign: "center", mt: 4 }}
+          >
             Memuat riwayat...
           </Typography>
         ) : conversations.length === 0 ? (
-          <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", mt: 4 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textAlign: "center", mt: 4 }}
+          >
             Belum ada riwayat latihan.
           </Typography>
         ) : (

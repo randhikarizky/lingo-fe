@@ -9,11 +9,7 @@ export type Query = "up" | "down" | "between" | "only";
 
 export type Value = Breakpoint | number;
 
-export function useResponsive(
-  query: Query,
-  start?: Value,
-  end?: Value
-): ReturnType {
+export function useResponsive(query: Query, start?: Value, end?: Value): ReturnType {
   const theme = useTheme();
 
   const mediaUp = useMediaQuery(theme.breakpoints.up(start as Value));

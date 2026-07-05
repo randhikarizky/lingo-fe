@@ -38,13 +38,11 @@ interface ScrollbarProps extends Props {
 
 const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
   ({ children, sx, ...other }, ref) => {
-    const userAgent =
-      typeof navigator === "undefined" ? "SSR" : navigator.userAgent;
+    const userAgent = typeof navigator === "undefined" ? "SSR" : navigator.userAgent;
 
-    const mobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        userAgent
-      );
+    const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgent
+    );
 
     if (mobile) {
       return (
@@ -70,5 +68,7 @@ const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
     );
   }
 );
+
+Scrollbar.displayName = "Scrollbar";
 
 export default memo(Scrollbar);

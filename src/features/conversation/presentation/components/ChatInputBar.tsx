@@ -74,7 +74,11 @@ export default function ChatInputBar({
   const isProcessingVoice = recordingStatus === "processing";
   const inputDisabled = disabled || isRecording || isProcessingVoice;
   const canSend = value.trim().length > 0 && !inputDisabled && !isSending;
-  const borderRadius = getChatInputBorderRadius(containerHeight, INPUT_MIN_HEIGHT, MAX_ROWS);
+  const borderRadius = getChatInputBorderRadius(
+    containerHeight,
+    INPUT_MIN_HEIGHT,
+    MAX_ROWS
+  );
   const isMultiline = containerHeight > INPUT_MIN_HEIGHT + 6;
 
   const micTitle = isRecording
@@ -173,10 +177,14 @@ export default function ChatInputBar({
             color: isRecording ? "error.main" : "text.secondary",
             bgcolor: (theme) =>
               isRecording ? alpha(theme.palette.error.main, 0.12) : "transparent",
-            animation: isRecording ? `${recordingPulse} 1.2s ease-in-out infinite` : "none",
+            animation: isRecording
+              ? `${recordingPulse} 1.2s ease-in-out infinite`
+              : "none",
             "&:hover": {
               bgcolor: (theme) =>
-                isRecording ? alpha(theme.palette.error.main, 0.16) : theme.palette.action.hover,
+                isRecording
+                  ? alpha(theme.palette.error.main, 0.16)
+                  : theme.palette.action.hover,
             },
           }}
         >

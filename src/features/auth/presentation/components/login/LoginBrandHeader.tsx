@@ -15,7 +15,10 @@ export default function LoginBrandHeader() {
       transition={{ duration: 0.4, ease: M3_MOTION_EASE.decelerate }}
       sx={{ textAlign: "center" }}
     >
-      <Typography variant="h4" sx={{ fontWeight: 900, color: "primary.main", letterSpacing: -0.5 }}>
+      <Typography
+        variant="h4"
+        sx={{ fontWeight: 900, color: "primary.main", letterSpacing: -0.5 }}
+      >
         Lingora
       </Typography>
       <Typography variant="subtitle2" sx={{ fontWeight: 700, mt: 0.5 }}>

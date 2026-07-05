@@ -41,7 +41,11 @@ export default function RecentPracticeCard({ conversation }: Props) {
   }
 
   const scoreLabel =
-    conversation.status === "COMPLETED" ? "Selesai" : conversation.status === "ACTIVE" ? "Sedang berlangsung" : "—";
+    conversation.status === "COMPLETED"
+      ? "Selesai"
+      : conversation.status === "ACTIVE"
+        ? "Sedang berlangsung"
+        : "—";
 
   return (
     <Card sx={{ p: 2, borderRadius: `${DASHBOARD_RADIUS.panel}px` }}>

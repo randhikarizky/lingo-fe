@@ -127,7 +127,10 @@ function MissionHero({
             border: MISSION_HERO.panelBorder,
           }}
         >
-          <Typography variant="subtitle2" sx={{ color: MISSION_HERO.gold, fontWeight: 800 }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ color: MISSION_HERO.gold, fontWeight: 800 }}
+          >
             {tutorEmoji} {tutorName}
           </Typography>
           <Typography variant="body2" sx={{ mt: 0.5, color: "rgba(255,255,255,0.9)" }}>
@@ -159,7 +162,10 @@ function MissionHero({
               <Typography variant="caption" sx={{ color: MISSION_HERO.textMuted }}>
                 {item.label}
               </Typography>
-              <Typography variant="subtitle2" sx={{ fontWeight: 800, color: MISSION_HERO.text }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontWeight: 800, color: MISSION_HERO.text }}
+              >
                 {item.value}
               </Typography>
             </Box>
@@ -170,7 +176,11 @@ function MissionHero({
   );
 }
 
-function SessionRewards({ rewards }: { rewards: ReturnType<typeof buildSessionRewards> }) {
+function SessionRewards({
+  rewards,
+}: {
+  rewards: ReturnType<typeof buildSessionRewards>;
+}) {
   return (
     <Card sx={{ ...missionSectionCardSx, p: 2 }}>
       <Typography variant="subtitle1" sx={{ fontWeight: 800, mb: 1.5 }}>
@@ -195,7 +205,10 @@ function SessionRewards({ rewards }: { rewards: ReturnType<typeof buildSessionRe
             <Typography variant="h6" sx={{ lineHeight: 1.1 }}>
               {reward.emoji}
             </Typography>
-            <Typography variant="subtitle2" sx={{ fontWeight: 800, mt: 0.5, color: "text.primary" }}>
+            <Typography
+              variant="subtitle2"
+              sx={{ fontWeight: 800, mt: 0.5, color: "text.primary" }}
+            >
               {reward.value}
             </Typography>
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
@@ -249,7 +262,10 @@ function MissionObjectives({ goals }: { goals: SessionGoal[] }) {
             }}
           >
             <CheckCircleRoundedIcon
-              sx={{ color: goal.achieved ? "success.main" : "action.disabled", fontSize: 20 }}
+              sx={{
+                color: goal.achieved ? "success.main" : "action.disabled",
+                fontSize: 20,
+              }}
             />
             <Typography variant="body2" sx={{ fontWeight: goal.achieved ? 700 : 500 }}>
               {goal.label}
@@ -285,7 +301,10 @@ function PerformanceSummary({
         <Typography variant="caption" sx={{ color: "text.secondary" }}>
           Performa Keseluruhan
         </Typography>
-        <Typography variant="h2" sx={{ fontWeight: 900, lineHeight: 1, color: "text.primary" }}>
+        <Typography
+          variant="h2"
+          sx={{ fontWeight: 900, lineHeight: 1, color: "text.primary" }}
+        >
           <AnimatedNumber value={overallScore} />
         </Typography>
         <Typography variant="subtitle2" color="primary.main" sx={{ fontWeight: 800 }}>
@@ -321,12 +340,34 @@ function PerformanceSummary({
   );
 }
 
-function CoachFeedback({ summary, nextChallenge }: { summary: SessionSummaryFeedback; nextChallenge: string }) {
+function CoachFeedback({
+  summary,
+  nextChallenge,
+}: {
+  summary: SessionSummaryFeedback;
+  nextChallenge: string;
+}) {
   const sections = [
-    { title: "Kekuatan", content: truncateSentences(summary.strength), tone: "success.main" },
-    { title: "Kerja Bagus", content: truncateSentences(summary.fluency), tone: "primary.main" },
-    { title: "Perbaiki Berikutnya", content: truncateSentences(summary.improvementArea), tone: "warning.main" },
-    { title: "Tantangan Sesi Berikutnya", content: nextChallenge, tone: "secondary.main" },
+    {
+      title: "Kekuatan",
+      content: truncateSentences(summary.strength),
+      tone: "success.main",
+    },
+    {
+      title: "Kerja Bagus",
+      content: truncateSentences(summary.fluency),
+      tone: "primary.main",
+    },
+    {
+      title: "Perbaiki Berikutnya",
+      content: truncateSentences(summary.improvementArea),
+      tone: "warning.main",
+    },
+    {
+      title: "Tantangan Sesi Berikutnya",
+      content: nextChallenge,
+      tone: "secondary.main",
+    },
   ];
 
   return (
@@ -367,7 +408,8 @@ function AchievementsPanel({ badges }: { badges: SessionBadge[] }) {
       </Typography>
       {badges.length === 0 ? (
         <Typography variant="body2" color="text.secondary">
-          Belum ada badge khusus kali ini — lanjutkan latihan untuk membuka pencapaian baru.
+          Belum ada badge khusus kali ini — lanjutkan latihan untuk membuka pencapaian
+          baru.
         </Typography>
       ) : (
         <Box
@@ -392,7 +434,10 @@ function AchievementsPanel({ badges }: { badges: SessionBadge[] }) {
               }}
             >
               <Typography variant="h5">{badge.emoji}</Typography>
-              <Typography variant="caption" sx={{ fontWeight: 700, color: "text.primary" }}>
+              <Typography
+                variant="caption"
+                sx={{ fontWeight: 700, color: "text.primary" }}
+              >
                 {badge.label}
               </Typography>
             </Box>
@@ -461,8 +506,14 @@ export default function MissionSummaryContent({
   const badges = buildBadges(sessionGoals, metrics, detail.scenarioType, overallScore);
   const dimensions = buildPerformanceDimensions(summary, metrics);
   const nextMission = getNextMission(detail.scenarioType, detail.difficulty);
-  const tutorMessage = buildTutorCongrats(getTutorName(detail.characterId), detail.scenarioLabel, summary);
-  const sentenceCount = detail.messages.filter((message) => message.role === "USER").length;
+  const tutorMessage = buildTutorCongrats(
+    getTutorName(detail.characterId),
+    detail.scenarioLabel,
+    summary
+  );
+  const sentenceCount = detail.messages.filter(
+    (message) => message.role === "USER"
+  ).length;
   const nextChallenge = `Coba ${nextMission.label.toLowerCase()} dan fokus pada ${truncateSentences(summary.improvementArea, 1).replace(/\.$/, "")}.`;
 
   return (

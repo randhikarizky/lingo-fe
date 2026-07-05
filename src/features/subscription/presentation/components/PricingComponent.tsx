@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, m } from "framer-motion";
 import Box from "@mui/material/Box";
@@ -31,7 +31,10 @@ import PlanComparisonTable from "./pricing/PlanComparisonTable";
 import TrustSection from "./pricing/TrustSection";
 import FAQAccordion from "./pricing/FAQAccordion";
 import StickyUpgradeBar from "./pricing/StickyUpgradeBar";
-import { PRICING_SECTION_SPACING, STICKY_UPGRADE_BAR_HEIGHT } from "./pricing/pricing.tokens";
+import {
+  PRICING_SECTION_SPACING,
+  STICKY_UPGRADE_BAR_HEIGHT,
+} from "./pricing/pricing.tokens";
 
 export default function PricingComponent() {
   const router = useRouter();
@@ -45,9 +48,10 @@ export default function PricingComponent() {
 
   const currentPlan = subscription?.plan ?? "FREE";
 
-  useEffect(() => {
+  const handleBillingChange = (nextBilling: BillingPeriod) => {
     setHighlightedPlanId(null);
-  }, [billing]);
+    setBilling(nextBilling);
+  };
 
   const visiblePlans = useMemo(
     () => getVisiblePlans(plans ?? [], billing),
@@ -106,7 +110,7 @@ export default function PricingComponent() {
       >
         <PricingHero />
         <BenefitGrid />
-        <PlanToggle value={billing} onChange={setBilling} />
+        <PlanToggle value={billing} onChange={handleBillingChange} />
 
         <AnimatePresence mode="wait">
           <Box
@@ -123,7 +127,9 @@ export default function PricingComponent() {
                   plan={heroPlan}
                   currentPlan={currentPlan}
                   loading={upgradePlan.isPending}
-                  selected={highlightedPlanId === heroPlan.id || highlightedPlanId === null}
+                  selected={
+                    highlightedPlanId === heroPlan.id || highlightedPlanId === null
+                  }
                   onSelect={openUpgradeDialog}
                 />
               )}

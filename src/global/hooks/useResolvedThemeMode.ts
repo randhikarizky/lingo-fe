@@ -1,25 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useSettingsContext } from "@/theme/settings";
+
+function subscribeSystemTheme(onStoreChange: () => void) {
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  media.addEventListener("change", onStoreChange);
+  return () => media.removeEventListener("change", onStoreChange);
+}
+
+function getSystemTheme(): "light" | "dark" {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function getServerTheme(): "light" | "dark" {
+  return "light";
+}
 
 export function useResolvedThemeMode(): "light" | "dark" {
   const { themeMode } = useSettingsContext();
-  const [resolved, setResolved] = useState<"light" | "dark">("light");
+  const systemTheme = useSyncExternalStore(
+    subscribeSystemTheme,
+    getSystemTheme,
+    getServerTheme
+  );
 
-  useEffect(() => {
-    if (themeMode === "light" || themeMode === "dark") {
-      setResolved(themeMode);
-      return;
-    }
+  if (themeMode === "light" || themeMode === "dark") {
+    return themeMode;
+  }
 
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const update = () => setResolved(media.matches ? "dark" : "light");
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, [themeMode]);
-
-  return resolved;
+  return systemTheme;
 }

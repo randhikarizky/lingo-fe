@@ -32,7 +32,8 @@ export default function UpgradeDialog({
       <DialogTitle>Upgrade ke {getPlanLabel(planId)}?</DialogTitle>
       <DialogContent>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          Pembayaran belum aktif — upgrade akan langsung diterapkan untuk pengujian closed beta.
+          Pembayaran belum aktif — upgrade akan langsung diterapkan untuk pengujian closed
+          beta.
         </Typography>
         {priceLabel && (
           <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>

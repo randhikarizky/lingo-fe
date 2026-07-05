@@ -142,7 +142,9 @@ export default function SessionGoalsCelebrationOverlay({
                     spacing={1}
                     sx={{ alignItems: "center" }}
                   >
-                    <CheckCircleRoundedIcon sx={{ color: "success.main", fontSize: 20 }} />
+                    <CheckCircleRoundedIcon
+                      sx={{ color: "success.main", fontSize: 20 }}
+                    />
                     <Typography variant="body2" sx={{ fontWeight: 600 }}>
                       {goal.emoji} {goal.label}
                     </Typography>

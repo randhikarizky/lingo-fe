@@ -22,14 +22,10 @@ async function normalizeBlobError(error: unknown) {
 
 export const speechApi = {
   transcribe: (formData: FormData) =>
-    api.post<BaseResponse<TranscribeResponse>>(
-      "/api/v1/speech/transcribe",
-      formData,
-      {
-        headers: { "Content-Type": false as unknown as string },
-        silentError: true,
-      }
-    ),
+    api.post<BaseResponse<TranscribeResponse>>("/api/v1/speech/transcribe", formData, {
+      headers: { "Content-Type": false as unknown as string },
+      silentError: true,
+    }),
 
   synthesize: async (request: SynthesizeRequest): Promise<SynthesizeResponse> => {
     try {

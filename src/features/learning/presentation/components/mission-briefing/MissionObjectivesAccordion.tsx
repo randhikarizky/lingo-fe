@@ -76,7 +76,11 @@ export default function MissionObjectivesAccordion({ goals, disabled }: Props) {
                 component={m.div}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.04, duration: 0.28, ease: M3_MOTION_EASE.decelerate }}
+                transition={{
+                  delay: index * 0.04,
+                  duration: 0.28,
+                  ease: M3_MOTION_EASE.decelerate,
+                }}
                 direction="row"
                 spacing={1}
                 sx={{
@@ -86,7 +90,9 @@ export default function MissionObjectivesAccordion({ goals, disabled }: Props) {
                   bgcolor: "background.surfaceContainerHigh",
                 }}
               >
-                <CheckCircleOutlineRoundedIcon sx={{ fontSize: 18, color: "action.disabled" }} />
+                <CheckCircleOutlineRoundedIcon
+                  sx={{ fontSize: 18, color: "action.disabled" }}
+                />
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>
                   {goal.emoji} {goal.label}
                 </Typography>

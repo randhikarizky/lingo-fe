@@ -39,8 +39,10 @@ export function buildJourneyNodes(conversationCount: number): JourneyNode[] {
   ];
 
   if (conversationCount >= 1) nodes[0].status = "done";
-  if (conversationCount >= 1) nodes[1].status = conversationCount >= 5 ? "done" : "active";
-  if (conversationCount >= 5) nodes[2].status = conversationCount >= 12 ? "done" : "active";
+  if (conversationCount >= 1)
+    nodes[1].status = conversationCount >= 5 ? "done" : "active";
+  if (conversationCount >= 5)
+    nodes[2].status = conversationCount >= 12 ? "done" : "active";
   if (conversationCount >= 12) nodes[3].status = "active";
 
   return nodes;

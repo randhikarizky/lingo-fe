@@ -44,7 +44,8 @@ export default function ChatMessageBubble({
 }: Props) {
   const isUser = message.role === "user";
   const [showFailedActions, setShowFailedActions] = useState(false);
-  const isThinking = message.assistantStatus === "thinking" || message.assistantStatus === "retrying";
+  const isThinking =
+    message.assistantStatus === "thinking" || message.assistantStatus === "retrying";
   const isAssistantFailed = message.assistantStatus === "failed";
   const isUserFailed = message.deliveryStatus === "failed";
   const speechText = message.speechAudioText ?? message.correctionAudioText;
@@ -94,7 +95,10 @@ export default function ChatMessageBubble({
             position: "relative",
             px: 2,
             py: 1.25,
-            pr: isUser && message.deliveryStatus && message.deliveryStatus !== "sent" ? 3 : 2,
+            pr:
+              isUser && message.deliveryStatus && message.deliveryStatus !== "sent"
+                ? 3
+                : 2,
             borderRadius: isUser ? "20px 20px 6px 20px" : "20px 20px 20px 6px",
             bgcolor: isUser ? "primary.main" : "background.paper",
             color: isUser ? "primary.contrastText" : "text.primary",
@@ -102,7 +106,11 @@ export default function ChatMessageBubble({
             borderColor: isAssistantFailed || isUserFailed ? "error.main" : "divider",
             boxShadow: "none",
             cursor: isUserFailed || isAssistantFailed ? "pointer" : "default",
-            opacity: message.deliveryStatus === "sending" || message.deliveryStatus === "retrying" ? 0.92 : 1,
+            opacity:
+              message.deliveryStatus === "sending" ||
+              message.deliveryStatus === "retrying"
+                ? 0.92
+                : 1,
             "& .MuiTypography-root": {
               color: "inherit",
             },
@@ -119,7 +127,9 @@ export default function ChatMessageBubble({
               <ThinkingDots />
             </Stack>
           ) : isAssistantFailed ? (
-            <Typography variant="body2">{message.content || ASSISTANT_FAILED_COPY}</Typography>
+            <Typography variant="body2">
+              {message.content || ASSISTANT_FAILED_COPY}
+            </Typography>
           ) : (
             <InlineCorrectionText content={message.content} variant="body2" />
           )}
@@ -128,7 +138,11 @@ export default function ChatMessageBubble({
         </Box>
 
         {(isUserFailed || isAssistantFailed) && (showFailedActions || isUserFailed) && (
-          <Stack direction="row" spacing={0.75} sx={{ alignSelf: isUser ? "flex-end" : "flex-start", ml: isUser ? 0 : 0.5 }}>
+          <Stack
+            direction="row"
+            spacing={0.75}
+            sx={{ alignSelf: isUser ? "flex-end" : "flex-start", ml: isUser ? 0 : 0.5 }}
+          >
             {isUserFailed && onRetryUser && (
               <Button
                 size="small"
@@ -136,7 +150,12 @@ export default function ChatMessageBubble({
                 color="inherit"
                 startIcon={<RefreshRoundedIcon fontSize="small" />}
                 onClick={() => onRetryUser(message.id)}
-                sx={{ borderRadius: 999, textTransform: "none", fontWeight: 600, minHeight: 30 }}
+                sx={{
+                  borderRadius: 999,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  minHeight: 30,
+                }}
               >
                 Coba Lagi
               </Button>
@@ -148,7 +167,12 @@ export default function ChatMessageBubble({
                 color="inherit"
                 startIcon={<DeleteOutlineRoundedIcon fontSize="small" />}
                 onClick={() => onDeleteUser(message.id)}
-                sx={{ borderRadius: 999, textTransform: "none", fontWeight: 600, minHeight: 30 }}
+                sx={{
+                  borderRadius: 999,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  minHeight: 30,
+                }}
               >
                 Hapus
               </Button>
@@ -160,7 +184,12 @@ export default function ChatMessageBubble({
                 color="inherit"
                 startIcon={<RefreshRoundedIcon fontSize="small" />}
                 onClick={() => onRetryAssistant(message.id)}
-                sx={{ borderRadius: 999, textTransform: "none", fontWeight: 600, minHeight: 30 }}
+                sx={{
+                  borderRadius: 999,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  minHeight: 30,
+                }}
               >
                 Coba Lagi
               </Button>
@@ -201,7 +230,12 @@ export default function ChatMessageBubble({
               startIcon={<VolumeUpRoundedIcon fontSize="small" />}
               onClick={() => onRetrySpeech(message.id, speechText)}
               disabled={isSpeechPlaying}
-              sx={{ alignSelf: "flex-start", borderRadius: 999, textTransform: "none", fontWeight: 600 }}
+              sx={{
+                alignSelf: "flex-start",
+                borderRadius: 999,
+                textTransform: "none",
+                fontWeight: 600,
+              }}
             >
               Putar Lagi
             </Button>

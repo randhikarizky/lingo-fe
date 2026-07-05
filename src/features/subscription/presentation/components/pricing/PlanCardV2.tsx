@@ -85,7 +85,11 @@ export default function PlanCardV2({
             <Chip
               label="Paket Saat Ini"
               size="small"
-              sx={{ fontWeight: 800, bgcolor: "primary.main", color: "primary.contrastText" }}
+              sx={{
+                fontWeight: 800,
+                bgcolor: "primary.main",
+                color: "primary.contrastText",
+              }}
             />
           )}
           {isPro && !isCurrent && (
@@ -131,7 +135,12 @@ export default function PlanCardV2({
         </Box>
 
         {isFree ? (
-          <Button variant="outlined" disabled fullWidth sx={{ fontWeight: 700, minHeight: 44 }}>
+          <Button
+            variant="outlined"
+            disabled
+            fullWidth
+            sx={{ fontWeight: 700, minHeight: 44 }}
+          >
             Titik awalmu
           </Button>
         ) : canUpgrade ? (
@@ -152,7 +161,12 @@ export default function PlanCardV2({
             Pilih {getPlanDisplayLabel(plan.id)}
           </Button>
         ) : (
-          <Button variant="outlined" disabled fullWidth sx={{ fontWeight: 700, minHeight: 44 }}>
+          <Button
+            variant="outlined"
+            disabled
+            fullWidth
+            sx={{ fontWeight: 700, minHeight: 44 }}
+          >
             {isCurrent ? "Paket Saat Ini" : "Sudah Termasuk"}
           </Button>
         )}

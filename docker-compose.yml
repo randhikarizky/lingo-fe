@@ -1,0 +1,21 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        API_PROXY_URL: ${API_PROXY_URL:-http://host.docker.internal:4626}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-}
+    ports:
+      - "3626:3626"
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3626/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

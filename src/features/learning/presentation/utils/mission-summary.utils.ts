@@ -68,13 +68,21 @@ function clampScore(value: number) {
 
 function scoreFromText(text: string) {
   const lower = text.toLowerCase();
-  if (lower.includes("excellent") || lower.includes("strong") || lower.includes("great")) {
+  if (
+    lower.includes("excellent") ||
+    lower.includes("strong") ||
+    lower.includes("great")
+  ) {
     return 92;
   }
   if (lower.includes("good") || lower.includes("solid") || lower.includes("clear")) {
     return 84;
   }
-  if (lower.includes("improv") || lower.includes("practice") || lower.includes("work on")) {
+  if (
+    lower.includes("improv") ||
+    lower.includes("practice") ||
+    lower.includes("work on")
+  ) {
     return 74;
   }
   return 80;
@@ -123,11 +131,19 @@ export function buildSessionRewards(
   overallScore: number
 ): SessionReward[] {
   const achieved = goals.filter((goal) => goal.achieved).length;
-  const xp = 80 + achieved * 25 + metrics.newVocabulary.length * 12 + Math.min(metrics.wordsSpoken, 40);
+  const xp =
+    80 +
+    achieved * 25 +
+    metrics.newVocabulary.length * 12 +
+    Math.min(metrics.wordsSpoken, 40);
 
   const rewards: SessionReward[] = [
     { emoji: "⭐", label: "XP Sesi", value: `+${xp} XP` },
-    { emoji: "🎙", label: "Waktu Speaking", value: `${metrics.estimatedSpeakingMinutes} mnt` },
+    {
+      emoji: "🎙",
+      label: "Waktu Speaking",
+      value: `${metrics.estimatedSpeakingMinutes} mnt`,
+    },
     { emoji: "📚", label: "Kosakata", value: `+${metrics.newVocabulary.length}` },
   ];
 
@@ -174,14 +190,24 @@ export function buildPerformanceDimensions(
   metrics: SessionMetrics
 ): PerformanceDimension[] {
   return [
-    { key: "grammar", label: "Grammar", score: scoreFromText(summary.grammar), blurb: summary.grammar },
+    {
+      key: "grammar",
+      label: "Grammar",
+      score: scoreFromText(summary.grammar),
+      blurb: summary.grammar,
+    },
     {
       key: "vocabulary",
       label: "Kosakata",
       score: Math.min(95, 68 + metrics.newVocabulary.length * 8),
       blurb: summary.vocabulary,
     },
-    { key: "fluency", label: "Kelancaran", score: scoreFromText(summary.fluency), blurb: summary.fluency },
+    {
+      key: "fluency",
+      label: "Kelancaran",
+      score: scoreFromText(summary.fluency),
+      blurb: summary.fluency,
+    },
     {
       key: "confidence",
       label: "Kepercayaan Diri",
@@ -191,7 +217,10 @@ export function buildPerformanceDimensions(
   ];
 }
 
-export function getNextMission(scenarioType: string, currentDifficulty: string): NextMission {
+export function getNextMission(
+  scenarioType: string,
+  currentDifficulty: string
+): NextMission {
   const mapped = NEXT_MISSION_MAP[scenarioType];
   if (mapped) return mapped;
 

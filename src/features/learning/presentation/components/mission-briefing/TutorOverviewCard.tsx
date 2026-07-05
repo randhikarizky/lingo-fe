@@ -9,7 +9,11 @@ import Typography from "@mui/material/Typography";
 
 import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
 import { getAvatarColor } from "@/features/settings/presentation/utils/profile-avatar.utils";
-import { BRIEFING_RADIUS, briefingSectionSx, getTutorGreeting } from "./mission-briefing.tokens";
+import {
+  BRIEFING_RADIUS,
+  briefingSectionSx,
+  getTutorGreeting,
+} from "./mission-briefing.tokens";
 
 type Props = {
   tutorName: string;
@@ -37,7 +41,14 @@ export default function TutorOverviewCard({
       sx={{ ...briefingSectionSx, p: 2 }}
     >
       <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
-        <Avatar sx={{ width: 48, height: 48, bgcolor: getAvatarColor(characterId), fontSize: 22 }}>
+        <Avatar
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: getAvatarColor(characterId),
+            fontSize: 22,
+          }}
+        >
           {tutorEmoji}
         </Avatar>
         <Box sx={{ flex: 1, minWidth: 0 }}>

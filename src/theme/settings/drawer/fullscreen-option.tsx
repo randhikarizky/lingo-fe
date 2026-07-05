@@ -30,8 +30,7 @@ export default function FullScreenOption() {
           borderRadius: 1,
           color: "text.disabled",
           typography: "subtitle2",
-          border: (theme) =>
-            `solid 1px ${alpha(theme.palette.grey[500], 0.08)}`,
+          border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.08)}`,
           ...(fullscreen && {
             color: "text.primary",
           }),

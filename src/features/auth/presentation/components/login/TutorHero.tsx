@@ -56,12 +56,20 @@ export default function TutorHero() {
           {tutor.emoji}
         </Box>
         <Box>
-          <Typography variant="caption" sx={{ color: LINGORA_HERO.gold, fontWeight: 800 }}>
+          <Typography
+            variant="caption"
+            sx={{ color: LINGORA_HERO.gold, fontWeight: 800 }}
+          >
             {tutor.name}
           </Typography>
           <Typography
             variant="body2"
-            sx={{ color: LINGORA_HERO.text, fontWeight: 600, whiteSpace: "pre-line", lineHeight: 1.45 }}
+            sx={{
+              color: LINGORA_HERO.text,
+              fontWeight: 600,
+              whiteSpace: "pre-line",
+              lineHeight: 1.45,
+            }}
           >
             {greeting}
           </Typography>

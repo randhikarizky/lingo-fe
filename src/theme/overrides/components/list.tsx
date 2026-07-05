@@ -44,12 +44,10 @@ export function list(theme: Theme) {
             fontWeight: 700,
             color: theme.palette.primary.onTonalContainer ?? theme.palette.primary.dark,
             backgroundColor:
-              theme.palette.primary.tonalContainer ??
-              theme.palette.action.selected,
+              theme.palette.primary.tonalContainer ?? theme.palette.action.selected,
             "&:hover": {
               backgroundColor:
-                theme.palette.primary.tonalContainer ??
-                theme.palette.action.selected,
+                theme.palette.primary.tonalContainer ?? theme.palette.action.selected,
             },
           },
         },

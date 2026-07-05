@@ -21,7 +21,9 @@ type Props = {
 
 export default function ActivityChart({ data }: Props) {
   const theme = useTheme();
-  const [hovered, setHovered] = useState<{ index: number; x: number; y: number } | null>(null);
+  const [hovered, setHovered] = useState<{ index: number; x: number; y: number } | null>(
+    null
+  );
 
   if (data.length === 0) {
     return (
@@ -36,10 +38,11 @@ export default function ActivityChart({ data }: Props) {
   const chartHeight = 130;
   const padding = { top: 15, bottom: 25, left: 10, right: 10 };
   const totalHeight = chartHeight + padding.top + padding.bottom;
-  
+
   const barWidth = 14;
   const barGap = 10;
-  const totalWidth = data.length * (barWidth + barGap) - barGap + padding.left + padding.right;
+  const totalWidth =
+    data.length * (barWidth + barGap) - barGap + padding.left + padding.right;
 
   const maxMessages = Math.max(...data.map((d) => d.messages), 0);
   const scaleMax = maxMessages === 0 ? 5 : Math.ceil(maxMessages / 5) * 5;
@@ -58,7 +61,14 @@ export default function ActivityChart({ data }: Props) {
           },
         }}
       >
-        <Box sx={{ width: totalWidth, minWidth: "100%", height: totalHeight, position: "relative" }}>
+        <Box
+          sx={{
+            width: totalWidth,
+            minWidth: "100%",
+            height: totalHeight,
+            position: "relative",
+          }}
+        >
           <svg width={totalWidth} height={totalHeight} style={{ overflow: "visible" }}>
             {/* Grid Lines */}
             {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
@@ -93,7 +103,8 @@ export default function ActivityChart({ data }: Props) {
             {/* Bars */}
             {data.map((item, idx) => {
               const x = padding.left + idx * (barWidth + barGap);
-              const barHeight = scaleMax === 0 ? 0 : (item.messages / scaleMax) * chartHeight;
+              const barHeight =
+                scaleMax === 0 ? 0 : (item.messages / scaleMax) * chartHeight;
               const y = chartHeight - barHeight + padding.top;
               const isHovered = hovered?.index === idx;
 
@@ -108,7 +119,7 @@ export default function ActivityChart({ data }: Props) {
                     fill={theme.palette.action.hover}
                     rx={barWidth / 2}
                   />
-                  
+
                   {/* Active Bar */}
                   {item.messages > 0 && (
                     <rect
@@ -116,7 +127,11 @@ export default function ActivityChart({ data }: Props) {
                       y={y}
                       width={barWidth}
                       height={barHeight}
-                      fill={isHovered ? theme.palette.primary.dark : theme.palette.primary.main}
+                      fill={
+                        isHovered
+                          ? theme.palette.primary.dark
+                          : theme.palette.primary.main
+                      }
                       rx={barWidth / 2}
                       style={{ transition: "fill 0.15s ease, height 0.3s ease" }}
                     />

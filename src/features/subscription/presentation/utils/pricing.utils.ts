@@ -75,7 +75,8 @@ export const TRUST_ITEMS = [
 export const FAQ_ITEMS = [
   {
     question: "Bisakah saya batalkan kapan saja?",
-    answer: "Ya. Paket bulanan bisa dibatalkan sebelum siklus tagihan berikutnya tanpa penalti selama beta.",
+    answer:
+      "Ya. Paket bulanan bisa dibatalkan sebelum siklus tagihan berikutnya tanpa penalti selama beta.",
   },
   {
     question: "Bisakah saya upgrade nanti?",
@@ -95,7 +96,8 @@ export const FAQ_ITEMS = [
   },
   {
     question: "Apakah pembayaran saya aman?",
-    answer: "Pembayaran akan diproses lewat provider tepercaya dengan enkripsi standar industri.",
+    answer:
+      "Pembayaran akan diproses lewat provider tepercaya dengan enkripsi standar industri.",
   },
   {
     question: "Ada diskon pelajar?",
@@ -112,12 +114,36 @@ export type ComparisonRow = {
 };
 
 export const COMPARISON_ROWS: ComparisonRow[] = [
-  { feature: "Speaking", free: "10 mnt", starter: "60 mnt", pro: "Tanpa batas", lifetime: "Tanpa batas" },
+  {
+    feature: "Speaking",
+    free: "10 mnt",
+    starter: "60 mnt",
+    pro: "Tanpa batas",
+    lifetime: "Tanpa batas",
+  },
   { feature: "Tutor", free: "2", starter: "Semua", pro: "Semua", lifetime: "Semua" },
   { feature: "Skenario", free: "3", starter: "Semua", pro: "Semua", lifetime: "Semua" },
-  { feature: "Feedback AI", free: "Dasar", starter: "Detail", pro: "Lanjutan", lifetime: "Lanjutan" },
-  { feature: "Latihan Suara", free: "Ya", starter: "Ya", pro: "Prioritas", lifetime: "Prioritas" },
-  { feature: "Analitik", free: "Dasar", starter: "Lanjutan", pro: "Lanjutan", lifetime: "Lanjutan" },
+  {
+    feature: "Feedback AI",
+    free: "Dasar",
+    starter: "Detail",
+    pro: "Lanjutan",
+    lifetime: "Lanjutan",
+  },
+  {
+    feature: "Latihan Suara",
+    free: "Ya",
+    starter: "Ya",
+    pro: "Prioritas",
+    lifetime: "Prioritas",
+  },
+  {
+    feature: "Analitik",
+    free: "Dasar",
+    starter: "Lanjutan",
+    pro: "Lanjutan",
+    lifetime: "Lanjutan",
+  },
   { feature: "Antrian Prioritas", free: "—", starter: "—", pro: "Ya", lifetime: "Ya" },
 ];
 
@@ -218,7 +244,10 @@ export function getVisiblePlans(plans: PublicPlan[], billing: BillingPeriod) {
   return plans.filter((plan) => plan.id !== "LIFETIME");
 }
 
-export function getDefaultStickyPlanId(currentPlan: PlanId, billing: BillingPeriod): PlanId {
+export function getDefaultStickyPlanId(
+  currentPlan: PlanId,
+  billing: BillingPeriod
+): PlanId {
   if (billing === "lifetime") return "LIFETIME";
   if (currentPlan === "FREE") return "STARTER";
   if (currentPlan === "STARTER") return "PRO";

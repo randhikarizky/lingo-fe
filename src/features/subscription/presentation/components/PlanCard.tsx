@@ -24,7 +24,12 @@ const PLAN_RANK: Record<PlanId, number> = {
   LIFETIME: 3,
 };
 
-export default function PlanCard({ plan, currentPlan = "FREE", loading, onSelect }: Props) {
+export default function PlanCard({
+  plan,
+  currentPlan = "FREE",
+  loading,
+  onSelect,
+}: Props) {
   const isCurrent = plan.id === currentPlan;
   const isDowngrade = PLAN_RANK[plan.id] <= PLAN_RANK[currentPlan];
   const canUpgrade = plan.id !== "FREE" && !isCurrent && !isDowngrade;

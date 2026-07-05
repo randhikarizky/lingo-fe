@@ -16,7 +16,11 @@ export default function SavingsBadge({
   accent = "#34D399",
 }: Props) {
   return (
-    <Stack direction="row" spacing={1} sx={{ alignItems: "center", flexWrap: "wrap", gap: 1 }}>
+    <Stack
+      direction="row"
+      spacing={1}
+      sx={{ alignItems: "center", flexWrap: "wrap", gap: 1 }}
+    >
       <Chip
         label={`Hemat ${savingsPercent}%`}
         size="small"
@@ -27,7 +31,10 @@ export default function SavingsBadge({
           letterSpacing: 0.4,
         }}
       />
-      <Typography variant="caption" sx={{ color: "inherit", opacity: 0.75, fontWeight: 600 }}>
+      <Typography
+        variant="caption"
+        sx={{ color: "inherit", opacity: 0.75, fontWeight: 600 }}
+      >
         {savingsLabel}
       </Typography>
     </Stack>

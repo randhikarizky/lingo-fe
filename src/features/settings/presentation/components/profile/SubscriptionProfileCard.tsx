@@ -94,7 +94,10 @@ export default function SubscriptionProfileCard({
 
   return (
     <Card sx={{ ...profileSectionCardSx, p: 2 }}>
-      <Stack direction="row" sx={{ alignItems: "flex-start", justifyContent: "space-between", mb: 1.5 }}>
+      <Stack
+        direction="row"
+        sx={{ alignItems: "flex-start", justifyContent: "space-between", mb: 1.5 }}
+      >
         <Box>
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
             Langganan
@@ -103,7 +106,13 @@ export default function SubscriptionProfileCard({
             {getPlanLabel(subscription.plan)}
           </Typography>
         </Box>
-        <Chip label={getPlanLabel(subscription.plan)} size="small" color="primary" variant="soft" sx={{ fontWeight: 800 }} />
+        <Chip
+          label={getPlanLabel(subscription.plan)}
+          size="small"
+          color="primary"
+          variant="soft"
+          sx={{ fontWeight: 800 }}
+        />
       </Stack>
 
       <Box
@@ -114,7 +123,11 @@ export default function SubscriptionProfileCard({
           bgcolor: "background.surfaceContainerHigh",
         }}
       >
-        <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, display: "block", mb: 0.75 }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ fontWeight: 700, display: "block", mb: 0.75 }}
+        >
           Manfaat paket
         </Typography>
         <Stack spacing={0.35}>

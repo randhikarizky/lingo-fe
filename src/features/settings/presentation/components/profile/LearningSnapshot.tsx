@@ -20,7 +20,12 @@ function estimateVocabularyLearned(summary: ProgressSummary) {
 }
 
 const STATS = [
-  { key: "streak", emoji: "🔥", label: "Streak Harian", getValue: (s: ProgressSummary) => s.currentStreak },
+  {
+    key: "streak",
+    emoji: "🔥",
+    label: "Streak Harian",
+    getValue: (s: ProgressSummary) => s.currentStreak,
+  },
   {
     key: "sessions",
     emoji: "⭐",

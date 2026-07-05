@@ -38,9 +38,12 @@ export default function MissionCompleteIntro({
 
     goals.forEach((_, index) => {
       timers.push(
-        window.setTimeout(() => {
-          setCheckedCount(index + 1);
-        }, 900 + index * 380)
+        window.setTimeout(
+          () => {
+            setCheckedCount(index + 1);
+          },
+          900 + index * 380
+        )
       );
     });
 
@@ -71,7 +74,10 @@ export default function MissionCompleteIntro({
             "radial-gradient(circle at 20% 10%, rgba(245,185,66,0.18), transparent 42%), radial-gradient(circle at 80% 80%, rgba(108,92,231,0.2), transparent 40%)",
         }}
       >
-        <Stack spacing={3} sx={{ width: "100%", maxWidth: 420, px: 3, textAlign: "center" }}>
+        <Stack
+          spacing={3}
+          sx={{ width: "100%", maxWidth: 420, px: 3, textAlign: "center" }}
+        >
           <Box>
             <Typography
               component={m.p}
@@ -108,42 +114,46 @@ export default function MissionCompleteIntro({
             </Stack>
           </Box>
 
-          {(phase === "objectives" || phase === "tutor" || phase === "exit") && goals.length > 0 && (
-            <Stack spacing={1} sx={{ textAlign: "left" }}>
-              {goals.map((goal, index) => {
-                const isChecked = index < checkedCount;
-                return (
-                  <Stack
-                    key={goal.id}
-                    component={m.div}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{
-                      opacity: isChecked ? 1 : 0.35,
-                      x: 0,
-                      scale: isChecked ? [1, 1.03, 1] : 1,
-                    }}
-                    transition={{ duration: 0.35, ease: M3_MOTION_EASE.decelerate }}
-                    direction="row"
-                    spacing={1}
-                    sx={{ alignItems: "center" }}
-                  >
-                    <CheckCircleRoundedIcon
-                      sx={{ color: isChecked ? "#6EE7A8" : "rgba(255,255,255,0.25)", fontSize: 20 }}
-                    />
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: isChecked ? "#fff" : "rgba(255,255,255,0.45)",
-                        fontWeight: isChecked ? 700 : 500,
+          {(phase === "objectives" || phase === "tutor" || phase === "exit") &&
+            goals.length > 0 && (
+              <Stack spacing={1} sx={{ textAlign: "left" }}>
+                {goals.map((goal, index) => {
+                  const isChecked = index < checkedCount;
+                  return (
+                    <Stack
+                      key={goal.id}
+                      component={m.div}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{
+                        opacity: isChecked ? 1 : 0.35,
+                        x: 0,
+                        scale: isChecked ? [1, 1.03, 1] : 1,
                       }}
+                      transition={{ duration: 0.35, ease: M3_MOTION_EASE.decelerate }}
+                      direction="row"
+                      spacing={1}
+                      sx={{ alignItems: "center" }}
                     >
-                      {goal.label}
-                    </Typography>
-                  </Stack>
-                );
-              })}
-            </Stack>
-          )}
+                      <CheckCircleRoundedIcon
+                        sx={{
+                          color: isChecked ? "#6EE7A8" : "rgba(255,255,255,0.25)",
+                          fontSize: 20,
+                        }}
+                      />
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: isChecked ? "#fff" : "rgba(255,255,255,0.45)",
+                          fontWeight: isChecked ? 700 : 500,
+                        }}
+                      >
+                        {goal.label}
+                      </Typography>
+                    </Stack>
+                  );
+                })}
+              </Stack>
+            )}
 
           {(phase === "tutor" || phase === "exit") && (
             <Box
@@ -159,7 +169,10 @@ export default function MissionCompleteIntro({
                 textAlign: "left",
               }}
             >
-              <Typography variant="subtitle2" sx={{ color: "#F5B942", fontWeight: 800, mb: 0.5 }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ color: "#F5B942", fontWeight: 800, mb: 0.5 }}
+              >
                 {tutorEmoji} {tutorName}
               </Typography>
               <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.88)" }}>

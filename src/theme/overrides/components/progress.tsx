@@ -35,7 +35,8 @@ export function progress(theme: Theme) {
   return {
     MuiLinearProgress: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: LinearProgressProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: LinearProgressProps }) =>
+          rootStyles(ownerState),
       },
     },
     MuiCircularProgress: {

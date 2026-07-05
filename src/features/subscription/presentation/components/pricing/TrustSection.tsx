@@ -24,7 +24,9 @@ export default function TrustSection() {
       >
         {TRUST_ITEMS.map((item) => (
           <Stack key={item} direction="row" spacing={1} sx={{ alignItems: "center" }}>
-            <CheckRoundedIcon sx={{ fontSize: 18, color: "success.main", flexShrink: 0 }} />
+            <CheckRoundedIcon
+              sx={{ fontSize: 18, color: "success.main", flexShrink: 0 }}
+            />
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
               {item}
             </Typography>

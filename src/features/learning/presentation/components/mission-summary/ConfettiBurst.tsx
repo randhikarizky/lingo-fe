@@ -1,25 +1,25 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState } from "react";
 import { m } from "framer-motion";
 import Box from "@mui/material/Box";
 
 const COLORS = ["#F5B942", "#6EE7A8", "#8B7CF6", "#FF8FAB", "#60A5FA"];
 
+function createParticles() {
+  return Array.from({ length: 28 }, (_, index) => ({
+    id: index,
+    left: `${4 + Math.random() * 92}%`,
+    delay: Math.random() * 0.35,
+    duration: 1.6 + Math.random() * 0.8,
+    color: COLORS[index % COLORS.length],
+    size: 6 + Math.round(Math.random() * 4),
+    rotate: Math.random() * 360,
+  }));
+}
+
 export default function ConfettiBurst() {
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 28 }, (_, index) => ({
-        id: index,
-        left: `${4 + Math.random() * 92}%`,
-        delay: Math.random() * 0.35,
-        duration: 1.6 + Math.random() * 0.8,
-        color: COLORS[index % COLORS.length],
-        size: 6 + Math.round(Math.random() * 4),
-        rotate: Math.random() * 360,
-      })),
-    []
-  );
+  const [particles] = useState(createParticles);
 
   return (
     <Box

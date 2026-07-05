@@ -13,9 +13,7 @@ export type LastSessionConfig = {
   updatedAt: string;
 };
 
-export function saveLastSession(
-  config: Omit<LastSessionConfig, "updatedAt">
-) {
+export function saveLastSession(config: Omit<LastSessionConfig, "updatedAt">) {
   if (typeof window === "undefined") return;
 
   const payload: LastSessionConfig = {

@@ -46,8 +46,15 @@ export default function PlanComparisonTable({ currentPlan }: Props) {
         >
           <thead>
             <tr>
-              <Box component="th" sx={{ textAlign: "left", p: 1.5, pl: 2.5, minWidth: 120 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 800 }}>
+              <Box
+                component="th"
+                sx={{ textAlign: "left", p: 1.5, pl: 2.5, minWidth: 120 }}
+              >
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 800 }}
+                >
                   Fitur
                 </Typography>
               </Box>
@@ -60,7 +67,9 @@ export default function PlanComparisonTable({ currentPlan }: Props) {
                     sx={{
                       p: 1.5,
                       minWidth: 88,
-                      bgcolor: isActive ? alpha(theme.palette.primary.main, 0.12) : "transparent",
+                      bgcolor: isActive
+                        ? alpha(theme.palette.primary.main, 0.12)
+                        : "transparent",
                       borderBottom: "1px solid",
                       borderColor: "divider",
                     }}
@@ -106,7 +115,9 @@ export default function PlanComparisonTable({ currentPlan }: Props) {
                         textAlign: "center",
                         fontWeight: isActive ? 800 : 600,
                         color: isActive ? "primary.main" : "text.secondary",
-                        bgcolor: isActive ? alpha(theme.palette.primary.main, 0.06) : "transparent",
+                        bgcolor: isActive
+                          ? alpha(theme.palette.primary.main, 0.06)
+                          : "transparent",
                         borderBottom: "1px solid",
                         borderColor: "divider",
                         transition: "background-color 0.2s ease",

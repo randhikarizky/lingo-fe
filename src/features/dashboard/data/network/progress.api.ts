@@ -15,8 +15,7 @@ export type ProgressActivity = {
 };
 
 export const progressApi = {
-  getSummary: () =>
-    api.get<BaseResponse<ProgressSummary>>("/api/v1/progress/summary"),
+  getSummary: () => api.get<BaseResponse<ProgressSummary>>("/api/v1/progress/summary"),
   getActivity: () =>
     api.get<BaseResponse<ProgressActivity[]>>("/api/v1/progress/activity"),
 };

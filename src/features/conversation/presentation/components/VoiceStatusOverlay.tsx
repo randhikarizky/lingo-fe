@@ -74,8 +74,7 @@ export default function VoiceStatusOverlay({
   const label = getVoiceLabel(recordingStatus, voiceUiState, voiceError);
   const isError = voiceUiState === "error" || Boolean(voiceError);
   const visible =
-    Boolean(label) &&
-    (isError || recordingStatus !== "idle" || voiceUiState !== "idle");
+    Boolean(label) && (isError || recordingStatus !== "idle" || voiceUiState !== "idle");
 
   return (
     <AnimatePresence>

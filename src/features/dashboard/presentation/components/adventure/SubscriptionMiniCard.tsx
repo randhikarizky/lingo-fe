@@ -13,7 +13,10 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 
 import type { UserSubscription } from "@/features/subscription/domain/entities/subscription.entity";
-import { formatQuotaUsage, getPlanLabel } from "@/features/subscription/domain/utils/subscription-access";
+import {
+  formatQuotaUsage,
+  getPlanLabel,
+} from "@/features/subscription/domain/utils/subscription-access";
 import { DASHBOARD_RADIUS } from "./dashboard.tokens";
 
 type Props = {
@@ -72,7 +75,10 @@ export default function SubscriptionMiniCard({ subscription, onUpgrade }: Props)
   return (
     <Card sx={{ p: 2, borderRadius: `${DASHBOARD_RADIUS.panel}px` }}>
       <Stack spacing={1.5}>
-        <Stack direction="row" sx={{ alignItems: "flex-start", justifyContent: "space-between" }}>
+        <Stack
+          direction="row"
+          sx={{ alignItems: "flex-start", justifyContent: "space-between" }}
+        >
           <Box>
             <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
               Paket Saat Ini
@@ -82,7 +88,12 @@ export default function SubscriptionMiniCard({ subscription, onUpgrade }: Props)
             </Typography>
           </Box>
           <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
-            <Chip label={subscription.status} size="small" color="primary" variant="soft" />
+            <Chip
+              label={subscription.status}
+              size="small"
+              color="primary"
+              variant="soft"
+            />
             <IconButton
               size="small"
               aria-expanded={expanded}
@@ -138,7 +149,12 @@ export default function SubscriptionMiniCard({ subscription, onUpgrade }: Props)
         </Collapse>
 
         {showUpgrade && (
-          <Button variant="outlined" size="small" onClick={onUpgrade} sx={{ fontWeight: 700 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={onUpgrade}
+            sx={{ fontWeight: 700 }}
+          >
             Upgrade Paket
           </Button>
         )}

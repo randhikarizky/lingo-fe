@@ -36,7 +36,11 @@ export default function MessageDeliveryIcon({ status, isUser }: Props) {
       }}
     >
       {status === "sending" || status === "retrying" ? (
-        <CircularProgress size={12} thickness={6} sx={{ color: "inherit", opacity: 0.85 }} />
+        <CircularProgress
+          size={12}
+          thickness={6}
+          sx={{ color: "inherit", opacity: 0.85 }}
+        />
       ) : status === "failed" ? (
         <ErrorOutlineRoundedIcon sx={{ fontSize: 14, opacity: 0.95 }} />
       ) : (

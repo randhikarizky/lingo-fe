@@ -53,30 +53,30 @@ Baca JSON desain Lingora di bawah ini. Lalu ajukan 10 pertanyaan pilihan ganda (
 
 ### Q1. Saat membuka Lingora, Anda ingin merasa seperti apa?
 
-| | Opsi | Deskripsi |
-|---|------|-----------|
-| **A** | Ruang belajar yang tenang | Seperti perpustakaan modern — fokus, minim distraksi |
-| **B** | Teman ngobrol yang fun | Seperti chat dengan teman — santai, hangat |
-| **C** | Coach profesional | Seperti sesi dengan tutor berpengalaman — serius tapi supportif |
-| **D** | Game edukasi | Seperti Duolingo — playful, ada reward & energi |
+|       | Opsi                      | Deskripsi                                                       |
+| ----- | ------------------------- | --------------------------------------------------------------- |
+| **A** | Ruang belajar yang tenang | Seperti perpustakaan modern — fokus, minim distraksi            |
+| **B** | Teman ngobrol yang fun    | Seperti chat dengan teman — santai, hangat                      |
+| **C** | Coach profesional         | Seperti sesi dengan tutor berpengalaman — serius tapi supportif |
+| **D** | Game edukasi              | Seperti Duolingo — playful, ada reward & energi                 |
 
 ### Q2. Warna utama yang paling cocok untuk app belajar bahasa?
 
-| | Opsi | Warna | Kesan |
-|---|------|-------|-------|
-| **A** | Hijau (sekarang) | #00A76F | Segar, growth, natural |
-| **B** | Biru | #2563EB | Trust, calm, tech |
-| **C** | Ungu | #7C3AED | Kreatif, modern, AI |
-| **D** | Oranye | #F97316 | Energik, friendly, motivasi |
+|       | Opsi             | Warna   | Kesan                       |
+| ----- | ---------------- | ------- | --------------------------- |
+| **A** | Hijau (sekarang) | #00A76F | Segar, growth, natural      |
+| **B** | Biru             | #2563EB | Trust, calm, tech           |
+| **C** | Ungu             | #7C3AED | Kreatif, modern, AI         |
+| **D** | Oranye           | #F97316 | Energik, friendly, motivasi |
 
 ### Q3. Background app sebaiknya seperti apa?
 
-| | Opsi | Deskripsi |
-|---|------|-----------|
-| **A** | Putih bersih (sekarang) | Minimal, terang, corporate |
-| **B** | Cream/warm white | Lebih hangat, tidak silau |
-| **C** | Dark mode default | Gelap, fokus, modern |
-| **D** | Gradient lembut | Background berwarna halus, lebih hidup |
+|       | Opsi                    | Deskripsi                              |
+| ----- | ----------------------- | -------------------------------------- |
+| **A** | Putih bersih (sekarang) | Minimal, terang, corporate             |
+| **B** | Cream/warm white        | Lebih hangat, tidak silau              |
+| **C** | Dark mode default       | Gelap, fokus, modern                   |
+| **D** | Gradient lembut         | Background berwarna halus, lebih hidup |
 
 ---
 
@@ -84,21 +84,21 @@ Baca JSON desain Lingora di bawah ini. Lalu ajukan 10 pertanyaan pilihan ganda (
 
 ### Q4. Navigasi utama app?
 
-| | Opsi | Deskripsi | Contoh familiar |
-|---|------|-----------|-----------------|
-| **A** | Header atas saja (sekarang) | Link teks di atas | Website sederhana |
-| **B** | Sidebar kiri | Menu tetap di kiri | Notion, Gmail |
-| **C** | Bottom tab (mobile-first) | 4-5 icon di bawah | Instagram, Spotify |
-| **D** | Floating menu | Tombol bulat mengambang | Google Assistant |
+|       | Opsi                        | Deskripsi               | Contoh familiar    |
+| ----- | --------------------------- | ----------------------- | ------------------ |
+| **A** | Header atas saja (sekarang) | Link teks di atas       | Website sederhana  |
+| **B** | Sidebar kiri                | Menu tetap di kiri      | Notion, Gmail      |
+| **C** | Bottom tab (mobile-first)   | 4-5 icon di bawah       | Instagram, Spotify |
+| **D** | Floating menu               | Tombol bulat mengambang | Google Assistant   |
 
 ### Q5. Halaman Conversation (chat) sebaiknya?
 
-| | Opsi | Deskripsi |
-|---|------|-----------|
-| **A** | Chat bubble klasik (sekarang) | WhatsApp-style |
-| **B** | Full-screen immersive | Hampir tanpa header, fokus suara |
-| **C** | Split view | Chat kiri, tips/feedback kanan |
-| **D** | Card-based turns | Setiap giliran = satu kartu besar |
+|       | Opsi                          | Deskripsi                         |
+| ----- | ----------------------------- | --------------------------------- |
+| **A** | Chat bubble klasik (sekarang) | WhatsApp-style                    |
+| **B** | Full-screen immersive         | Hampir tanpa header, fokus suara  |
+| **C** | Split view                    | Chat kiri, tips/feedback kanan    |
+| **D** | Card-based turns              | Setiap giliran = satu kartu besar |
 
 ---
 
@@ -106,21 +106,21 @@ Baca JSON desain Lingora di bawah ini. Lalu ajukan 10 pertanyaan pilihan ganda (
 
 ### Q6. Gaya huruf/tulisan?
 
-| | Opsi | Font feel | Contoh |
-|---|------|-----------|--------|
-| **A** | Modern bold (sekarang) | Public Sans tebal | Startup SaaS |
-| **B** | Soft & rounded | Bulat, friendly | Headspace |
-| **C** | Classic serif | Elegan, akademik | Medium, NY Times |
-| **D** | Geometric clean | Tegas, minimal | Linear, Vercel |
+|       | Opsi                   | Font feel         | Contoh           |
+| ----- | ---------------------- | ----------------- | ---------------- |
+| **A** | Modern bold (sekarang) | Public Sans tebal | Startup SaaS     |
+| **B** | Soft & rounded         | Bulat, friendly   | Headspace        |
+| **C** | Classic serif          | Elegan, akademik  | Medium, NY Times |
+| **D** | Geometric clean        | Tegas, minimal    | Linear, Vercel   |
 
 ### Q7. Sudut elemen (border radius)?
 
-| | Opsi | Nilai | Kesan |
-|---|------|-------|-------|
-| **A** | Sedang 8px (sekarang) | Standar MUI | Seimbang |
-| **B** | Sangat rounded 16-24px | Pill-like | Friendly, modern |
-| **C** | Tajam 0-4px | Sharp corners | Professional, editorial |
-| **D** | Mixed | Card bulat, button tajam | Kontras menarik |
+|       | Opsi                   | Nilai                    | Kesan                   |
+| ----- | ---------------------- | ------------------------ | ----------------------- |
+| **A** | Sedang 8px (sekarang)  | Standar MUI              | Seimbang                |
+| **B** | Sangat rounded 16-24px | Pill-like                | Friendly, modern        |
+| **C** | Tajam 0-4px            | Sharp corners            | Professional, editorial |
+| **D** | Mixed                  | Card bulat, button tajam | Kontras menarik         |
 
 ---
 
@@ -128,21 +128,21 @@ Baca JSON desain Lingora di bawah ini. Lalu ajukan 10 pertanyaan pilihan ganda (
 
 ### Q8. Tombol utama (CTA) seperti apa?
 
-| | Opsi | Deskripsi |
-|---|------|-----------|
-| **A** | Solid filled hijau (sekarang) | Tombol penuh warna |
-| **B** | Outline/border | Tombol garis, isi transparan |
-| **C** | Gradient | Tombol bergradasi warna |
-| **D** | Soft/tinted | Background warna tipis, teks berwarna |
+|       | Opsi                          | Deskripsi                             |
+| ----- | ----------------------------- | ------------------------------------- |
+| **A** | Solid filled hijau (sekarang) | Tombol penuh warna                    |
+| **B** | Outline/border                | Tombol garis, isi transparan          |
+| **C** | Gradient                      | Tombol bergradasi warna               |
+| **D** | Soft/tinted                   | Background warna tipis, teks berwarna |
 
 ### Q9. Kartu/kontainer konten?
 
-| | Opsi | Deskripsi |
-|---|------|-----------|
-| **A** | Card putih + shadow (sekarang) | Mengambang di background |
-| **B** | Flat tanpa shadow | Border tipis saja |
-| **C** | Glassmorphism | Transparan blur |
-| **D** | Tanpa card | Konten langsung di background |
+|       | Opsi                           | Deskripsi                     |
+| ----- | ------------------------------ | ----------------------------- |
+| **A** | Card putih + shadow (sekarang) | Mengambang di background      |
+| **B** | Flat tanpa shadow              | Border tipis saja             |
+| **C** | Glassmorphism                  | Transparan blur               |
+| **D** | Tanpa card                     | Konten langsung di background |
 
 ---
 
@@ -150,20 +150,20 @@ Baca JSON desain Lingora di bawah ini. Lalu ajukan 10 pertanyaan pilihan ganda (
 
 ### Q10. Default tema saat pertama buka?
 
-| | Opsi |
-|---|------|
+|       | Opsi                  |
+| ----- | --------------------- |
 | **A** | Light mode (sekarang) |
-| **B** | Dark mode |
-| **C** | Ikuti sistem (auto) |
+| **B** | Dark mode             |
+| **C** | Ikuti sistem (auto)   |
 
 ### Q11. Ilustrasi & imagery?
 
-| | Opsi | Deskripsi |
-|---|------|-----------|
-| **A** | Tanpa ilustrasi (sekarang) | Pure UI, teks saja |
-| **B** | Ilustrasi flat/colorful | Karakter & scene |
-| **C** | Foto real orang | Human connection |
-| **D** | Abstract shapes | Bentuk geometris dekoratif |
+|       | Opsi                       | Deskripsi                  |
+| ----- | -------------------------- | -------------------------- |
+| **A** | Tanpa ilustrasi (sekarang) | Pure UI, teks saja         |
+| **B** | Ilustrasi flat/colorful    | Karakter & scene           |
+| **C** | Foto real orang            | Human connection           |
+| **D** | Abstract shapes            | Bentuk geometris dekoratif |
 
 ---
 
@@ -177,13 +177,13 @@ Berdasarkan `current-design-system.json`, berikut 4 arah revamp yang realistis:
 
 **Konsep:** Pertahankan basis Minimals, tambah identitas Lingora
 
-| Aspek | Perubahan |
-|-------|-----------|
-| Warna | Hijau primary dipertahankan, purple jadi aksen sekunder aktif |
-| Layout | Tambah sidebar kiri (gunakan themeLayout vertical yang sudah ada) |
-| Conversation | Bubble dipertahankan, tambah avatar AI & user |
-| Typography | Public Sans tetap |
-| Atmosphere | Professional → Professional + warm |
+| Aspek        | Perubahan                                                         |
+| ------------ | ----------------------------------------------------------------- |
+| Warna        | Hijau primary dipertahankan, purple jadi aksen sekunder aktif     |
+| Layout       | Tambah sidebar kiri (gunakan themeLayout vertical yang sudah ada) |
+| Conversation | Bubble dipertahankan, tambah avatar AI & user                     |
+| Typography   | Public Sans tetap                                                 |
+| Atmosphere   | Professional → Professional + warm                                |
 
 **Cocok jika:** Anda suka tampilan sekarang tapi ingin lebih "punya karakter"
 
@@ -193,14 +193,14 @@ Berdasarkan `current-design-system.json`, berikut 4 arah revamp yang realistis:
 
 **Konsep:** Ruang belajar digital yang menenangkan
 
-| Aspek | Perubahan |
-|-------|-----------|
-| Warna | Primary → Blue #3B82F6, background → #F8FAFC |
-| Layout | Sidebar minimal + area konten luas |
+| Aspek        | Perubahan                                    |
+| ------------ | -------------------------------------------- |
+| Warna        | Primary → Blue #3B82F6, background → #F8FAFC |
+| Layout       | Sidebar minimal + area konten luas           |
 | Conversation | Split view: chat + panel tips pronounciation |
-| Typography | Inter atau Plus Jakarta Sans (lebih soft) |
-| Radius | 12px — lebih rounded |
-| Atmosphere | Dashboard → Meditation app meets tutor |
+| Typography   | Inter atau Plus Jakarta Sans (lebih soft)    |
+| Radius       | 12px — lebih rounded                         |
+| Atmosphere   | Dashboard → Meditation app meets tutor       |
 
 **Cocok jika:** Target user belajar malam hari, ingin fokus tanpa distraksi
 
@@ -210,15 +210,15 @@ Berdasarkan `current-design-system.json`, berikut 4 arah revamp yang realistis:
 
 **Konsep:** Belajar bahasa terasa seperti main game
 
-| Aspek | Perubahan |
-|-------|-----------|
-| Warna | Primary → Orange #F97316, secondary → Purple |
-| Layout | Bottom navigation 4 tab |
+| Aspek        | Perubahan                                    |
+| ------------ | -------------------------------------------- |
+| Warna        | Primary → Orange #F97316, secondary → Purple |
+| Layout       | Bottom navigation 4 tab                      |
 | Conversation | Full-screen immersive, besar, dengan animasi |
-| Typography | Nunito atau Poppins — rounded friendly |
-| Radius | 20px+ pill buttons |
-| Imagery | Ilustrasi karakter AI tutor |
-| Atmosphere | Admin panel → Duolingo meets chat app |
+| Typography   | Nunito atau Poppins — rounded friendly       |
+| Radius       | 20px+ pill buttons                           |
+| Imagery      | Ilustrasi karakter AI tutor                  |
+| Atmosphere   | Admin panel → Duolingo meets chat app        |
 
 **Cocok jika:** Target user muda, ingin belajar terasa fun bukan formal
 
@@ -228,15 +228,15 @@ Berdasarkan `current-design-system.json`, berikut 4 arah revamp yang realistis:
 
 **Konsep:** Platform AI speaking yang terasa cutting-edge
 
-| Aspek | Perubahan |
-|-------|-----------|
-| Warna | Primary → Purple #8B5CF6, dark mode default |
-| Layout | Header minimal, sidebar collapsible |
-| Conversation | Card-based turns + waveform audio visual |
-| Typography | Geist atau SF Pro — clean tech |
-| Radius | 8px sharp-modern |
-| Effects | Glassmorphism cards, subtle gradients |
-| Atmosphere | SaaS admin → ChatGPT meets voice app |
+| Aspek        | Perubahan                                   |
+| ------------ | ------------------------------------------- |
+| Warna        | Primary → Purple #8B5CF6, dark mode default |
+| Layout       | Header minimal, sidebar collapsible         |
+| Conversation | Card-based turns + waveform audio visual    |
+| Typography   | Geist atau SF Pro — clean tech              |
+| Radius       | 8px sharp-modern                            |
+| Effects      | Glassmorphism cards, subtle gradients       |
+| Atmosphere   | SaaS admin → ChatGPT meets voice app        |
 
 **Cocok jika:** Ingin positioning sebagai AI product premium
 
@@ -253,12 +253,12 @@ Q4 (Navigasi): A / B / C / D
 Q5 (Chat UI):  A / B / C / D
 ```
 
-| Jawaban dominan | Rekomendasi |
-|-----------------|-------------|
-| A + A + A + A | Alternatif A (Evolution) |
-| A + B + B + C | Alternatif B (Calm Coach) |
+| Jawaban dominan     | Rekomendasi               |
+| ------------------- | ------------------------- |
+| A + A + A + A       | Alternatif A (Evolution)  |
+| A + B + B + C       | Alternatif B (Calm Coach) |
 | B/D + C/D + C/D + B | Alternatif C (Speak Play) |
-| C + C + B + D | Alternatif D (AI Native) |
+| C + C + B + D       | Alternatif D (AI Native)  |
 
 ---
 

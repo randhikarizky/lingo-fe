@@ -14,7 +14,11 @@ import LockOpenRoundedIcon from "@mui/icons-material/LockOpenRounded";
 import { useSynthesize } from "@/features/conversation/presentation/controller/speech.controller";
 import { useAudioPlayer } from "@/features/conversation/presentation/hooks/useAudioPlayer";
 import { vocabularyExample } from "../../utils/mission-summary.utils";
-import { MISSION_RADIUS, missionNestedSurface, missionSectionCardSx } from "./mission-summary.tokens";
+import {
+  MISSION_RADIUS,
+  missionNestedSurface,
+  missionSectionCardSx,
+} from "./mission-summary.tokens";
 
 type Props = {
   words: string[];
@@ -70,7 +74,9 @@ export default function VocabularyUnlockPanel({
               sx={{
                 borderRadius: `${MISSION_RADIUS.item}px`,
                 overflow: "hidden",
-                ...(isOpen ? missionNestedSurface("primary") : missionNestedSurface("neutral")),
+                ...(isOpen
+                  ? missionNestedSurface("primary")
+                  : missionNestedSurface("neutral")),
               }}
             >
               <Stack
@@ -84,7 +90,10 @@ export default function VocabularyUnlockPanel({
                 }}
                 onClick={() => setExpandedWord(isOpen ? null : word)}
               >
-                <Typography variant="body2" sx={{ fontWeight: 700, color: "text.primary" }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 700, color: "text.primary" }}
+                >
                   Terbuka · {word}
                 </Typography>
                 <IconButton
@@ -112,7 +121,11 @@ export default function VocabularyUnlockPanel({
                     bgcolor: "background.surfaceContainer",
                   }}
                 >
-                  <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: "block" }}
+                  >
                     Arti: kata kunci dari sesi latihanmu
                   </Typography>
                   <Typography variant="body2" sx={{ mt: 0.5, color: "text.primary" }}>

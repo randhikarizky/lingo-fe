@@ -45,7 +45,10 @@ export default function SessionSummaryCard({
         <SummaryRow label="Tutor" value={tutorName} />
         <SummaryRow label="Skenario" value={scenarioLabel} />
         <SummaryRow label="Tingkat" value={difficultyLabel} />
-        <SummaryRow label="Durasi" value={`${getSessionDurationMinutes(difficulty)} Menit`} />
+        <SummaryRow
+          label="Durasi"
+          value={`${getSessionDurationMinutes(difficulty)} Menit`}
+        />
         <SummaryRow label="Tujuan" value={String(objectiveCount)} />
       </Box>
     </Card>

@@ -15,7 +15,9 @@ export const useEndSession = () => {
   return useMutation({
     mutationFn: (conversationId: string) => learningService.endSession(conversationId),
     onSuccess: (_data, conversationId) => {
-      queryClient.invalidateQueries({ queryKey: ["conversations", "detail", conversationId] });
+      queryClient.invalidateQueries({
+        queryKey: ["conversations", "detail", conversationId],
+      });
       queryClient.invalidateQueries({ queryKey: ["conversations", "list"] });
       queryClient.invalidateQueries({ queryKey: ["progress"] });
     },

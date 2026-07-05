@@ -35,7 +35,8 @@ export default function ObjectiveCard({
           {objective}
         </Typography>
         <Typography variant="body2">
-          {scenarioCategory} · {scenarioLabel} · {difficultyLabel} · dengan {characterName}
+          {scenarioCategory} · {scenarioLabel} · {difficultyLabel} · dengan{" "}
+          {characterName}
         </Typography>
       </Stack>
     </Card>

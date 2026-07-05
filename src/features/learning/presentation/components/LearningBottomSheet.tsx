@@ -168,7 +168,13 @@ export default function LearningBottomSheet({
 
               <Box sx={{ px: 2, pb: 2, overflowY: "auto", flex: 1 }}>
                 <Stack spacing={2}>
-                  <Box component={m.div} custom={0} variants={sheetContentVariants} initial="hidden" animate="visible">
+                  <Box
+                    component={m.div}
+                    custom={0}
+                    variants={sheetContentVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
                     <Typography variant="overline" color="text.secondary">
                       Tujuan
                     </Typography>
@@ -178,7 +184,13 @@ export default function LearningBottomSheet({
                   </Box>
 
                   {goals.length > 0 && (
-                    <Box component={m.div} custom={1} variants={sheetContentVariants} initial="hidden" animate="visible">
+                    <Box
+                      component={m.div}
+                      custom={1}
+                      variants={sheetContentVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
                       <SessionGoalChecklist
                         goals={goals}
                         title="Tujuan Sesi"
@@ -188,7 +200,13 @@ export default function LearningBottomSheet({
                     </Box>
                   )}
 
-                  <Box component={m.div} custom={2} variants={sheetContentVariants} initial="hidden" animate="visible">
+                  <Box
+                    component={m.div}
+                    custom={2}
+                    variants={sheetContentVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
                     <Divider />
                   </Box>
 
@@ -215,7 +233,13 @@ export default function LearningBottomSheet({
                     </Typography>
                   </Stack>
 
-                  <Box component={m.div} custom={4} variants={sheetContentVariants} initial="hidden" animate="visible">
+                  <Box
+                    component={m.div}
+                    custom={4}
+                    variants={sheetContentVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
                     <Typography variant="overline" color="text.secondary">
                       Perkiraan Waktu
                     </Typography>
@@ -287,7 +311,11 @@ export default function LearningBottomSheet({
                 />
               )}
               <KeyboardArrowDownRoundedIcon
-                sx={{ fontSize: 20, color: "text.secondary", transform: "rotate(180deg)" }}
+                sx={{
+                  fontSize: 20,
+                  color: "text.secondary",
+                  transform: "rotate(180deg)",
+                }}
               />
             </Box>
           )}

@@ -96,7 +96,9 @@ export default function PracticeHeader({
             transition={{ duration: 0.25, ease: M3_MOTION_EASE.decelerate }}
             sx={{ display: "flex", alignItems: "center" }}
           >
-            <KeyboardArrowDownRoundedIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+            <KeyboardArrowDownRoundedIcon
+              sx={{ fontSize: 18, color: "text.secondary" }}
+            />
           </Box>
         </Stack>
       </Stack>

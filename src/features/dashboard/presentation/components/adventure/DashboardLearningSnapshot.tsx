@@ -16,10 +16,30 @@ type Props = {
 };
 
 const METRICS = [
-  { key: "streak", icon: "🔥", label: "Streak Harian", getValue: (s: ProgressSummary) => s.currentStreak },
-  { key: "sessions", icon: "⭐", label: "Sesi", getValue: (s: ProgressSummary) => s.conversationCount },
-  { key: "speaking", icon: "🎙", label: "Menit Speaking", getValue: (s: ProgressSummary) => s.speakingMinutes },
-  { key: "vocab", icon: "📚", label: "Kosakata", getValue: (s: ProgressSummary) => estimateVocabulary(s) },
+  {
+    key: "streak",
+    icon: "🔥",
+    label: "Streak Harian",
+    getValue: (s: ProgressSummary) => s.currentStreak,
+  },
+  {
+    key: "sessions",
+    icon: "⭐",
+    label: "Sesi",
+    getValue: (s: ProgressSummary) => s.conversationCount,
+  },
+  {
+    key: "speaking",
+    icon: "🎙",
+    label: "Menit Speaking",
+    getValue: (s: ProgressSummary) => s.speakingMinutes,
+  },
+  {
+    key: "vocab",
+    icon: "📚",
+    label: "Kosakata",
+    getValue: (s: ProgressSummary) => estimateVocabulary(s),
+  },
 ] as const;
 
 export default function DashboardLearningSnapshot({ summary }: Props) {

@@ -27,7 +27,10 @@ type Props = {
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <Box>
-      <Typography variant="caption" sx={{ color: DASHBOARD_HERO.textMuted, fontWeight: 600, display: "block" }}>
+      <Typography
+        variant="caption"
+        sx={{ color: DASHBOARD_HERO.textMuted, fontWeight: 600, display: "block" }}
+      >
         {label}
       </Typography>
       <Typography variant="body2" sx={{ color: DASHBOARD_HERO.text, fontWeight: 700 }}>
@@ -64,10 +67,16 @@ export default function MissionHeroCard({ state }: Props) {
           boxShadow: "0 12px 40px rgba(0,0,0,0.35)",
         }}
       >
-        <Typography variant="overline" sx={{ color: DASHBOARD_HERO.gold, fontWeight: 800, letterSpacing: 1.4 }}>
+        <Typography
+          variant="overline"
+          sx={{ color: DASHBOARD_HERO.gold, fontWeight: 800, letterSpacing: 1.4 }}
+        >
           Misi Hari Ini
         </Typography>
-        <Typography variant="h5" sx={{ color: DASHBOARD_HERO.text, fontWeight: 900, mt: 0.5, mb: 1 }}>
+        <Typography
+          variant="h5"
+          sx={{ color: DASHBOARD_HERO.text, fontWeight: 900, mt: 0.5, mb: 1 }}
+        >
           Mulai pelajaran pertamamu
         </Typography>
         <Typography variant="body2" sx={{ color: DASHBOARD_HERO.textMuted, mb: 2.5 }}>
@@ -113,7 +122,8 @@ export default function MissionHeroCard({ state }: Props) {
           </Typography>
         </Stack>
         <Typography variant="body2" sx={{ color: DASHBOARD_HERO.textMuted, mb: 2 }}>
-          Kerja bagus hari ini. Coba {state.nextLabel} berikutnya — AI menyarankan lanjutkan streak-mu.
+          Kerja bagus hari ini. Coba {state.nextLabel} berikutnya — AI menyarankan
+          lanjutkan streak-mu.
         </Typography>
         <Button
           variant="contained"
@@ -156,10 +166,16 @@ export default function MissionHeroCard({ state }: Props) {
         boxShadow: "0 12px 40px rgba(0,0,0,0.35)",
       }}
     >
-      <Typography variant="overline" sx={{ color: DASHBOARD_HERO.gold, fontWeight: 800, letterSpacing: 1.4 }}>
+      <Typography
+        variant="overline"
+        sx={{ color: DASHBOARD_HERO.gold, fontWeight: 800, letterSpacing: 1.4 }}
+      >
         Misi Hari Ini
       </Typography>
-      <Typography variant="h5" sx={{ color: DASHBOARD_HERO.text, fontWeight: 900, mt: 0.5, mb: 2 }}>
+      <Typography
+        variant="h5"
+        sx={{ color: DASHBOARD_HERO.text, fontWeight: 900, mt: 0.5, mb: 2 }}
+      >
         {meta.scenarioLabel}
       </Typography>
 
@@ -174,9 +190,7 @@ export default function MissionHeroCard({ state }: Props) {
         <MetaRow label="Tutor" value={meta.tutorName} />
         <MetaRow label="Tingkat" value={meta.difficultyLabel} />
         <MetaRow label="Estimasi" value={`${meta.duration} Menit`} />
-        {state.kind === "continue" && (
-          <MetaRow label="Progres" value={`${progress}%`} />
-        )}
+        {state.kind === "continue" && <MetaRow label="Progres" value={`${progress}%`} />}
       </Box>
 
       {state.kind === "continue" && (

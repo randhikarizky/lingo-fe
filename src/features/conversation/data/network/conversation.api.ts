@@ -62,8 +62,7 @@ export const conversationApi = {
     }),
   create: (request: CreateConversationRequest) =>
     api.post<BaseResponse<{ id: string }>>("/api/v1/conversations", request),
-  list: () =>
-    api.get<BaseResponse<ConversationListItem[]>>("/api/v1/conversations"),
+  list: () => api.get<BaseResponse<ConversationListItem[]>>("/api/v1/conversations"),
   detail: (id: string) =>
     api.get<BaseResponse<ConversationDetail>>(`/api/v1/conversations/${id}`),
   delete: (id: string) =>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { m, AnimatePresence } from "framer-motion";
 import Box from "@mui/material/Box";
@@ -22,7 +22,11 @@ import {
   formatDifficultyLabel,
   getTutorName,
 } from "../../domain/constants/characters";
-import type { DifficultyId, ScenarioDefinition, SessionGoal } from "../../domain/entities/learning-session.entity";
+import type {
+  DifficultyId,
+  ScenarioDefinition,
+  SessionGoal,
+} from "../../domain/entities/learning-session.entity";
 import { useLearningCatalog } from "../controller/learning.controller";
 import { saveLastSession } from "../utils/last-session.storage";
 import DifficultySelector from "./DifficultySelector";
@@ -38,7 +42,10 @@ import { isScenarioAllowed } from "@/features/subscription/domain/utils/subscrip
 import { parseSubscriptionError } from "@/features/subscription/domain/utils/parse-subscription-error";
 import LockedFeatureDialog from "@/features/subscription/presentation/components/LockedFeatureDialog";
 import { FOCUS_HANDOFF_KEY } from "@/theme/animate/practice-session";
-import { APP_BOTTOM_NAV_HEIGHT, MISSION_STICKY_CTA_HEIGHT } from "@/global/constants/layout";
+import {
+  APP_BOTTOM_NAV_HEIGHT,
+  MISSION_STICKY_CTA_HEIGHT,
+} from "@/global/constants/layout";
 
 const DEFAULT_CHARACTER = "maya";
 const DEFAULT_PERSONALITY = "santai";
@@ -68,7 +75,8 @@ export default function PracticeSetupComponent() {
   const [pendingConversationId, setPendingConversationId] = useState<string | null>(null);
   const [launchPhase, setLaunchPhase] = useState<"idle" | "accepted">("idle");
 
-  const characterId = searchParams.get("character") || settings.defaultTutor || DEFAULT_CHARACTER;
+  const characterId =
+    searchParams.get("character") || settings.defaultTutor || DEFAULT_CHARACTER;
   const personality =
     searchParams.get("personality") ||
     settings.preferredPersonality ||
@@ -85,7 +93,7 @@ export default function PracticeSetupComponent() {
 
   const [scenarioId, setScenarioId] = useState(initialScenario);
   const [difficulty, setDifficulty] = useState<DifficultyId>(initialDifficulty);
-  const [activeCategory, setActiveCategory] = useState("Daily Life");
+  const [categoryOverride, setCategoryOverride] = useState<string | null>(null);
 
   const isLocked = launchPhase === "accepted" || createConversation.isPending;
 
@@ -101,23 +109,25 @@ export default function PracticeSetupComponent() {
     [catalog]
   );
 
+  const activeCategory =
+    categoryOverride ?? selectedScenario?.category ?? categories[0] ?? "Daily Life";
+
   const activeScenarios = useMemo(() => {
     if (!catalog) return [];
-    return catalog.scenarios.find((group) => group.category === activeCategory)?.scenarios ?? [];
+    return (
+      catalog.scenarios.find((group) => group.category === activeCategory)?.scenarios ??
+      []
+    );
   }, [catalog, activeCategory]);
-
-  useEffect(() => {
-    if (selectedScenario) {
-      setActiveCategory(selectedScenario.category);
-    }
-  }, [selectedScenario?.id, selectedScenario?.category]);
 
   const difficultyLabel =
     catalog?.difficulties.find((item) => item.id === difficulty)?.label ??
     formatDifficultyLabel(difficulty);
 
   const previewGoals = useMemo<SessionGoal[]>(() => {
-    const preview = catalog?.sessionGoalPreviews.find((item) => item.difficulty === difficulty);
+    const preview = catalog?.sessionGoalPreviews.find(
+      (item) => item.difficulty === difficulty
+    );
 
     return (
       preview?.goals.map((goal) => ({
@@ -142,7 +152,7 @@ export default function PracticeSetupComponent() {
   const handleCategoryChange = (category: string) => {
     if (!catalog || isLocked) return;
 
-    setActiveCategory(category);
+    setCategoryOverride(category);
     const group = catalog.scenarios.find((item) => item.category === category);
     if (!group) return;
 
@@ -154,6 +164,11 @@ export default function PracticeSetupComponent() {
       group.scenarios[0];
 
     setScenarioId(nextScenario.id);
+  };
+
+  const handleScenarioChange = (nextScenarioId: string) => {
+    setCategoryOverride(null);
+    setScenarioId(nextScenarioId);
   };
 
   const handleStart = () => {
@@ -314,7 +329,7 @@ export default function PracticeSetupComponent() {
               difficulty={difficulty}
               disabled={isLocked}
               isLocked={(id) => !isScenarioAllowed(subscription, id)}
-              onChange={setScenarioId}
+              onChange={handleScenarioChange}
               onLockedClick={handleLockedScenario}
             />
           </Stack>

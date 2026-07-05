@@ -51,7 +51,10 @@ export default function OptionPickerSheet({
       }}
     >
       <Stack sx={{ px: 2, pt: 1.5, pb: 2 }}>
-        <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between", mb: 1 }}>
+        <Stack
+          direction="row"
+          sx={{ alignItems: "center", justifyContent: "space-between", mb: 1 }}
+        >
           <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
             {title}
           </Typography>
