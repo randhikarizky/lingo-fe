@@ -11,7 +11,8 @@ export function timeline(theme: Theme) {
           transition: m3Transition(theme, "transform"),
         },
         filled: {
-          backgroundColor: theme.palette.primary.tonalContainer ?? theme.palette.primary.light,
+          backgroundColor:
+            theme.palette.primary.tonalContainer ?? theme.palette.primary.light,
           color: theme.palette.primary.onTonalContainer ?? theme.palette.primary.dark,
         },
         outlined: {

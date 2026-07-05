@@ -29,9 +29,7 @@ export default function MainTemplate({ children }: Props) {
     <m.div
       key={pathname}
       initial={
-        softEnter
-          ? { opacity: 0 }
-          : { opacity: 0, x: direction * 28, scale: 0.97 }
+        softEnter ? { opacity: 0 } : { opacity: 0, x: direction * 28, scale: 0.97 }
       }
       animate={{ opacity: 1, x: 0, scale: 1 }}
       transition={{

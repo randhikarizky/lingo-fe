@@ -9,7 +9,10 @@ import Typography from "@mui/material/Typography";
 
 import LoadingTips from "@/global/components/Loading/LoadingTips";
 import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
-import { useGetMe, useLogout } from "@/features/auth/presentation/controller/auth.controller";
+import {
+  useGetMe,
+  useLogout,
+} from "@/features/auth/presentation/controller/auth.controller";
 import { useProgressSummary } from "@/features/dashboard/presentation/controller/progress.controller";
 import { useSubscriptionMe } from "@/features/subscription/presentation/controller/subscription.controller";
 import AboutCard from "./profile/AboutCard";

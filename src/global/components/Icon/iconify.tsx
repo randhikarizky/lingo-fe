@@ -23,4 +23,6 @@ const Iconify = forwardRef<SVGElement, Props>(
   )
 );
 
+Iconify.displayName = "Iconify";
+
 export default Iconify;

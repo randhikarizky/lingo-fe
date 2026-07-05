@@ -56,7 +56,10 @@ export default function UsageCard({ subscription, onUpgrade }: Props) {
   return (
     <Card sx={{ p: 2.5 }}>
       <Stack spacing={2}>
-        <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
+        <Stack
+          direction="row"
+          sx={{ alignItems: "center", justifyContent: "space-between" }}
+        >
           <Box>
             <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
               Paket Aktif

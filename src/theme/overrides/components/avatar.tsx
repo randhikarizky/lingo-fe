@@ -3,7 +3,15 @@ import { alpha, Theme } from "@mui/material/styles";
 import { AvatarGroupProps, avatarGroupClasses } from "@mui/material/AvatarGroup";
 import { m3Transition } from "../../motion";
 
-const COLORS = ["default", "primary", "secondary", "info", "success", "warning", "error"] as const;
+const COLORS = [
+  "default",
+  "primary",
+  "secondary",
+  "info",
+  "success",
+  "warning",
+  "error",
+] as const;
 
 const colorByName = (name: string) => {
   const charAt = name.charAt(0).toLowerCase();
@@ -43,8 +51,7 @@ export function avatar(theme: Theme) {
                   theme.palette[color].contrastText,
                 fontWeight: 800,
                 backgroundColor:
-                  theme.palette[color].tonalContainer ??
-                  theme.palette[color].main,
+                  theme.palette[color].tonalContainer ?? theme.palette[color].main,
               },
             }
       ),
@@ -66,8 +73,7 @@ export function avatar(theme: Theme) {
                       theme.palette[color].onTonalContainer ??
                       theme.palette[color].contrastText,
                     backgroundColor:
-                      theme.palette[color].tonalContainer ??
-                      theme.palette[color].main,
+                      theme.palette[color].tonalContainer ?? theme.palette[color].main,
                   }
                 : {
                     color: theme.palette.text.secondary,

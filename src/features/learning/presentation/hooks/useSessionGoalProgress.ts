@@ -14,9 +14,17 @@ export function useSessionGoalProgress(
 ) {
   const prevGoalsRef = useRef<SessionGoal[]>([]);
   const initializedRef = useRef(false);
+  const [prevConversationId, setPrevConversationId] = useState(conversationId);
   const [pulseKey, setPulseKey] = useState(0);
   const [recentlyAchievedIds, setRecentlyAchievedIds] = useState<string[]>([]);
   const [showCelebration, setShowCelebration] = useState(false);
+
+  if (conversationId !== prevConversationId) {
+    setPrevConversationId(conversationId);
+    setShowCelebration(false);
+    setRecentlyAchievedIds([]);
+    setPulseKey(0);
+  }
 
   const achievedCount = goals.filter((goal) => goal.achieved).length;
   const totalGoals = goals.length;
@@ -68,9 +76,6 @@ export function useSessionGoalProgress(
   useEffect(() => {
     initializedRef.current = false;
     prevGoalsRef.current = [];
-    setShowCelebration(false);
-    setRecentlyAchievedIds([]);
-    setPulseKey(0);
   }, [conversationId]);
 
   const dismissCelebration = () => {

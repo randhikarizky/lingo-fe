@@ -1,12 +1,6 @@
-import { useSettingsContext } from "@/theme/settings/context";
 import { Collapse, IconButton, styled } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import {
-  MaterialDesignContent,
-  SnackbarProvider,
-  closeSnackbar,
-} from "notistack";
-import { useRef } from "react";
+import { MaterialDesignContent, SnackbarProvider, closeSnackbar } from "notistack";
 import Iconify from "../Icon/iconify";
 
 type StyledIconProps = {
@@ -57,13 +51,8 @@ type Props = {
 };
 
 export default function Snackbar(props: Props) {
-  const settings = useSettingsContext();
-
-  const Ref = useRef<any>(null);
-
   return (
     <SnackbarProvider
-      ref={Ref}
       maxSnack={5}
       preventDuplicate
       autoHideDuration={3000}

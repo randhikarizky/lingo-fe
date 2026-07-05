@@ -25,7 +25,11 @@ import {
   TARGET_LANGUAGES,
 } from "../../../domain/constants/learning-preferences";
 import OptionPickerSheet from "./OptionPickerSheet";
-import { PROFILE_RADIUS, profileSectionCardSx, profileToggleGroupSx } from "./profile.tokens";
+import {
+  PROFILE_RADIUS,
+  profileSectionCardSx,
+  profileToggleGroupSx,
+} from "./profile.tokens";
 
 function PreferenceRow({
   label,
@@ -62,7 +66,9 @@ function PreferenceRow({
         <Typography variant="body2" sx={{ fontWeight: 800 }}>
           {value}
         </Typography>
-        {onClick && <ChevronRightRoundedIcon sx={{ fontSize: 18, color: "text.secondary" }} />}
+        {onClick && (
+          <ChevronRightRoundedIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+        )}
       </Stack>
     </Box>
   );
@@ -87,7 +93,11 @@ export default function LearningPreferenceCard() {
           />
 
           <Box>
-            <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, mb: 0.75, display: "block" }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontWeight: 700, mb: 0.75, display: "block" }}
+            >
               Target Harian
             </Typography>
             <ToggleButtonGroup
@@ -116,7 +126,11 @@ export default function LearningPreferenceCard() {
           </Box>
 
           <Box>
-            <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, mb: 0.75, display: "block" }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontWeight: 700, mb: 0.75, display: "block" }}
+            >
               Tutor Default
             </Typography>
             <ToggleButtonGroup
@@ -142,7 +156,11 @@ export default function LearningPreferenceCard() {
           </Box>
 
           <Box>
-            <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, mb: 0.75, display: "block" }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontWeight: 700, mb: 0.75, display: "block" }}
+            >
               Kepribadian Pilihan
             </Typography>
             <ToggleButtonGroup
@@ -160,13 +178,22 @@ export default function LearningPreferenceCard() {
               }}
             >
               {PERSONALITY_OPTIONS.map((option) => (
-                <ToggleButton key={option.id} value={option.id} sx={{ fontWeight: 700, fontSize: 12 }}>
+                <ToggleButton
+                  key={option.id}
+                  value={option.id}
+                  sx={{ fontWeight: 700, fontSize: 12 }}
+                >
                   {option.label}
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>
-            <Typography variant="caption" color="text.secondary" sx={{ mt: 0.75, display: "block" }}>
-              {getPersonalityLabel(settings.preferredPersonality)} · disimpan untuk sesi berikutnya
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ mt: 0.75, display: "block" }}
+            >
+              {getPersonalityLabel(settings.preferredPersonality)} · disimpan untuk sesi
+              berikutnya
             </Typography>
           </Box>
         </Stack>

@@ -38,9 +38,7 @@ api.interceptors.response.use(
     const silentError = config?.silentError === true;
 
     const message =
-      error.response?.data?.message ||
-      error.message ||
-      "Terjadi kesalahan pada server";
+      error.response?.data?.message || error.message || "Terjadi kesalahan pada server";
 
     if (error.response?.status === 401) {
       if (!silentError) {

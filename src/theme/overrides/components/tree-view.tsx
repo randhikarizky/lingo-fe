@@ -24,12 +24,10 @@ export function treeView(theme: Theme) {
           },
           "&.Mui-selected": {
             backgroundColor:
-              theme.palette.primary.tonalContainer ??
-              theme.palette.action.selected,
+              theme.palette.primary.tonalContainer ?? theme.palette.action.selected,
             "&:hover": {
               backgroundColor:
-                theme.palette.primary.tonalContainer ??
-                theme.palette.action.selected,
+                theme.palette.primary.tonalContainer ?? theme.palette.action.selected,
             },
           },
           "&.Mui-focused": {

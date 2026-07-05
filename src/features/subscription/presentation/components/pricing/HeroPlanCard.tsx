@@ -94,7 +94,10 @@ export default function HeroPlanCard({
           <Typography variant="h4" sx={{ fontWeight: 900, color: theme.text, mb: 0.5 }}>
             {getPlanDisplayLabel(plan.id)}
           </Typography>
-          <Typography variant="h3" sx={{ fontWeight: 900, color: theme.accent, letterSpacing: -0.5 }}>
+          <Typography
+            variant="h3"
+            sx={{ fontWeight: 900, color: theme.accent, letterSpacing: -0.5 }}
+          >
             {plan.priceLabel}
           </Typography>
         </Box>
@@ -116,7 +119,10 @@ export default function HeroPlanCard({
           </>
         )}
 
-        <Typography variant="body1" sx={{ color: theme.textMuted, fontWeight: 600, lineHeight: 1.5 }}>
+        <Typography
+          variant="body1"
+          sx={{ color: theme.textMuted, fontWeight: 600, lineHeight: 1.5 }}
+        >
           {getPlanBenefitTagline(plan.id)}
         </Typography>
 
@@ -141,7 +147,12 @@ export default function HeroPlanCard({
             Upgrade ke {getPlanDisplayLabel(plan.id)}
           </Button>
         ) : (
-          <Button variant="outlined" disabled fullWidth sx={{ fontWeight: 700, minHeight: 48 }}>
+          <Button
+            variant="outlined"
+            disabled
+            fullWidth
+            sx={{ fontWeight: 700, minHeight: 48 }}
+          >
             {isCurrent ? "Paket Saat Ini" : "Sudah Termasuk"}
           </Button>
         )}

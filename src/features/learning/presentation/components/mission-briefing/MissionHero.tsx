@@ -8,7 +8,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
-import type { DifficultyId, ScenarioDefinition } from "../../../domain/entities/learning-session.entity";
+import type {
+  DifficultyId,
+  ScenarioDefinition,
+} from "../../../domain/entities/learning-session.entity";
 import {
   BRIEFING_HERO,
   BRIEFING_RADIUS,
@@ -68,13 +71,20 @@ export default function MissionHero({
               {getScenarioIcon(scenario.id)}
             </Box>
             <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="overline" sx={{ color: BRIEFING_HERO.gold, fontWeight: 800 }}>
+              <Typography
+                variant="overline"
+                sx={{ color: BRIEFING_HERO.gold, fontWeight: 800 }}
+              >
                 {scenario.category} · Pratinjau Sesi
               </Typography>
               <Typography variant="h4" sx={{ fontWeight: 900, lineHeight: 1.15 }}>
                 {scenario.label}
               </Typography>
-              <Stack direction="row" spacing={0.75} sx={{ mt: 1, flexWrap: "wrap", gap: 0.75 }}>
+              <Stack
+                direction="row"
+                spacing={0.75}
+                sx={{ mt: 1, flexWrap: "wrap", gap: 0.75 }}
+              >
                 <Chip
                   size="small"
                   label={difficultyLabel}
@@ -127,12 +137,20 @@ export default function MissionHero({
                   textAlign: "center",
                 }}
               >
-                <Typography variant="caption" sx={{ color: BRIEFING_HERO.textMuted, display: "block" }}>
+                <Typography
+                  variant="caption"
+                  sx={{ color: BRIEFING_HERO.textMuted, display: "block" }}
+                >
                   {item.label}
                 </Typography>
                 <Typography
                   variant="caption"
-                  sx={{ fontWeight: 800, color: BRIEFING_HERO.text, display: "block", mt: 0.25 }}
+                  sx={{
+                    fontWeight: 800,
+                    color: BRIEFING_HERO.text,
+                    display: "block",
+                    mt: 0.25,
+                  }}
                   noWrap
                 >
                   {item.value}

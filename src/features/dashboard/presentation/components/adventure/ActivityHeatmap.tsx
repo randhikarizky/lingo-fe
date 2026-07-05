@@ -32,7 +32,9 @@ function buildHeatmapDays(data: ProgressActivity[]) {
 
 export default function ActivityHeatmap({ data }: Props) {
   const theme = useTheme();
-  const [selected, setSelected] = useState<{ date: string; messages: number } | null>(null);
+  const [selected, setSelected] = useState<{ date: string; messages: number } | null>(
+    null
+  );
 
   const days = useMemo(() => buildHeatmapDays(data), [data]);
   const maxMessages = Math.max(...days.map((d) => d.messages), 1);
@@ -116,7 +118,15 @@ export default function ActivityHeatmap({ data }: Props) {
 
 function StackLegend() {
   return (
-    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 0.5, mt: 1.5 }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        gap: 0.5,
+        mt: 1.5,
+      }}
+    >
       <Typography variant="caption" color="text.secondary" sx={{ mr: 0.5 }}>
         Sedikit
       </Typography>

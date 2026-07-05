@@ -28,7 +28,11 @@ function getRecommendationReason(scenarioLabel: string) {
   return "Direkomendasikan berdasarkan jalur belajarmu.";
 }
 
-export default function TutorCarousel({ recommendedCharacterId, scenarioLabel, subscription }: Props) {
+export default function TutorCarousel({
+  recommendedCharacterId,
+  scenarioLabel,
+  subscription,
+}: Props) {
   const router = useRouter();
 
   const sorted = [...TUTOR_CHARACTERS].sort((a, b) => {
@@ -79,14 +83,22 @@ export default function TutorCarousel({ recommendedCharacterId, scenarioLabel, s
                   <Typography variant="subtitle1" sx={{ fontWeight: 900 }}>
                     {tutor.name}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ fontWeight: 600 }}
+                  >
                     {tutor.role}
                   </Typography>
                 </Box>
               </Stack>
 
               {isRecommended && (
-                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.45 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ lineHeight: 1.45 }}
+                >
                   {getRecommendationReason(scenarioLabel)}
                 </Typography>
               )}
@@ -100,7 +112,9 @@ export default function TutorCarousel({ recommendedCharacterId, scenarioLabel, s
                     router.push("/pricing");
                     return;
                   }
-                  router.push(`/practice?character=${tutor.id}&personality=${personality}`);
+                  router.push(
+                    `/practice?character=${tutor.id}&personality=${personality}`
+                  );
                 }}
                 sx={{ fontWeight: 700 }}
               >

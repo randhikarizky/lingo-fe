@@ -31,7 +31,8 @@ export function stepper(theme: Theme) {
           width: 36,
           height: 36,
           color: theme.palette.background.surfaceContainerHigh,
-          transition: "color 250ms cubic-bezier(0.05, 0.7, 0.1, 1), transform 250ms cubic-bezier(0.34, 1.4, 0.64, 1)",
+          transition:
+            "color 250ms cubic-bezier(0.05, 0.7, 0.1, 1), transform 250ms cubic-bezier(0.34, 1.4, 0.64, 1)",
           [`&.${stepIconClasses.active}`]: {
             color: theme.palette.primary.main,
             transform: "scale(1.1)",

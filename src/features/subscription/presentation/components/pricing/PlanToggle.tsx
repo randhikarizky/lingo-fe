@@ -25,7 +25,11 @@ export default function PlanToggle({ value, onChange }: Props) {
       sx={pricingToggleGroupSx}
     >
       {(["monthly", "lifetime"] as const).map((option) => (
-        <ToggleButton key={option} value={option} sx={{ position: "relative", overflow: "hidden" }}>
+        <ToggleButton
+          key={option}
+          value={option}
+          sx={{ position: "relative", overflow: "hidden" }}
+        >
           {value === option && (
             <Box
               component={m.span}

@@ -8,7 +8,11 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import type { DifficultyId } from "../../../domain/entities/learning-session.entity";
-import { BRIEFING_RADIUS, briefingSectionSx, DIFFICULTY_BRIEFS } from "./mission-briefing.tokens";
+import {
+  BRIEFING_RADIUS,
+  briefingSectionSx,
+  DIFFICULTY_BRIEFS,
+} from "./mission-briefing.tokens";
 
 type Props = {
   difficulty: DifficultyId;

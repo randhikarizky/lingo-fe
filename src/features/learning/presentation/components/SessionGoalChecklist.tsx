@@ -36,7 +36,10 @@ export default function SessionGoalChecklist({
 
   return (
     <Card sx={{ ...props.sx, p: compact ? 1.5 : 2, px: 0 }}>
-      <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", mb: 1 }}>
+      <Stack
+        direction="row"
+        sx={{ justifyContent: "space-between", alignItems: "center", mb: 1 }}
+      >
         <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
           {title}
         </Typography>

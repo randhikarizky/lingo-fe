@@ -27,9 +27,13 @@ export function button(theme: Theme) {
       ...(inheritColor && {
         ...(containedVariant && {
           color: lightMode ? theme.palette.common.white : theme.palette.grey[800],
-          backgroundColor: lightMode ? theme.palette.grey[800] : theme.palette.common.white,
+          backgroundColor: lightMode
+            ? theme.palette.grey[800]
+            : theme.palette.common.white,
           "&:hover": {
-            backgroundColor: lightMode ? theme.palette.grey[700] : theme.palette.grey[400],
+            backgroundColor: lightMode
+              ? theme.palette.grey[700]
+              : theme.palette.grey[400],
           },
         }),
         ...(outlinedVariant && {
@@ -57,8 +61,7 @@ export function button(theme: Theme) {
       const paletteColor = theme.palette[color];
       const tonalBg = paletteColor.tonalContainer ?? alpha(paletteColor.main, 0.16);
       const tonalFg =
-        paletteColor.onTonalContainer ??
-        paletteColor[lightMode ? "dark" : "light"];
+        paletteColor.onTonalContainer ?? paletteColor[lightMode ? "dark" : "light"];
 
       return {
         ...(ownerState.color === color && {

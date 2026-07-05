@@ -21,7 +21,11 @@ export default function PricingHero() {
         <br />
         Speaking Penuhmu
       </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 600, lineHeight: 1.55, maxWidth: 340 }}>
+      <Typography
+        variant="body1"
+        color="text.secondary"
+        sx={{ fontWeight: 600, lineHeight: 1.55, maxWidth: 340 }}
+      >
         Latihan setiap hari dengan tutor AI yang menyesuaikan levelmu.
       </Typography>
     </Box>

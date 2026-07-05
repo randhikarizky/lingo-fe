@@ -20,7 +20,12 @@ type Props = {
   disabled?: boolean;
 };
 
-export default function DifficultySelector({ options, value, onChange, disabled }: Props) {
+export default function DifficultySelector({
+  options,
+  value,
+  onChange,
+  disabled,
+}: Props) {
   return (
     <Stack spacing={1}>
       {options.map((option, index) => (
@@ -29,7 +34,11 @@ export default function DifficultySelector({ options, value, onChange, disabled 
           component={m.div}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.05, duration: 0.32, ease: M3_MOTION_EASE.decelerate }}
+          transition={{
+            delay: index * 0.05,
+            duration: 0.32,
+            ease: M3_MOTION_EASE.decelerate,
+          }}
         >
           <DifficultyCard
             difficulty={option.id}

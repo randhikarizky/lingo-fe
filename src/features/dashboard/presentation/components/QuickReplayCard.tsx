@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { m } from "framer-motion";
 import Card from "@mui/material/Card";
@@ -11,19 +11,18 @@ import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { enqueueSnackbar } from "notistack";
 
 import { useCreateConversation } from "@/features/conversation/presentation/controller/conversation.controller";
-import { formatDifficultyLabel, getTutorName } from "@/features/learning/domain/constants/characters";
-import { getLastSession, type LastSessionConfig } from "@/features/learning/presentation/utils/last-session.storage";
+import {
+  formatDifficultyLabel,
+  getTutorName,
+} from "@/features/learning/domain/constants/characters";
+import { getLastSession } from "@/features/learning/presentation/utils/last-session.storage";
 import { parseSubscriptionError } from "@/features/subscription/domain/utils/parse-subscription-error";
 import { FOCUS_HANDOFF_KEY } from "@/theme/animate/practice-session";
 
 export default function QuickReplayCard() {
   const router = useRouter();
   const createConversation = useCreateConversation();
-  const [lastSession, setLastSession] = useState<LastSessionConfig | null>(null);
-
-  useEffect(() => {
-    setLastSession(getLastSession());
-  }, []);
+  const [lastSession] = useState(() => getLastSession());
 
   if (!lastSession) return null;
 

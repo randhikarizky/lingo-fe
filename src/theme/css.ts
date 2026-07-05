@@ -40,12 +40,10 @@ export const menuItem = (theme: Theme) => ({
     fontWeight: 700,
     color: theme.palette.primary.onTonalContainer ?? theme.palette.primary.dark,
     backgroundColor:
-      theme.palette.primary.tonalContainer ??
-      alpha(theme.palette.primary.main, 0.12),
+      theme.palette.primary.tonalContainer ?? alpha(theme.palette.primary.main, 0.12),
     "&:hover": {
       backgroundColor:
-        theme.palette.primary.tonalContainer ??
-        alpha(theme.palette.primary.main, 0.16),
+        theme.palette.primary.tonalContainer ?? alpha(theme.palette.primary.main, 0.16),
     },
   },
   "&:hover": {
@@ -60,8 +58,7 @@ export const menuItem = (theme: Theme) => ({
     fontWeight: 700,
     color: theme.palette.primary.onTonalContainer ?? theme.palette.primary.dark,
     backgroundColor:
-      theme.palette.primary.tonalContainer ??
-      alpha(theme.palette.primary.main, 0.12),
+      theme.palette.primary.tonalContainer ?? alpha(theme.palette.primary.main, 0.12),
     "&:hover": {
       backgroundColor: theme.palette.background.surfaceContainerHigh,
     },

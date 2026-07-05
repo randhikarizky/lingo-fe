@@ -11,7 +11,10 @@ export function getPlanLabel(planId: string) {
   return PLAN_LABELS[planId as PlanId] ?? planId;
 }
 
-export function isScenarioAllowed(subscription: UserSubscription | undefined, scenarioId: string) {
+export function isScenarioAllowed(
+  subscription: UserSubscription | undefined,
+  scenarioId: string
+) {
   if (!subscription) return true;
 
   if (subscription.features.allScenarios) return true;
@@ -20,7 +23,10 @@ export function isScenarioAllowed(subscription: UserSubscription | undefined, sc
   return subscription.features.allowedScenarios.includes(scenarioId);
 }
 
-export function isTutorAllowed(subscription: UserSubscription | undefined, characterId: string) {
+export function isTutorAllowed(
+  subscription: UserSubscription | undefined,
+  characterId: string
+) {
   if (!subscription) return true;
 
   if (subscription.features.allTutors) return true;

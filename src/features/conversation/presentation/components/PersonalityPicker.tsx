@@ -5,10 +5,7 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import {
-  PERSONALITIES,
-  type PersonalityId,
-} from "../../domain/constants/personalities";
+import { PERSONALITIES, type PersonalityId } from "../../domain/constants/personalities";
 
 type Props = {
   value: PersonalityId;
@@ -55,7 +52,11 @@ export default function PersonalityPicker({ value, onChange, disabled = false }:
         })}
       </Stack>
       {selected && (
-        <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ mt: 1, display: "block" }}
+        >
           {selected.description}
         </Typography>
       )}

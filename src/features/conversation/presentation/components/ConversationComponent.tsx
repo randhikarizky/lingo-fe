@@ -23,18 +23,18 @@ import { useEndSession } from "@/features/learning/presentation/controller/learn
 import { useGetMe } from "@/features/auth/presentation/controller/auth.controller";
 import { buildRecordingFormData } from "../../domain/utils/buildRecordingFormData";
 import type { VoiceRecording, VoiceUiState } from "../../domain/constants/speech";
-import {
-  getPersonality,
-  type PersonalityId,
-} from "../../domain/constants/personalities";
-import {
-  useChat,
-  useGetConversationDetail,
-} from "../controller/conversation.controller";
+import { getPersonality, type PersonalityId } from "../../domain/constants/personalities";
+import { useChat, useGetConversationDetail } from "../controller/conversation.controller";
 import { useSynthesize, useTranscribe } from "../controller/speech.controller";
-import type { ChatMessageEntity, ChatRole } from "../../domain/entities/chat-message.entity";
+import type {
+  ChatMessageEntity,
+  ChatRole,
+} from "../../domain/entities/chat-message.entity";
 import { ASSISTANT_FAILED_COPY } from "../../domain/constants/message-status";
-import { buildChatPayloadBeforeAssistant, buildChatPayloadMessages } from "../../domain/utils/build-chat-payload";
+import {
+  buildChatPayloadBeforeAssistant,
+  buildChatPayloadMessages,
+} from "../../domain/utils/build-chat-payload";
 import { parseApiError } from "../../domain/utils/parse-api-error";
 import { useConnectionMonitor } from "../hooks/useConnectionMonitor";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
@@ -44,7 +44,10 @@ import ChatMessageBubble from "./ChatMessageBubble";
 import ConnectionBanner from "./ConnectionBanner";
 import VoiceStatusOverlay from "./VoiceStatusOverlay";
 import MicPermissionDialog from "./MicPermissionDialog";
-import { formatDifficultyLabel, getTutorName } from "@/features/learning/domain/constants/characters";
+import {
+  formatDifficultyLabel,
+  getTutorName,
+} from "@/features/learning/domain/constants/characters";
 import HistoryDrawer from "./HistoryDrawer";
 import LockedFeatureDialog from "@/features/subscription/presentation/components/LockedFeatureDialog";
 import { parseSubscriptionError } from "@/features/subscription/domain/utils/parse-subscription-error";
@@ -84,7 +87,12 @@ function createMessage(
 }
 
 function resolvePersonalityId(value?: string | null): PersonalityId {
-  if (value === "santai" || value === "semangat" || value === "teliti" || value === "bebas") {
+  if (
+    value === "santai" ||
+    value === "semangat" ||
+    value === "teliti" ||
+    value === "bebas"
+  ) {
     return value;
   }
 
@@ -94,7 +102,7 @@ function resolvePersonalityId(value?: string | null): PersonalityId {
 export default function ConversationComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const conversationId = searchParams.get("id");
   const queryPersonality = searchParams.get("personality") as PersonalityId | null;
   const queryCharacter = searchParams.get("character");
@@ -113,7 +121,9 @@ export default function ConversationComponent() {
     () => searchParams.get("focus") === "1"
   );
   const endSession = useEndSession();
-  const { data: detail, isLoading: isDetailLoading } = useGetConversationDetail(conversationId || "");
+  const { data: detail, isLoading: isDetailLoading } = useGetConversationDetail(
+    conversationId || ""
+  );
   const sessionPersonality = getPersonality(resolvePersonalityId(detail?.personality));
 
   const [messages, setMessages] = useState<ChatMessageEntity[]>([]);
@@ -146,7 +156,14 @@ export default function ConversationComponent() {
       const suffix = params.toString() ? `?${params.toString()}` : "";
       router.replace(`/practice${suffix}`);
     }
-  }, [conversationId, isAuthLoading, isAuthError, queryCharacter, queryPersonality, router]);
+  }, [
+    conversationId,
+    isAuthLoading,
+    isAuthError,
+    queryCharacter,
+    queryPersonality,
+    router,
+  ]);
 
   // Restore messages when conversation details are loaded
   useEffect(() => {
@@ -189,9 +206,12 @@ export default function ConversationComponent() {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("focus");
     const query = params.toString();
-    router.replace(query ? `/conversation?${query}` : `/conversation?id=${conversationId}`, {
-      scroll: false,
-    });
+    router.replace(
+      query ? `/conversation?${query}` : `/conversation?id=${conversationId}`,
+      {
+        scroll: false,
+      }
+    );
 
     const focusTimer = window.setTimeout(() => {
       inputRef.current?.focus();
@@ -259,7 +279,13 @@ export default function ConversationComponent() {
         setVoiceError("Audio gagal diputar");
       }
     },
-    [audioPlayer, conversationId, sessionPersonality.sttLanguage, showSubscriptionDialog, synthesize]
+    [
+      audioPlayer,
+      conversationId,
+      sessionPersonality.sttLanguage,
+      showSubscriptionDialog,
+      synthesize,
+    ]
   );
 
   const requestAssistantReply = useCallback(
@@ -396,7 +422,9 @@ export default function ConversationComponent() {
       if (!text || chat.isPending) return;
 
       const userMessage = createMessage("user", text, { deliveryStatus: "sending" });
-      const thinkingMessage = createMessage("assistant", "", { assistantStatus: "thinking" });
+      const thinkingMessage = createMessage("assistant", "", {
+        assistantStatus: "thinking",
+      });
 
       setMessages((prev) => [...prev, userMessage, thinkingMessage]);
       if (!options?.fromVoice) {
@@ -423,7 +451,9 @@ export default function ConversationComponent() {
       const target = messagesRef.current.find((message) => message.id === messageId);
       if (!target || target.role !== "user") return;
 
-      const thinkingMessage = createMessage("assistant", "", { assistantStatus: "thinking" });
+      const thinkingMessage = createMessage("assistant", "", {
+        assistantStatus: "thinking",
+      });
 
       setMessages((prev) => {
         const index = prev.findIndex((message) => message.id === messageId);
@@ -437,10 +467,15 @@ export default function ConversationComponent() {
 
         const withoutFailedAssistant = next.filter(
           (message, idx) =>
-            !(idx === index + 1 && message.role === "assistant" && message.assistantStatus === "failed")
+            !(
+              idx === index + 1 &&
+              message.role === "assistant" &&
+              message.assistantStatus === "failed"
+            )
         );
 
-        const insertAt = withoutFailedAssistant.findIndex((message) => message.id === messageId) + 1;
+        const insertAt =
+          withoutFailedAssistant.findIndex((message) => message.id === messageId) + 1;
         return [
           ...withoutFailedAssistant.slice(0, insertAt),
           thinkingMessage,
@@ -448,7 +483,9 @@ export default function ConversationComponent() {
         ];
       });
 
-      const priorMessages = messagesRef.current.filter((message) => message.id !== messageId);
+      const priorMessages = messagesRef.current.filter(
+        (message) => message.id !== messageId
+      );
       const payloadMessages = [
         ...buildChatPayloadMessages(priorMessages),
         { role: "user" as const, content: target.content },
@@ -500,7 +537,10 @@ export default function ConversationComponent() {
 
       const userMessageId =
         [...messagesRef.current]
-          .slice(0, messagesRef.current.findIndex((message) => message.id === assistantMessageId))
+          .slice(
+            0,
+            messagesRef.current.findIndex((message) => message.id === assistantMessageId)
+          )
           .reverse()
           .find((message) => message.role === "user")?.id ?? "";
 
@@ -829,7 +869,9 @@ export default function ConversationComponent() {
           isSending={chat.isPending}
           recordingStatus={recorder.status}
           onMicToggle={() => void recorder.toggleRecording()}
-          isMicDisabled={(isVoiceBusy && recorder.status !== "recording") || isSessionCompleted}
+          isMicDisabled={
+            (isVoiceBusy && recorder.status !== "recording") || isSessionCompleted
+          }
           bottomOffset={inputBottomOffset}
           inputRef={inputRef}
           autoFocus={false}

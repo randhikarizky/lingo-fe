@@ -4,7 +4,10 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import { getPersonality, type PersonalityId } from "@/features/conversation/domain/constants/personalities";
+import {
+  getPersonality,
+  type PersonalityId,
+} from "@/features/conversation/domain/constants/personalities";
 import {
   CHARACTER_EMOJIS,
   formatDifficultyLabel,
@@ -12,7 +15,12 @@ import {
 } from "../../domain/constants/characters";
 
 function resolvePersonalityId(value: string): PersonalityId {
-  if (value === "santai" || value === "semangat" || value === "teliti" || value === "bebas") {
+  if (
+    value === "santai" ||
+    value === "semangat" ||
+    value === "teliti" ||
+    value === "bebas"
+  ) {
     return value;
   }
 

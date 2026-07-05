@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { m } from "framer-motion";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -30,10 +30,7 @@ import RecentPracticeCard from "./adventure/RecentPracticeCard";
 import ActivityHeatmap from "./adventure/ActivityHeatmap";
 import SubscriptionMiniCard from "./adventure/SubscriptionMiniCard";
 import { DASHBOARD_RADIUS } from "./adventure/dashboard.tokens";
-import {
-  buildJourneyNodes,
-  resolveMissionState,
-} from "../utils/dashboard.utils";
+import { buildJourneyNodes, resolveMissionState } from "../utils/dashboard.utils";
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 16 },
@@ -70,13 +67,9 @@ export default function DashboardComponent() {
   } = useProgressActivity();
   const { data: subscription } = useSubscriptionMe();
 
-  const [lastSession, setLastSession] = useState(() =>
+  const [lastSession] = useState(() =>
     typeof window !== "undefined" ? getLastSession() : null
   );
-
-  useEffect(() => {
-    setLastSession(getLastSession());
-  }, []);
 
   const missionState = useMemo(
     () => resolveMissionState(conversations, summary, lastSession),
@@ -155,7 +148,11 @@ export default function DashboardComponent() {
           <Typography variant="subtitle2" color="error" sx={{ fontWeight: 700, mb: 1 }}>
             Gagal memuat progres belajar
           </Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 2 }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ display: "block", mb: 2 }}
+          >
             Koneksi atau server error saat mengambil statistikmu.
           </Typography>
           <Button variant="outlined" color="primary" size="small" onClick={handleRetry}>
@@ -178,9 +175,18 @@ export default function DashboardComponent() {
               </Card>
             ))}
           </Box>
-          <Card component={m.div} variants={sectionVariants} custom={0.08} sx={{ p: 2.5 }}>
+          <Card
+            component={m.div}
+            variants={sectionVariants}
+            custom={0.08}
+            sx={{ p: 2.5 }}
+          >
             <Skeleton variant="text" width="180px" />
-            <Skeleton variant="rectangular" height={120} sx={{ mt: 1.5, borderRadius: 1 }} />
+            <Skeleton
+              variant="rectangular"
+              height={120}
+              sx={{ mt: 1.5, borderRadius: 1 }}
+            />
           </Card>
         </>
       ) : summary ? (

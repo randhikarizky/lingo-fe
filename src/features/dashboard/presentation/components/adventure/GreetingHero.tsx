@@ -19,7 +19,10 @@ export default function GreetingHero({ name }: Props) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
-      <Typography variant="overline" sx={{ fontWeight: 700, letterSpacing: 1.2, color: "text.secondary" }}>
+      <Typography
+        variant="overline"
+        sx={{ fontWeight: 700, letterSpacing: 1.2, color: "text.secondary" }}
+      >
         {getTimeGreeting()} 👋
       </Typography>
       <Typography variant="h5" sx={{ fontWeight: 800, mt: 0.25 }}>
@@ -30,5 +33,4 @@ export default function GreetingHero({ name }: Props) {
       </Typography>
     </Box>
   );
-
 }

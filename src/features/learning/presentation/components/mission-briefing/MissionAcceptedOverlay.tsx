@@ -74,7 +74,10 @@ export default function MissionAcceptedOverlay({
           <Typography variant="h4" sx={{ color: BRIEFING_HERO.text, fontWeight: 900 }}>
             {scenarioLabel}
           </Typography>
-          <Typography variant="subtitle1" sx={{ color: BRIEFING_HERO.textMuted, mt: 0.5 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ color: BRIEFING_HERO.textMuted, mt: 0.5 }}
+          >
             {tutorEmoji} dengan {tutorName}
           </Typography>
         </Box>

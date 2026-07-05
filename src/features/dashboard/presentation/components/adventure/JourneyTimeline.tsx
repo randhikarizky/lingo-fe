@@ -135,7 +135,11 @@ export default function JourneyTimeline({ nodes }: Props) {
                 {node.title}
               </Typography>
               {node.status === "done" && (
-                <Typography variant="caption" color="success.main" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="success.main"
+                  sx={{ fontWeight: 700 }}
+                >
                   Selesai
                 </Typography>
               )}

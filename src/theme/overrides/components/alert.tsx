@@ -31,8 +31,7 @@ export function alert(theme: Theme) {
         }),
         ...(outlinedVariant && {
           backgroundColor:
-            theme.palette[color].tonalContainer ??
-            alpha(theme.palette[color].main, 0.08),
+            theme.palette[color].tonalContainer ?? alpha(theme.palette[color].main, 0.08),
           color: theme.palette[color][lightMode ? "dark" : "light"],
           border: "none",
           [`& .${alertClasses.icon}`]: {
@@ -56,7 +55,14 @@ export function alert(theme: Theme) {
           ...m3Interactive(theme, 0.99),
           ...rootStyles(ownerState),
         }),
-        icon: { opacity: 1, padding: 0, marginRight: theme.spacing(1.5), display: "flex", alignItems: "center", justifyContent: "center" },
+        icon: {
+          opacity: 1,
+          padding: 0,
+          marginRight: theme.spacing(1.5),
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        },
         action: { paddingTop: 0, marginRight: 0 },
       },
     },

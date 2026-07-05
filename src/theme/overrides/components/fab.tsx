@@ -36,7 +36,9 @@ export function fab(theme: Theme) {
           backgroundColor: theme.palette.text.primary,
           color: lightMode ? theme.palette.common.white : theme.palette.grey[800],
           "&:hover": {
-            backgroundColor: lightMode ? theme.palette.grey[700] : theme.palette.grey[400],
+            backgroundColor: lightMode
+              ? theme.palette.grey[700]
+              : theme.palette.grey[400],
           },
         }),
       }),
@@ -88,7 +90,8 @@ export function fab(theme: Theme) {
             },
           }),
           ...((softVariant || softExtendedVariant) && {
-            color: paletteColor.onTonalContainer ?? paletteColor[lightMode ? "dark" : "light"],
+            color:
+              paletteColor.onTonalContainer ?? paletteColor[lightMode ? "dark" : "light"],
             backgroundColor: tonalBg,
             "&:hover": {
               backgroundColor: alpha(paletteColor.main, 0.32),

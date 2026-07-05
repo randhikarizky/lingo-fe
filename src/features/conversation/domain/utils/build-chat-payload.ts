@@ -43,7 +43,9 @@ export function buildChatPayloadBeforeAssistant(
   messages: ChatMessageEntity[],
   assistantMessageId: string
 ) {
-  const assistantIndex = messages.findIndex((message) => message.id === assistantMessageId);
+  const assistantIndex = messages.findIndex(
+    (message) => message.id === assistantMessageId
+  );
   if (assistantIndex === -1) return [];
 
   const preceding = messages.slice(0, assistantIndex);

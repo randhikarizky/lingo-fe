@@ -24,7 +24,9 @@ function getPlanBadgeLabel(plan: string) {
   return getPlanLabel(plan);
 }
 
-function getPlanBadgeColor(plan: string): "default" | "primary" | "warning" | "secondary" {
+function getPlanBadgeColor(
+  plan: string
+): "default" | "primary" | "warning" | "secondary" {
   if (plan === "FREE") return "default";
   if (plan === "LIFETIME") return "warning";
   if (plan === "PRO" || plan === "STARTER") return "primary";

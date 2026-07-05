@@ -46,8 +46,14 @@
         "label": "M3 Expressive Dynamic Blue"
       },
       "semantic": {
-        "success": { "main": "#14B862", "description": "Digunakan untuk teks koreksi AI yang benar" },
-        "error": { "main": "#FF3B30", "description": "Digunakan untuk coretan merah (strikethrough)" }
+        "success": {
+          "main": "#14B862",
+          "description": "Digunakan untuk teks koreksi AI yang benar"
+        },
+        "error": {
+          "main": "#FF3B30",
+          "description": "Digunakan untuk coretan merah (strikethrough)"
+        }
       },
       "lightMode": {
         "textPrimary": "#1C1B1A",
@@ -104,7 +110,12 @@
   },
   "atmosphere": {
     "summary": "Aplikasi edukasi yang sangat playful, empuk, dan interaktif (Material 3 Expressive)",
-    "derivedFrom": ["Extreme pill shapes", "Tonal surface colors", "Chunky typography", "No harsh borders/shadows"],
+    "derivedFrom": [
+      "Extreme pill shapes",
+      "Tonal surface colors",
+      "Chunky typography",
+      "No harsh borders/shadows"
+    ],
     "keywords": ["expressive", "chunky", "tactile", "dynamic", "fun", "modern-mobile"],
     "density": "Lega dan besar. Target sentuh (touch target) minimum 48px untuk semua interaksi.",
     "visualWeight": "Diberikan melalui Tonal Container (warna latar lembut yang menyesuaikan primary/secondary) alih-alih bayangan."

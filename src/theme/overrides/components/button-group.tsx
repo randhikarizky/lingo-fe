@@ -71,7 +71,8 @@ export function buttonGroup(theme: Theme) {
   return {
     MuiButtonGroup: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ButtonGroupProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: ButtonGroupProps }) =>
+          rootStyles(ownerState),
       },
     },
   };

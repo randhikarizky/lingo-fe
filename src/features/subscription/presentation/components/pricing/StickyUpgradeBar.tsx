@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, m } from "framer-motion";
 import { alpha, useTheme } from "@mui/material/styles";
@@ -12,7 +12,11 @@ import Typography from "@mui/material/Typography";
 
 import type { PlanId, PublicPlan } from "../../../domain/entities/subscription.entity";
 import type { BillingPeriod } from "../../utils/pricing.utils";
-import { canUpgradeToPlan, formatStickyPrice, getPlanDisplayLabel } from "../../utils/pricing.utils";
+import {
+  canUpgradeToPlan,
+  formatStickyPrice,
+  getPlanDisplayLabel,
+} from "../../utils/pricing.utils";
 import { PRICING_RADIUS, pricingCtaSx } from "./pricing.tokens";
 import { APP_BOTTOM_NAV_HEIGHT } from "@/global/constants/layout";
 import { M3_MOTION_EASE } from "@/theme/animate/m3-page";
@@ -25,13 +29,19 @@ type Props = {
   onUpgrade: () => void;
 };
 
-export default function StickyUpgradeBar({ plan, currentPlan, billing, loading, onUpgrade }: Props) {
+export default function StickyUpgradeBar({
+  plan,
+  currentPlan,
+  billing,
+  loading,
+  onUpgrade,
+}: Props) {
   const theme = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   if (!mounted || !plan) return null;
 
@@ -74,13 +84,22 @@ export default function StickyUpgradeBar({ plan, currentPlan, billing, loading, 
               transition={{ duration: 0.22 }}
               spacing={0.15}
             >
-              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ fontWeight: 700 }}
+              >
                 {canUpgrade ? "Rekomendasi" : "Paketmu"}
               </Typography>
               <Typography variant="subtitle2" sx={{ fontWeight: 900 }} noWrap>
                 Paket {getPlanDisplayLabel(plan.id)}
               </Typography>
-              <Typography variant="caption" color="primary.main" sx={{ fontWeight: 700 }} noWrap>
+              <Typography
+                variant="caption"
+                color="primary.main"
+                sx={{ fontWeight: 700 }}
+                noWrap
+              >
                 {formatStickyPrice(plan, billing)}
               </Typography>
             </Stack>

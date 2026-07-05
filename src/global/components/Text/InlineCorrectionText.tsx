@@ -32,7 +32,10 @@ export default function InlineCorrectionText({ content, ...typographyProps }: Pr
     return (
       <Box
         component="span"
-        sx={{ "& del": { color: "error.main" }, "& ins": { color: "success.main", textDecoration: "none", fontWeight: 600 } }}
+        sx={{
+          "& del": { color: "error.main" },
+          "& ins": { color: "success.main", textDecoration: "none", fontWeight: 600 },
+        }}
       >
         <Typography
           component="span"

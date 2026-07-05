@@ -25,38 +25,32 @@ const rightIcon = () => <Iconify icon="eva:arrow-ios-forward-fill" width={24} />
 const calendarIcon = () => <Iconify icon="solar:calendar-mark-bold-duotone" width={24} />;
 const clockIcon = () => <Iconify icon="solar:clock-circle-outline" width={24} />;
 
-const desktopTypes = dateList.reduce(
-  (result: Record<string, object>, currentValue) => {
-    result[`Mui${currentValue}`] = {
-      defaultProps: {
-        slots: {
-          openPickerIcon: calendarIcon,
-          leftArrowIcon: leftIcon,
-          rightArrowIcon: rightIcon,
-          switchViewIcon: switchIcon,
-        },
+const desktopTypes = dateList.reduce((result: Record<string, object>, currentValue) => {
+  result[`Mui${currentValue}`] = {
+    defaultProps: {
+      slots: {
+        openPickerIcon: calendarIcon,
+        leftArrowIcon: leftIcon,
+        rightArrowIcon: rightIcon,
+        switchViewIcon: switchIcon,
       },
-    };
-    return result;
-  },
-  {}
-);
+    },
+  };
+  return result;
+}, {});
 
-const timeTypes = timeList.reduce(
-  (result: Record<string, object>, currentValue) => {
-    result[`Mui${currentValue}`] = {
-      defaultProps: {
-        slots: {
-          openPickerIcon: clockIcon,
-          rightArrowIcon: rightIcon,
-          switchViewIcon: switchIcon,
-        },
+const timeTypes = timeList.reduce((result: Record<string, object>, currentValue) => {
+  result[`Mui${currentValue}`] = {
+    defaultProps: {
+      slots: {
+        openPickerIcon: clockIcon,
+        rightArrowIcon: rightIcon,
+        switchViewIcon: switchIcon,
       },
-    };
-    return result;
-  },
-  {}
-);
+    },
+  };
+  return result;
+}, {});
 
 export function datePicker(theme: Theme) {
   return {

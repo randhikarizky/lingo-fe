@@ -40,10 +40,7 @@ export type SessionGoal = {
   achieved: boolean;
 };
 
-export type SessionGoalPreview = Pick<
-  SessionGoal,
-  "id" | "emoji" | "label" | "target"
->;
+export type SessionGoalPreview = Pick<SessionGoal, "id" | "emoji" | "label" | "target">;
 
 export type LearningCatalog = {
   scenarios: Array<{

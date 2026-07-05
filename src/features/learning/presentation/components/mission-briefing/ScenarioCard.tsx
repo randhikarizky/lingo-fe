@@ -10,7 +10,11 @@ import Typography from "@mui/material/Typography";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 
 import type { ScenarioDefinition } from "../../../domain/entities/learning-session.entity";
-import { BRIEFING_RADIUS, briefingSectionSx, getScenarioIcon } from "./mission-briefing.tokens";
+import {
+  BRIEFING_RADIUS,
+  briefingSectionSx,
+  getScenarioIcon,
+} from "./mission-briefing.tokens";
 
 type Props = {
   scenario: ScenarioDefinition;
@@ -74,7 +78,10 @@ export default function ScenarioCard({
           {locked ? <LockRoundedIcon fontSize="small" /> : getScenarioIcon(scenario.id)}
         </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between", gap: 0.5 }}>
+          <Stack
+            direction="row"
+            sx={{ alignItems: "center", justifyContent: "space-between", gap: 0.5 }}
+          >
             <Typography variant="subtitle2" sx={{ fontWeight: 800 }} noWrap>
               {scenario.label}
             </Typography>
@@ -84,17 +91,30 @@ export default function ScenarioCard({
                 size="small"
                 color="warning"
                 variant="soft"
-                sx={{ height: 22, fontSize: 10, fontWeight: 800, borderRadius: `${BRIEFING_RADIUS.inset}px` }}
+                sx={{
+                  height: 22,
+                  fontSize: 10,
+                  fontWeight: 800,
+                  borderRadius: `${BRIEFING_RADIUS.inset}px`,
+                }}
               />
             )}
           </Stack>
           <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
             {scenario.category}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25, lineHeight: 1.35 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ mt: 0.25, lineHeight: 1.35 }}
+          >
             {scenario.objective}
           </Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block", fontWeight: 700 }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ mt: 0.5, display: "block", fontWeight: 700 }}
+          >
             Est. {estimatedDuration}
           </Typography>
         </Box>

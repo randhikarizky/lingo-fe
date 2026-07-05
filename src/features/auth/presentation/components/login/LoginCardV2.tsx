@@ -111,13 +111,19 @@ export default function LoginCardV2({
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
+                      aria-label={
+                        showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"
+                      }
                       onClick={onTogglePassword}
                       edge="end"
                       disabled={isPending}
                       size="small"
                     >
-                      {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
+                      {showPassword ? (
+                        <VisibilityOffRoundedIcon />
+                      ) : (
+                        <VisibilityRoundedIcon />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -140,7 +146,9 @@ export default function LoginCardV2({
           size="large"
           fullWidth
           disabled={isPending}
-          startIcon={isPending ? <CircularProgress size={18} color="inherit" /> : undefined}
+          startIcon={
+            isPending ? <CircularProgress size={18} color="inherit" /> : undefined
+          }
           sx={{ fontWeight: 800, borderRadius: `${LINGORA_RADIUS.item}px` }}
         >
           {isPending ? "Masuk..." : "Masuk"}

@@ -56,8 +56,21 @@ function MissionProgressRing({ progress }: { progress: number }) {
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <Box sx={{ position: "relative", width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <svg width={size} height={size} style={{ position: "absolute", transform: "rotate(-90deg)" }}>
+    <Box
+      sx={{
+        position: "relative",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <svg
+        width={size}
+        height={size}
+        style={{ position: "absolute", transform: "rotate(-90deg)" }}
+      >
         <circle
           cx={size / 2}
           cy={size / 2}
