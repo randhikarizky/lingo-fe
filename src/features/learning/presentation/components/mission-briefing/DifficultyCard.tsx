@@ -2,17 +2,12 @@
 
 import { m } from "framer-motion";
 import { alpha } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import type { DifficultyId } from "../../../domain/entities/learning-session.entity";
-import {
-  BRIEFING_RADIUS,
-  briefingSectionSx,
-  DIFFICULTY_BRIEFS,
-} from "./mission-briefing.tokens";
+import { briefingSectionSx, DIFFICULTY_BRIEFS } from "./mission-briefing.tokens";
 
 type Props = {
   difficulty: DifficultyId;

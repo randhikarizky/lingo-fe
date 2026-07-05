@@ -1,5 +1,5 @@
 import { AvatarProps } from "@mui/material/Avatar";
-import { alpha, Theme } from "@mui/material/styles";
+import { Theme } from "@mui/material/styles";
 import { AvatarGroupProps, avatarGroupClasses } from "@mui/material/AvatarGroup";
 import { m3Transition } from "../../motion";
 

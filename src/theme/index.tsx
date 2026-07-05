@@ -44,9 +44,9 @@ export default function ThemeConfig({ children }: Props) {
         ...palette(mode),
         ...contrast.palette,
       },
-      customShadows: customShadows(mode),
+      customShadows: customShadows(),
       direction: settings.themeDirection,
-      shadows: shadows(mode),
+      shadows: shadows(),
       shape: { borderRadius: M3_SHAPE.borderRadius },
       typography,
       transitions: {
