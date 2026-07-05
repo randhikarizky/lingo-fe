@@ -22,6 +22,12 @@ export type PerformanceDimension = {
   blurb: string;
 };
 
+export type FocusSummary = {
+  score: number;
+  label: string;
+  description: string;
+};
+
 export type NextMission = {
   scenarioId: string;
   label: string;
@@ -215,6 +221,32 @@ export function buildPerformanceDimensions(
       blurb: summary.confidence,
     },
   ];
+}
+
+export function buildFocusSummary(metrics: SessionMetrics): FocusSummary {
+  const score = metrics.focusScore ?? 100;
+
+  if (score >= 85) {
+    return {
+      score,
+      label: "Luar Biasa",
+      description: "Kamu tetap fokus sepanjang misi.",
+    };
+  }
+
+  if (score >= 70) {
+    return {
+      score,
+      label: "Bagus",
+      description: "Secara umum kamu tetap on track selama latihan.",
+    };
+  }
+
+  return {
+    score,
+    label: "Perlu Diperbaiki",
+    description: "Kamu beberapa kali keluar topik.",
+  };
 }
 
 export function getNextMission(

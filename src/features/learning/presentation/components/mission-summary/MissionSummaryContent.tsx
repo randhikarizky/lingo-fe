@@ -25,6 +25,7 @@ import type {
 } from "../../../domain/entities/learning-session.entity";
 import {
   buildBadges,
+  buildFocusSummary,
   buildPerformanceDimensions,
   buildSessionRewards,
   buildTutorCongrats,
@@ -273,6 +274,42 @@ function MissionObjectives({ goals }: { goals: SessionGoal[] }) {
           </Stack>
         ))}
       </Stack>
+    </Card>
+  );
+}
+
+function FocusSummaryPanel({ metrics }: { metrics: SessionMetrics }) {
+  const focus = buildFocusSummary(metrics);
+
+  return (
+    <Card sx={{ ...missionSectionCardSx, p: 2 }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 800, mb: 1.5 }}>
+        Fokus
+      </Typography>
+      <Box
+        sx={{
+          p: 2,
+          borderRadius: `${MISSION_RADIUS.panel}px`,
+          textAlign: "center",
+          ...missionNestedSurface("primary"),
+        }}
+      >
+        <Typography variant="caption" sx={{ color: "text.secondary" }}>
+          Skor Fokus Sesi
+        </Typography>
+        <Typography
+          variant="h2"
+          sx={{ fontWeight: 900, lineHeight: 1, color: "text.primary" }}
+        >
+          <AnimatedNumber value={focus.score} />%
+        </Typography>
+        <Typography variant="subtitle2" color="primary.main" sx={{ fontWeight: 800 }}>
+          {focus.label}
+        </Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.75 }}>
+          {focus.description}
+        </Typography>
+      </Box>
     </Card>
   );
 }
@@ -537,14 +574,18 @@ export default function MissionSummaryContent({
       </Box>
 
       <Box component={m.div} {...sectionVariants(3)}>
-        <PerformanceSummary overallScore={overallScore} dimensions={dimensions} />
+        <FocusSummaryPanel metrics={metrics} />
       </Box>
 
       <Box component={m.div} {...sectionVariants(4)}>
-        <CoachFeedback summary={summary} nextChallenge={nextChallenge} />
+        <PerformanceSummary overallScore={overallScore} dimensions={dimensions} />
       </Box>
 
       <Box component={m.div} {...sectionVariants(5)}>
+        <CoachFeedback summary={summary} nextChallenge={nextChallenge} />
+      </Box>
+
+      <Box component={m.div} {...sectionVariants(6)}>
         <VocabularyUnlockPanel
           words={metrics.newVocabulary}
           scenarioLabel={detail.scenarioLabel}
@@ -552,15 +593,15 @@ export default function MissionSummaryContent({
         />
       </Box>
 
-      <Box component={m.div} {...sectionVariants(6)}>
+      <Box component={m.div} {...sectionVariants(7)}>
         <AchievementsPanel badges={badges} />
       </Box>
 
-      <Box component={m.div} {...sectionVariants(7)}>
+      <Box component={m.div} {...sectionVariants(8)}>
         <NextChallengeCard detail={detail} nextMission={nextMission} />
       </Box>
 
-      <Stack spacing={1.25} component={m.div} {...sectionVariants(8)}>
+      <Stack spacing={1.25} component={m.div} {...sectionVariants(9)}>
         <Button
           variant="contained"
           size="large"
